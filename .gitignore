@@ -3,4 +3,8 @@
 .settings
 BuildConfig.groovy
 lecturious.iws
+lecturious.iml
+lecturious.ipr
 target
+lib
+FacebookConfig.groovy
