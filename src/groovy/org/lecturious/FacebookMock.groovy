@@ -4,7 +4,7 @@ package org.lecturious
  *
  * @author florian
  */
-class FacebookMock{
+class FacebookMock implements Serializable{
 	
 }
 

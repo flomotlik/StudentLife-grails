@@ -11,7 +11,7 @@
     <title>Sample title</title>
   </head>
   <body>
-    <p>You are logged in as ${session.user.name} with id ${session.user.facebookId}</p>
+    <p>You are logged in as ${session.user?.name} with id ${session.user?.facebookId}</p>
   <g:link controller="inscription" action="addInscription">Inscriptions</g:link>
   <table>
     <tr>
@@ -21,7 +21,7 @@
     </tr>
     <g:each in="${universities}">
       <tr>
-        <td>${it.name}</td>
+        <td>${it?.name}</td>
       </tr>
     </g:each>
   </table>
