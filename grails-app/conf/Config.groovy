@@ -49,14 +49,12 @@ environments {
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(
+            conversionPattern: '%d{dd MMM yyyy HH:mm:ss,SSS} [%t] %-5p %c{2} - %m%n')
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
+        // other error/warning levels for other loggers here...
+        error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
 	       'org.codehaus.groovy.grails.web.pages', //  GSP
 	       'org.codehaus.groovy.grails.web.sitemesh', //  layouts
 	       'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
@@ -67,10 +65,11 @@ log4j = {
 	       'org.springframework',
 	       'org.hibernate'
 
-    warn   'org.mortbay.log'
+        warn   'org.mortbay.log'
+        // set level to debug for all your artefacts.
+        debug 'grails.app'
 
-    debug 'grails.app.controller'
+        // set default debug level of root logger and add console appender
+        root { error 'stdout' }
+    }
 }
-
-
-     

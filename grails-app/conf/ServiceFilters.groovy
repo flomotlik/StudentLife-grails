@@ -5,8 +5,6 @@ import com.google.code.facebookapi.FacebookWebappHelper
 
 class ServiceFilters{
 
-    def persistenceManager
-
     def filters = {
         facebook(controller:"*", action:"*"){
             before = {
@@ -15,7 +13,6 @@ class ServiceFilters{
                         case "development":
                         session.facebook = new FacebookMock()
                         session.user = new User(name:"Name", facebookId:"12345")
-                        persistenceManager.makePersistent(session.user)
                         break
                     
                         case "production":
@@ -40,11 +37,7 @@ class ServiceFilters{
 
                         if (!session.user) {
                             def facebookUserId = facebook.users_getLoggedInUser();
-                            def query = persistenceManager.newQuery(User.class);
-                            query.setFilter("facebookId == facebookIdParam");
-                            query.declareParameters("String facebookIdParam");
-
-                            def user = query.execute(facebookUserId.toString())
+                            
                             if(!user){
                                 def username = userClient.users_getInfo([facebookUserId], ["name"]).get(0).name
                                 user = new User(facebookId:facebookUserId, name:username)
@@ -55,6 +48,7 @@ class ServiceFilters{
                         break
                     }
                 }
+
             }
         }
     }

@@ -3,7 +3,7 @@ package org.lecturious
 
 
 import javax.jdo.annotations.*;
-// import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 class User implements Serializable {
@@ -17,6 +17,9 @@ class User implements Serializable {
 
     @Persistent
     String name
+
+    @Persistent
+    List<Key> universities
 
     static constraints = {
     	id( visible:false)

@@ -1,55 +1,92 @@
 package org.lecturious
 
-class InscriptionController {
+import org.springframework.context.ApplicationContextAware
+import org.springframework.context.ApplicationContext
 
-    def index = {
-        def user = User.get(session.user.id)
-        def countries = Country.list()
-        flash.country = params.country?.toLong() ?: flash.country
-        flash.state = params.state?.toLong() ?: flash.state
-        flash.city = params.city?.toLong() ?: flash.city
+class InscriptionController{
 
-        def selectedCountry = countries.find{c -> c.id == flash.country}
-        def states = flash.country? State.findAllByCountry(selectedCountry) : null
-        //states.each{log.debug("${it.id}:${flash.state} ${it.id == flash.state}")}
-        def cities = flash.state? City.findAllByState(State.get(flash.state)) : null
-        def universities = flash.city? University.findAllByCity(City.get(flash.city)) : null
+    def persistenceManager
 
-        [userUniversities:user.universities, countries:countries, states:states,
-            cities:cities, universities:universities, country:flash.country,
-            state:flash.state, city:flash.city]
-    }
-
-    def addCountry = {
-        if(!params.value){
-            render (view:"add", model:[label:"Country", action:"addCountry"])
-        }else{
-            def countryInstance = new Country(name:params.value)
-            if(!countryInstance.hasErrors() && countryInstance.save()) {
-                flash.message = "Country ${countryInstance.name} created"
+    def addInscriptionFlow = {
+        listCountries {
+            action {
+                log.debug("Start Action called")
+                //[] needed because result of newQuery is not serializable
+                def countries = [] + persistenceManager.newQuery(Country.class).execute()
+                log.debug("Countries class ${countries.class}")
+                [countries:countries]
             }
-            redirect(action:index)
+            on("success").to "selectCountry"
         }
-    }
+        selectCountry {
+            on("select"){
+                flow.country = flow.countries.find{c -> c.id == params.country.toLong()}
+                log.debug("SelectedCountry: ${params.country} - ${flow.country}")
+            }.to "listStates"
+            on("addCountry"){
+                persistenceManager.makePersistent(new Country(name:params.newCountry))
+            }.to "listCountries"
+        }
 
-    def addState = {
-        if(!params.value){
-            flash.country = params.country
-            render (view:"add", model:[label:"State", action:"addState"])
-        }else{
-            def stateInstance = new State(name:params.value, country:Country.get(params.country))
-            if(!stateInstance.hasErrors() && stateInstance.save()) {
-                flash.message = "State ${stateInstance.name} created"
+        listStates {
+            action{
+                log.debug("States: ${flow.country.states}")
+                [states:flow.country.states, country:flow.country]
             }
-            redirect(action:index)
+            on("success").to "selectState"
         }
-    }
+        selectState{
+            on("select"){
+                flow.state = flow.country.states.find{c-> c.id.getId() == params.state.toLong()}
+                log.debug("SelectedState: ${flow.state}")
+            }.to "listCities"
+            on("addState"){
+                flow.country.states.add(new State(name:params.newState))
+                persistenceManager.makePersistent(flow.country)
+            }.to "listStates"
+        }
 
-    def addCity = {
+        listCities {
+            action{
+                [cities:flow.state.cities, state:flow.state]
+            }
+            on("success").to "selectCity"
+        }
+        selectCity{
+            on("select"){
+                flow.city = flow.state.cities.find{c-> c.id.getId() == params.city.toLong()}
+                log.debug("SelectedCity: ${params.city.toLong()} - ${flow.city}")
+            }.to "listUniversities"
+            on("addCity"){
+                flow.state.cities.add(new City(name:params.newCity))
+                persistenceManager.makePersistent(flow.state)
+            }.to "listCities"
+        }
 
-    }
-
-    def addUniversity = {
-        
+        listUniversities{
+            action{
+                [universities:flow.city.universities, city:flow.city]
+            }
+            on("success").to "selectUniversity"
+        }
+        selectUniversity{
+            on("select"){
+                def university = flow.city.universities.find{c-> c.id.getId() == params.university.toLong()}
+                log.debug("Universities ${session.user.universities}")
+                def universities = session.user.universities?: []
+                universities << university.id
+                session.user.universities = universities
+                persistenceManager.makePersistent(session.user)
+                log.debug("Added University ${university} to User ${session.user.id}")
+                flash.message = "Successfully added University ${university.name}."
+            }.to "universityAdded"
+            on("addUniversity"){
+                flow.city.universities.add(new University(name:params.newUniversity))
+                persistenceManager.makePersistent(flow.city)
+            }.to "listUniversities"
+        }
+        universityAdded{
+            redirect(controller:"application")
+        }
     }
 }

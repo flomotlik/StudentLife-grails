@@ -2,20 +2,22 @@ package org.lecturious
 
 
 
-import javax.jdo.annotations.*
+import javax.jdo.annotations.*;
+import com.google.appengine.api.datastore.Key
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-class Country implements Serializable {
+class University implements Serializable {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    Long id
+    Key id
 
     @Persistent
     String name
 
-    @Persistent
-    List<State> states
+    public getIdKey(){
+        return id.getId()
+    }
 
     static constraints = {
     	id( visible:false)
