@@ -1,16 +1,15 @@
 package org.lecturious
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-
 class CityController {
 
   def index = { }
 
   def persistenceManager
 
+  def keyService
+
   def add = {
-    def state = persistenceManager.getObjectById(State.class, getStateKey())
+    def state = stateKey()
     def city = new City(name: params.name)
     persistenceManager.makePersistent(city)
     state.cities << city
@@ -19,7 +18,7 @@ class CityController {
   }
 
   def list = {
-    def state = persistenceManager.getObjectById(State.class, getStateKey())
+    def state = stateKey()
     render(builder: "json", contentType:"application/json") {
       cities {
         state.cities.each {
@@ -29,10 +28,7 @@ class CityController {
     }
   }
 
-  private def getStateKey() {
-    def countryId = Long.valueOf(params.country)
-    def stateId = Long.valueOf(params.state)
-    def key = new KeyFactory.Builder(Country.class.simpleName, countryId).
-            addChild(State.class.simpleName, stateId).key
+  private def stateKey() {
+    persistenceManager.getObjectById(State.class, keyService.stateKey(params.country, params.state))
   }
 }
