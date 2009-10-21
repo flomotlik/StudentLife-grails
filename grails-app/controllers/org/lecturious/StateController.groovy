@@ -10,7 +10,7 @@ class StateController {
 
   def add = {
     def country = persistenceManager.getObjectById(Country.class, Long.valueOf(params.country))
-    def state = new State(name:params.name)
+    def state = new State(name: params.name)
     persistenceManager.makePersistent(state)
     country.states << state
     persistenceManager.makePersistent(country)
@@ -18,11 +18,13 @@ class StateController {
   }
 
   def list = {
-    log.debug("Country: ${params.country}") 
+    log.debug("Country: ${params.country}")
     def country = persistenceManager.getObjectById(Country.class, Long.valueOf(params.country))
-    render(builder:"json"){
-      country.states.each{
-        state(id:it.id.getId(), name:it.name)
+    render(builder: "json", contentType: "application/json") {
+      states {
+        country.states.each {
+          state(id: it.id.getId(), name: it.name)
+        }
       }
     }
   }
