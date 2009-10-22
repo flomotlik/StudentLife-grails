@@ -32,6 +32,14 @@ class CourseController {
     }
   }
 
+  def update = {
+    def course = persistenceManager.getObjectById(Course.class, keyService.courseKey(params.country, params.state,
+            params.city, params.university, params.course))
+    course.properties = params
+    persistenceManager.makePersistent(course)
+    render course.id
+  }
+
   private def universityKey() {
     persistenceManager.getObjectById(University.class, keyService.universityKey(params.country, params.state,
             params.city, params.university))
