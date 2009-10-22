@@ -1,12 +1,10 @@
 package org.lecturious
 
-
-
 import javax.jdo.annotations.*;
-import com.google.appengine.api.datastore.Key
+import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable (identityType = IdentityType.APPLICATION, detachable = "true")
-class University implements Serializable {
+class Course implements Serializable {
 
   @PrimaryKey
   @Persistent (valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -16,11 +14,16 @@ class University implements Serializable {
   String name
 
   @Persistent
-  List<Course> courses
+  String professor
 
-  public getIdKey() {
-    return id.getId()
-  }
+  @Persistent
+  String identificator
+
+  @Persistent
+  String type
+
+  @Persistent
+  int points
 
   static constraints = {
     id(visible: false)

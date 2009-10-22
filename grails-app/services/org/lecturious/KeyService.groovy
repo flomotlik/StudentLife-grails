@@ -24,6 +24,11 @@ class KeyService {
     createKey(country, state, city).addChild(University.class.simpleName, universityId)
   }
 
+  private def createKey(country, state, city, university, course){
+    def courseId = Long.valueOf(course)
+    createKey(country, state, city, university).addChild(Course.class.simpleName, courseId)
+  }
+
   def stateKey(country, state){
      createKey(country, state).key
   }
@@ -34,5 +39,9 @@ class KeyService {
 
   def universityKey(country, state, city, university){
     createKey(country, state, city, university).key
+  }
+
+  def courseKey(country, state, city, university, course){
+    createKey(country, state, city, university, course).key
   }
 }
