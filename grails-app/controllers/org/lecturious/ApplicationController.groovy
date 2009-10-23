@@ -41,6 +41,7 @@ class ApplicationController {
       } catch (e) {
         log.debug(e)
       }
+      redirect(controller:"user", action:"list")
     }
   }
 
@@ -48,7 +49,8 @@ class ApplicationController {
     def query = persistenceManager.newQuery(User.class);
     query.setFilter("facebookId == facebookIdParam");
     query.declareParameters("String facebookIdParam");
-
-    query.execute(facebookUserId.toString())
+    def user = query.execute(facebookUserId.toString())[0]
+    log.debug(user)
+    return user
   }
 }
