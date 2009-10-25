@@ -1,0 +1,62 @@
+{
+  "let" :
+  {
+    "APPLICATION"  : "bom",
+    "QOOXDOO_PATH" : "${REL_QOOXDOO_PATH}",
+    "CACHE"        : "${Cache}",
+    "ROOT"         : "."
+  },
+
+  "jobs" :
+  {
+    "build" :
+    {
+      "library" :
+      [
+        {
+          "manifest" : "$${QOOXDOO_PATH}/framework/Manifest.json",
+          "uri" : ".."          
+        }
+      ],
+
+      "cache" :
+      {
+        "path" : "./cache"
+      },
+
+      "include" : 
+      [
+        "qx.bom.Lifecycle",
+        "qx.bom.Element",
+        "qx.bom.element.*",
+        "qx.dom.*",
+        "qx.event.handler.Keyboard",
+        "qx.event.handler.Mouse"
+      ],
+
+      "variants" :
+      {
+        "qx.debug" : ["off"],
+        "qx.aspects" : ["off"]
+      },
+
+      "compile-dist" :
+      {
+        "paths" :
+        {
+          "file" : "qx-bom.js"
+        },
+        "uris" :
+        {
+          "script"   : ".",
+          "resource" : "."
+        },
+        "code" :
+        {
+          "format"   : true,
+          "optimize" : [ "variables", "basecalls", "privates", "strings" ]
+        }
+      }
+    }
+  }
+}

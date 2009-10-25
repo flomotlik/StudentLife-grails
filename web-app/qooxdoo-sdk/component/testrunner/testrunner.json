@@ -1,0 +1,281 @@
+{
+  "name" : "Testrunner (export) config",
+
+  //"export" : [ "source", "build", "clean", "build-with-tests-source" ],
+
+  "let" :
+  {
+    "QOOXDOO_PATH" : "../..",
+    "TESTRUNNER_ROOT" : ".",
+    "TESTRUNNER"   : "testrunner",
+    "TEST_INCLUDE"   : "${APPLICATION}.test.*",
+    "BUILD_PATH"   : "build",
+    "THEME"        : "qx.theme.Modern"
+  },
+
+  "jobs" :
+  {
+    "common" :
+    {
+      "library" :
+      [
+        {
+          "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"
+        },
+
+        {
+          "manifest" : "${TESTRUNNER_ROOT}/Manifest.json"
+        }
+      ],
+
+      "include" :
+      [
+        "testrunner.runner.Application",
+        "${THEME}"
+      ],
+
+      "settings" :
+      {
+        "qx.application"   : "testrunner.runner.Application",
+        "qx.theme"         : "${THEME}",
+        "qx.version"       : "${QOOXDOO_VERSION}",
+        //"qx.testPageUri"   : "html/tests.html",
+        "qx.testNameSpace" : "${APPLICATION}.test",  // this is common, but not mandatory
+        "testrunner.title" : "${APPLICATION}"
+      },
+
+      "asset-let" :
+      {
+        "qx.icontheme" : ["Tango"],
+        "qx.theme"     : ["${THEME}"]
+      },
+
+      "cache" :
+      {
+        "compile" : "${CACHE}"
+      }
+    },
+
+
+    "common-tests" :
+    {
+      "let" :
+      {
+        "LOCALES" : ["de", "de_DE", "fr", "fr_FR" ]
+      },
+
+      "library" :
+      [
+        {
+          "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"
+        },
+
+        {
+          "manifest" : "${TESTRUNNER_ROOT}/Manifest.json"
+        }
+      ],
+
+      "include" : ["testrunner.TestLoader", "${TEST_INCLUDE}", "${QXTHEME}"],
+
+      "settings" :
+      {
+        "qx.theme" : "${QXTHEME}",
+        "qx.globalErrorHandling" : "on"
+      },
+
+      "cache" :
+      {
+        "compile" : "${CACHE}"
+      }
+    },
+
+
+    // -- source jobs ------------------------------------------
+
+    "source-script" :
+    {
+      "extend" : ["common"],
+
+      "compile-source" :
+      {
+        "file" : "./source/script/${APPLICATION}.js",
+        "root" : "source"  // the root dir of your app, where the HTML lives
+      }
+    },
+
+
+    "source-tests" :
+    {
+      "extend" : ["common-tests"],
+
+      "compile-source" :
+      {
+        "file" : "./source/script/tests.js",
+        "locales" : "${LOCALES}",
+        "root" : "source/html"
+      }
+    },
+
+
+    "source" :
+    {
+      "run" :
+      [
+        "source-script",
+        "source-tests"
+      ]
+    },
+
+
+    // -- build jobs -------------------------------------------
+
+    "build-files" :
+    {
+      "extend" : ["common"],
+
+      "copy-files" :
+      {
+        "files" :
+        [
+          "index.html",
+          "index-source.html",
+          "html"
+        ],
+
+        "target" : "${BUILD_PATH}",
+        "source" : "${TESTRUNNER_ROOT}/source"
+      }
+    },
+
+
+    "build-resources":
+    {
+      "extend" : ["common"],
+
+      "include" :
+      [
+        "${THEME}",
+        "testrunner.*"
+      ],
+
+      "copy-resources" :
+      {
+        "target" : "${BUILD_PATH}"
+      }
+    },
+
+
+    "build-script" :
+    {
+      "extend" : ["common"],
+
+      "compile-dist" :
+      {
+        "paths" :
+        {
+          "file"   : "${BUILD_PATH}/script/${TESTRUNNER}.js" // this should be relative to 'target'
+        },
+        "code" :
+        {
+          "optimize" : ["variables", "basecalls", "privates", "strings"]
+        }
+      }
+    },
+
+
+    "build-tests" :
+    {
+      "extend" : ["common-tests"],
+
+      "variants": 
+      {
+        "qx.debug" : ["off"]
+      },
+
+      "compile-dist" :
+      {
+        "paths" :
+        {
+          "file" : "${BUILD_PATH}/script/tests.js"
+        },
+        "uris" :
+        {
+           "script"  : "../script",
+          "resource" : "../resource"
+        },
+        "code" :
+        {
+          "locales" : "${LOCALES}"
+          ,"optimize" : ["variables", "basecalls", "privates", "strings"]
+          ,"format" : true
+        }
+      }
+    },
+
+
+    "build" :
+    {
+      "run" :
+      [
+        "build-resources",
+        "build-files",
+        "build-script",
+        "build-tests"
+      ]
+    },
+
+    // -- testrunner build & tests source ---------------------
+
+    "source-tests-in-build-path" : 
+    {
+      "extend" : ["common-tests"],
+
+      "compile-source" :
+      {
+        "file"    : "${BUILD_PATH}/script/tests-source.js",
+        "locales" : "${LOCALES}",
+        "root"    : "${BUILD_PATH}/html"
+      }
+    },
+
+    "build-with-tests-source" :
+    {
+      "run" :
+      [
+        "build-resources",
+        "build-files",
+        "build-script",
+        "source-tests-in-build-path"
+      ]
+    },
+
+    // -- misc jobs -------------------------------------------
+
+    "clean" :
+    {
+      "extend" : [ "common" ],
+
+      "clean-files" :
+      {
+        "Cleaning up build" :
+        [
+          "${BUILD_PATH}/script/${APPLICATION}.js",
+          "${BUILD_PATH}/script/${APPLICATION}[_-]*.js",
+          "${BUILD_PATH}/script/test.js",
+          "${BUILD_PATH}/script/test[_-]*.js"
+        ],
+        "Cleaning up source" :
+        [
+          "${ROOT}/cache",
+          "${ROOT}/source/script/${APPLICATION}.js",
+          "${ROOT}/source/script/test.js",
+          "${ROOT}/source/translation/messages.pot"
+        ],
+        "Cleaning up framework" :
+        [
+          "${QOOXDOO_PATH}/framework/source/translation/messages.pot"
+        ]
+      }
+    }
+  }
+}

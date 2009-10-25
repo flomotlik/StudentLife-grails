@@ -1,0 +1,183 @@
+{
+  "name"    : "Generic application.json",
+
+  "include" :
+  [
+    {
+      "path" : "./base.json"
+    },
+
+    {
+      "path" : "${QOOXDOO_PATH}/component/apiviewer/api.json",
+      "as"   : "apiconf"
+    },
+    
+    {
+      "path" : "${QOOXDOO_PATH}/component/testrunner/testrunner.json",
+      "as"   : "testrunner"
+    },
+
+    {
+      "path" : "${QOOXDOO_PATH}/component/inspector/inspector.json",
+      "as"   : "inspector"
+    }
+  ],
+
+  /*
+  "export" :
+  [
+    "api",
+    "build",
+    "clean",
+    "distclean",
+    "fix",
+    "inspector",
+    "lint",
+    "migration",
+    "pretty",
+    "profiling",
+    "publish",
+    "source",
+    "test",
+    "test-source",
+    "translation"
+  ],
+  */
+
+
+
+  "let" :
+  {
+    "ROOT"         : ".",
+    "QOOXDOO_PATH" : "../../.."
+  },
+
+  "jobs"  :
+  {
+    "api" :
+    {
+      "desc"   : "create api doc for the current library",
+
+      "extend" : ["apiconf::build"],
+
+      "let"    :
+      {
+        "APIVIEWER_ROOT" : "${QOOXDOO_PATH}/component/apiviewer",
+        "BUILD_PATH"     : "${ROOT}/api",
+        "API_INCLUDE"    : ["qx.*", "${APPLICATION}.*"]
+      },
+
+      "library":
+      [
+        {
+          "manifest"     : "${ROOT}/Manifest.json"
+        }
+      ]
+    },
+
+    "inspector":
+    {
+      "desc"   : "create an inspector instance in the current library",
+
+      "extend" : ["inspector::build"],
+
+      "let"    :
+      {
+        "INSPECTOR_ROOT" : "${QOOXDOO_PATH}/component/inspector"
+        ,"BUILD_PATH"    : "${ROOT}/inspector"
+      },
+
+      "=run" : ["inspector-resources", "inspector-script", "inspector-files"]
+    },
+
+    "inspector-resources":
+    {
+      "extend"  : ["inspector::build-resources"],
+
+      "copy-files" : // piggy-packing another files copy job onto this one
+      {
+        "files"  :
+        [
+          "index.html"
+        ],
+
+        "target" : "${BUILD_PATH}",
+        "source" : "${INSPECTOR_ROOT}/source/resource/inspector/html"
+      }
+    },
+
+    "inspector-script":
+    {
+      "extend"  : ["inspector::build-script"],
+
+      "compile-dist": 
+      {
+        "uris" : 
+        { 
+          "resource" : "../inspector/resource",
+          "script"   : "../inspector/script"
+        }
+      }
+    },
+
+    "inspector-files":
+    {
+      "extend" : ["inspector::build-files"],
+
+      "copy-files" :
+      {
+        "=files" :
+        [
+          "inspector.html"
+        ],
+
+        "target" : "${ROOT}/source"
+      }
+    },
+
+
+    "test" :
+    {
+      "desc"    : "create a test runner app for unit tests of the current library",
+
+      "extend" : ["testrunner::build"],
+
+      "let" :
+      {
+        "TESTRUNNER_ROOT" : "${QOOXDOO_PATH}/component/testrunner",
+        "TEST_INCLUDE"    : "${APPLICATION}.test.*",
+        "QXTHEME"         : "qx.theme.Modern",
+        "BUILD_PATH"      : "${ROOT}/test"
+      },
+
+      "library" :
+      [
+        {
+          "manifest" : "${ROOT}/Manifest.json"
+        }
+      ]
+    },
+
+    "test-source" :
+    {
+      "desc"    : "create a test runner app for unit tests (source version) of the current library",
+
+      "extend" : ["testrunner::build-with-tests-source"],
+
+      "let" :
+      {
+        "TESTRUNNER_ROOT" : "${QOOXDOO_PATH}/component/testrunner",
+        "TEST_INCLUDE"    : "${APPLICATION}.test.*",
+        "QXTHEME"         : "qx.theme.Modern",
+        "BUILD_PATH"      : "${ROOT}/test"
+      },
+
+      "library" :
+      [
+        {
+          "manifest" : "${ROOT}/Manifest.json"
+        }
+      ]
+    }
+  }
+}

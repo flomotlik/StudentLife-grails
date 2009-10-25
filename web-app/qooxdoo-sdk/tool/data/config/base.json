@@ -1,0 +1,388 @@
+// base.json
+{
+  "name"    : "base.json",
+
+  "let" :
+  {
+    "ROOT"         : ".",
+    "QOOXDOO_PATH" : "../../..",
+    //"CACHE"        : "cache",
+    "CACHE"        : "${TMPDIR}/cache",
+    "QXTHEME"      : "qx.theme.Modern",
+    "QXICONTHEME"  : ["Tango"],
+    "OPTIMIZE"     : ["basecalls", "variables", "privates", "strings"],
+    "LOCALES"      : [ "en" ],
+    "APPLICATION_MAIN_CLASS" : "${APPLICATION}.Application",
+    "BUILD_PATH"   : "${ROOT}/build"
+  },
+
+
+  "jobs" :
+  {
+    // the next one is needed wherever the local lib is to be scanned
+    "scan-local-lib" :
+    {
+      "desc"    : "scan for classes and resources in the current library",
+
+      "library" :
+      [
+        {
+          "manifest" : "${ROOT}/Manifest.json"
+        }
+      ],
+
+      "cache" :
+      {
+        "compile" :  "${CACHE}"
+      }
+    },
+
+
+    "libraries" :
+    {
+      "desc" : "includer job, to hold the essential libraries for the compile jobs",
+
+      "library" :
+      [
+        {
+          "manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"
+        },
+
+        {
+          "manifest" : "${ROOT}/Manifest.json"
+        }
+      ]
+    },
+
+    "common" :
+    {
+      "desc"    : "common settings for base.json jobs",
+
+      "extend"  : ["libraries"],
+
+      "include" :
+      [
+        "${QXTHEME}",
+        "${APPLICATION_MAIN_CLASS}"
+      ],
+
+      "cache" :
+      {
+        "compile"   :  "${CACHE}",
+        "downloads" :  "${CACHE}/downloads"
+      },
+
+      "settings" :
+      {
+        "qx.version"     : "${QOOXDOO_VERSION}",
+        "qx.theme"       : "${QXTHEME}",
+        "qx.application" : "${APPLICATION_MAIN_CLASS}"
+      },
+      
+      "asset-let" :
+      {
+        "qx.icontheme" : "${QXICONTHEME}"
+      }
+    },
+
+
+    // -- source jobs --------------------------------------------------
+
+    "source-script" :
+    {
+      "desc"    : "create includer script of current application",
+
+      "extend" : ["common"],
+
+      "compile-source" :
+      {
+        "file" : "${ROOT}/source/script/${APPLICATION}.js",
+        "locales" : "${LOCALES}",
+        "root" : "source"
+      }
+    },
+
+
+    "source" :
+    {
+      "desc"    : "create source version of current application",
+
+      "run" :
+      [
+        "source-script"
+      ]
+    },
+
+
+    "source-all-script" :
+    {
+      "desc"    : "create includer script of current application",
+
+      "extend" : ["common"],
+
+      // include all (relevant) sources
+      "include" :     
+      [
+        "${APPLICATION}.*",
+        "qx.*"
+      ],
+      "exclude" :
+      [
+        "qx.legacy.*",
+        "qx.test.*"
+      ],
+      /*
+      */
+
+      "compile-source" :
+      {
+        "file" : "${ROOT}/source/script/${APPLICATION}.js",
+        "locales" : "${LOCALES}",
+        "root" : "source"
+      }
+    },
+
+
+    "source-all" :
+    {
+      "desc"    : "create source version of current application, with all classes",
+
+      "run" :
+      [
+        "source-all-script"
+      ]
+    },
+
+    // -- build jobs ---------------------------------------------------
+
+    "build-script" :
+    {
+      "desc"    : "create build script of current application",
+
+      "extend" : ["common"],
+
+      "variants" :
+      {
+        "qx.debug" : ["off"]
+      },
+
+      "compile-dist" :
+      {
+        "paths"  :
+        {
+          "file" : "${BUILD_PATH}/script/${APPLICATION}.js"
+        },
+        "uris"   :
+        {
+          "script"   : "script"
+          //,"resource" : "resource"
+        },
+        "code"   :
+        {
+          "format"   : true,
+          "locales"  : "${LOCALES}",
+          "optimize" : "${OPTIMIZE}"
+        }
+      }
+    },
+
+
+    "build-files" :
+    {
+      "desc"    : "copy files of current application to build dir",
+
+      "extend" : ["common"],
+
+      "copy-files" :
+      {
+        "files" :
+        [
+          "index.html"
+        ],
+
+        "source" : "${ROOT}/source",
+        "target" : "${BUILD_PATH}"
+      }
+    },
+
+
+    "build-resources":
+    {
+      "desc"    : "copy necessary resources for current application to build dir",
+
+      "extend" : ["common"],
+
+      "copy-resources" :
+      {
+        "target"          : "${BUILD_PATH}",
+        "resource-filter" : true
+      }
+    },
+
+
+    "build" :
+    {
+      "desc"    : "create build version of current application",
+
+      "run" :
+      [
+        "build-resources",
+        "build-script",
+        "build-files"
+      ]
+    },
+
+    // -- various jobs -------------------------------------------------
+
+    "translation" :
+    {
+      "desc"    : "create .po files for current library",
+
+      "extend" : ["common"],
+
+      "translate" :
+      {
+        "locales": "${LOCALES}",
+        "namespaces" : ["${APPLICATION}"]
+      }
+    },
+
+
+    // can be used as an 'extend' to activate profiling
+    "profiling" :
+    {
+      "desc"    : "includer job, to activate profiling",
+
+      "variants" :
+      {
+        "qx.aspects" : ["on"]
+      },
+
+      "require" :
+      {
+        "qx.Class" : [ "qx.core.Aspect", "qx.dev.Profile" ]
+      }
+    },
+
+
+    "pretty" :
+    {
+      "desc"    : "pretty-formatting of the source code of the current library",
+
+      "extend" : [ "scan-local-lib" ],
+
+      "include" : [ "=${APPLICATION}.*" ],
+
+      "pretty-print" : {}
+    },
+
+
+    "clean" :
+    {
+      "desc"    : "remove local cache and generated .js files (source/build)",
+
+      "clean-files" :
+      {
+        "Cleaning up build" :
+        [
+          "${BUILD_PATH}/script/${APPLICATION}.js",
+          "${BUILD_PATH}/script/${APPLICATION}[_-]*.js"
+        ],
+        "Cleaning up source" :
+        [
+          "${ROOT}/source/script/${APPLICATION}.js"
+        ],
+        "Deleting local cache" :
+        [
+          "${ROOT}/cache"
+        ]
+      }
+    },
+
+
+    "distclean" :
+    {
+      "desc"    : "remove the cache and all generated artefacts of this library (source, build, ...)",
+
+      "cache"   : { "compile" : "${CACHE}" },    // this is to check cache lock
+
+      "clean-files" :
+      {
+        "Deleting build" :
+        [
+          "${BUILD_PATH}"
+        ],
+        "Cleaning up source" :
+        [
+          "${ROOT}/source/script"
+        ],
+        "Deleting api folder" :
+        [
+          "${ROOT}/api"
+        ],
+        "Deleting test folder" :
+        [
+          "${ROOT}/test"
+        ],
+        "Deleting inspector folder" :
+        [
+          "${ROOT}/inspector"
+        ],
+        "Deleting cache" :
+        [
+          "${CACHE}"
+        ]
+      }
+    },
+
+
+    "lint" :
+    {
+      "desc"    : "check the source code of the .js files of the current library",
+
+      "extend" : [ "scan-local-lib" ],
+
+      "lint-check" :
+      {
+        "allowed-globals" : [ "qx", "qxsettings", "qxvariants", "${APPLICATION}" ]
+      }
+    },
+
+
+    "migration" :
+    {
+      "desc"    : "migrate the .js files of the current library to the current qooxdoo version",
+
+      "extend" : [ "scan-local-lib" ],
+
+      "migrate-files" :
+      {
+        //"from-version" : "0.7",
+        "migrate-html" : false
+      }
+    },
+
+
+    "publish" :
+    {
+      "desc"    : "(this is an admin job for the qooxdoo project web site)",
+
+      "extend" : [ "scan-local-lib" ],
+
+      "shell" :
+      {
+        "command" : "rsync --checksum --compress --recursive --delete --inplace --links --safe-links --exclude .svn ${BUILD_PATH}/* root@qooxdoo.org:/var/www/qooxdoo/demo/${QOOXDOO_VERSION}/${APPLICATION}"
+      }
+    },
+
+
+    "fix" :
+    {
+      "desc"    : "normalize whitespace in .js files of the current library (tabs, eol, ...)",
+
+      "extend" : [ "scan-local-lib" ],
+
+      "fix-files" : {}
+    }
+  }
+}

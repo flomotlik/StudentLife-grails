@@ -1,0 +1,33 @@
+{
+  "name"    : "Inspector (application) config",
+
+  "include" :
+  [
+    {
+      "path" : "inspector.json"
+    },
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json",
+      "block"   : 
+      [ 
+        "libraries",
+        "common",
+        "build",
+        "build-script",
+        "build-resources",
+        "build-files"
+      ]
+    }
+  ],
+
+  "let" :
+  {
+    "APPLICATION"  : "inspector",
+    "QOOXDOO_PATH" : "../..",
+    "CACHE"        : "${TMPDIR}/cache",
+    "QXTHEME"      : "inspector.theme.Theme",
+    "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+    "LOCALES"      : [ "en" ],
+    "ROOT"         : "."
+  }
+}
