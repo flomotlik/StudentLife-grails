@@ -41,7 +41,7 @@ class ApplicationController {
       } catch (e) {
         log.debug(e)
       }
-      redirect(controller:"user", action:"list")
+      redirect(controller:"user", action:"listUniversities")
     }
   }
 
