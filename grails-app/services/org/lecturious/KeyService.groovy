@@ -1,7 +1,9 @@
 package org.lecturious
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.KeyFactory
+import com.google.appengine.api.datastore.KeyFactory.Builder
+import org.lecturious.*
+
 
 class KeyService {
 
@@ -14,34 +16,34 @@ class KeyService {
             addChild(State.class.simpleName, stateId)
   }
 
-  private def createKey(country, state, city){
+  private def createKey(country, state, city) {
     def cityId = Long.valueOf(city)
     createKey(country, state).addChild(City.class.simpleName, cityId)
   }
 
-  private def createKey(country, state, city, university){
+  private def createKey(country, state, city, university) {
     def universityId = Long.valueOf(university)
     createKey(country, state, city).addChild(University.class.simpleName, universityId)
   }
 
-  private def createKey(country, state, city, university, course){
+  private def createKey(country, state, city, university, course) {
     def courseId = Long.valueOf(course)
     createKey(country, state, city, university).addChild(Course.class.simpleName, courseId)
   }
 
-  def stateKey(country, state){
-     createKey(country, state).key
+  def stateKey(country, state) {
+    createKey(country, state).key
   }
 
-  def  cityKey(country, state, city){
+  def cityKey(country, state, city) {
     createKey(country, state, city).key
   }
 
-  def universityKey(country, state, city, university){
+  def universityKey(country, state, city, university) {
     createKey(country, state, city, university).key
   }
 
-  def courseKey(country, state, city, university, course){
+  def courseKey(country, state, city, university, course) {
     createKey(country, state, city, university, course).key
   }
 }
