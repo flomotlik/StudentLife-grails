@@ -19,10 +19,10 @@ class User implements Serializable {
   String name
 
   @Persistent
-  List<Inscription> inscriptions = []
+  List<Inscription> inscriptions
 
   @Persistent
-  List<Key> universities = []
+  List<Key> universities
 
   static constraints = {
     id(visible: false)

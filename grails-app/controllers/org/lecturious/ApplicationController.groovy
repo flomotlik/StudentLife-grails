@@ -1,5 +1,8 @@
 package org.lecturious
 
+import grails.util.GrailsUtil
+import org.lecturious.User
+
 class ApplicationController {
 
   def persistenceManager
@@ -11,9 +14,9 @@ class ApplicationController {
       try {
         switch (grails.util.GrailsUtil.environment) {
           case "development":
-            def facebookId = "development_user"
+            def facebookId = params.userId ?: "development_user"
             def user = loadUser(facebookId)
-            if(!user){
+            if (!user) {
               user = new User(name: "Name", facebookId: facebookId)
               persistenceManager.makePersistent(user)
             }
@@ -41,7 +44,7 @@ class ApplicationController {
       } catch (e) {
         log.debug(e)
       }
-      redirect(controller:"user", action:"listUniversities")
+      redirect(controller: "user", action: "listUniversities")
     }
   }
 
