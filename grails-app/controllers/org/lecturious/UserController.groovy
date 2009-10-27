@@ -8,7 +8,7 @@ class UserController {
 
   def persistenceManager
 
-  def inscribe = {
+  def addCourse = {
     def courseKey = keyService.courseKey(params.country, params.state, params.city, params.university, params.course)
     def inscribtion = new Inscription(course: courseKey)
     persistenceManager.makePersistent(inscribtion)
@@ -27,7 +27,7 @@ class UserController {
           log.debug("$session.user $it")
           def course = persistenceManager.getObjectById(Course.class, it.course)
           log.debug(course)
-          inscription(id: course.id.id, course: course.id.id, name: course.name, type: course.type,
+          inscription(id: it.id.id, courseId: course.id.id, course: course.id.id, name: course.name, type: course.type,
                   professor: course.professor)
         }
       }
