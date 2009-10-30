@@ -1,0 +1,198 @@
+{
+  "include" :
+  [
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json",
+      "as"   : "appconf"
+    },
+
+    {
+      "path" : "image.json"
+    }
+  ],
+
+  "export":
+  [
+    "api",
+    //"build",
+    "clean",
+    "distclean",
+    "fix",
+    "images",
+    "lint",
+    "lint-legacy",
+    "lint-test",
+    //"publish-api",
+    //"publish-framework",
+    //"publish-test",
+    //"source",
+    "test",
+    //"test-copy-files",
+    "test-source",
+    "translation"
+  ],
+
+
+  "let" :
+  {
+    "APPLICATION"  : "qx",
+    "QOOXDOO_PATH" : "..",
+    "API_EXCLUDE"  : ["qx.legacy.*", "qx.test.*"],
+    "TEST_INCLUDE" : "qx.test.*",
+    "LOCALES"      : [ "de", "en", "es", "fr", "it", "nl", "sv" ],
+    "CACHE"        : "${TMPDIR}/cache"
+  },
+
+  "jobs":
+  {
+    "source" :
+    {
+      "extend" : ["appconf::source"],
+      "include": ["qx.*"]
+    },
+
+    "build" :
+    {
+      "library" :
+      [
+        {
+          "manifest" : "Manifest.json"
+        }
+      ],
+
+      "cache"  : { "compile" : "${CACHE}" },
+
+      "include": ["qx.*"],
+      "exclude": ["=qx.legacy.*", "=qx.test.*"],
+
+      "variants" :
+      {
+        "qx.debug" : ["on"],
+        "qx.aspects" : ["off"]
+      },
+
+      "compile-dist" :
+      {
+        "paths" :
+        {
+          "file"     : "build/script/qx.js"
+        },
+        "code"  :
+        {
+          "format"   : "on",
+          "optimize" : ["basecalls", "variables", "privates", "strings"]
+        }
+      },
+
+      "copy-resources" :
+      {
+        "target" : "build"
+      }
+    },
+
+    "publish-api" :
+    {
+      "shell" :
+      {
+        "command" : "rsync --checksum --compress --recursive --delete --inplace --links --safe-links --exclude .svn api/* root@qooxdoo.org:/var/www/qooxdoo/demo/0.8.3/apiviewer"
+      }
+    },
+
+    "publish-test" :
+    {
+      "shell" :
+      {
+        "command" : "rsync --checksum --compress --recursive --delete --inplace --links --safe-links --exclude .svn test/* root@qooxdoo.org:/var/www/qooxdoo/demo/0.8.3/testrunner"
+      }
+    },
+
+    "publish-framework" :
+    {
+      "run" :
+      [
+        "publish-api",
+        "publish-test"
+      ]
+    },
+
+    "test" :
+    {
+      "run" : ["appconf::test", "test-copy-files"],
+
+      "let" :
+      {
+        "LOCALES" : ["de", "de_DE", "en", "en_GB"]
+      }
+    },
+
+    "test-copy-files" :
+    {
+      "copy-files" :
+      {
+        "files"    : [ "test" ],
+        "source"   : "source/resource/qx",
+        "target"   : "test/resource/qx"
+      }
+    },
+
+
+    "test-source" :
+    {
+      "extend" : ["appconf::test-source"],
+
+      "let" :
+      {
+        "LOCALES" : ["de", "de_DE", "en", "en_GB"]
+      }
+    },
+
+    "images" :
+    {
+      "run" : [ "image-clipping", "image-combine" ]
+    },
+
+    "api" :
+    {
+      "extend" : ["appconf::api"]
+    },
+
+    "clean" :
+    {
+      "extend" : ["appconf::clean"]
+    },
+
+    "distclean" :
+    {
+      "extend" : ["appconf::distclean"]
+    },
+
+    "fix" :
+    {
+      "extend" : ["appconf::fix"]
+    },
+
+    "lint" :
+    {
+      "extend" : ["appconf::lint"],
+      "exclude": ["=qx.legacy.*", "=qx.test.*"]
+    },
+
+    "lint-test" :
+    {
+      "extend" : ["appconf::lint"],
+      "include": ["=qx.test.*"]
+    },
+
+    "lint-legacy" :
+    {
+      "extend" : ["appconf::lint"],
+      "include": ["=qx.legacy.*"]
+    },
+
+    "translation" :
+    {
+      "=include": ["qx.*"],
+      "extend" : ["appconf::translation"]
+    }
+  }
+}
