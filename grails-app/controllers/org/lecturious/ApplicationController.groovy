@@ -10,15 +10,19 @@ class ApplicationController {
   def facebookService
 
   def index = {
-    if (session.user == null) {
+    if (session.user == null || grails.util.GrailsUtil.environment == "development") {
       try {
         switch (grails.util.GrailsUtil.environment) {
           case "development":
             def facebookId = params.userId ?: "development_user"
+            log.debug("Development Mode User: $facebookId")
             def user = loadUser(facebookId)
             if (!user) {
-              user = new User(name: "Name", facebookId: facebookId)
-              persistenceManager.makePersistent(user)
+              def newUser = new User(name: "Name", facebookId: facebookId)
+              log.debug("Persisting User")
+              persistenceManager.makePersistent(newUser)
+              user = newUser.id
+              log.debug("UserID: $user")
             }
             session.user = user
             break
@@ -44,16 +48,17 @@ class ApplicationController {
       } catch (e) {
         log.debug(e)
       }
-      redirect(controller: "user", action: "listUniversities")
     }
+    log.debug("LoggedIn UserId: $session.user")
+    redirect(controller: "user", action: "listUniversities")
   }
 
   private def loadUser(facebookUserId) {
-    def query = persistenceManager.newQuery(User.class);
+    def query = persistenceManager.newQuery("select id from ${User.class.name}");
     query.setFilter("facebookId == facebookIdParam");
     query.declareParameters("String facebookIdParam");
     def user = query.execute(facebookUserId.toString())[0]
-    log.debug(user)
+    log.debug("Loaded user: $user")
     return user
   }
 }

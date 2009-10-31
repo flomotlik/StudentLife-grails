@@ -54,7 +54,7 @@ class CourseController {
     render(builder: "json", contentType: "application/json") {
       colleagues {
         users.each {
-          if (it.id != session.user.id) {
+          if (it.id != session.user) {
             def user = persistenceManager.getObjectById(User.class, it)
             colleague(name: user.name, facebookId: user.facebookId)
           }
