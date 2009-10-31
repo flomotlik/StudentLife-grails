@@ -40,7 +40,7 @@ class CourseController {
     render course.id
   }
 
-  def colleagues = {
+  def showColleagues = {
     def key = keyService.courseKey(params.country, params.state, params.city, params.university, params.course)
     def query = persistenceManager.newQuery(Inscription.class)
     query.setFilter("course == courseParam")
@@ -49,9 +49,18 @@ class CourseController {
     log.debug("Inscriptions: $inscriptions")
     def users = []
     inscriptions.each {
-      users<< it.id.parent
+      users << it.id.parent
     }
-    render users
+    render(builder: "json", contentType: "application/json") {
+      colleagues {
+        users.each {
+          if (it.id != session.user.id) {
+            def user = persistenceManager.getObjectById(User.class, it)
+            colleague(name: user.name, facebookId: user.facebookId)
+          }
+        }
+      }
+    }
   }
 
   private def universityKey() {
