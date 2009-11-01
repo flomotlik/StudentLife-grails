@@ -9,3 +9,4 @@ target
 lib
 FacebookConfig.groovy
 build
+*~
