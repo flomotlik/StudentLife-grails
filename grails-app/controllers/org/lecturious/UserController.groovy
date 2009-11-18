@@ -44,7 +44,7 @@ class UserController {
           log.debug("$user $it")
           def course = persistenceManager.getObjectById(Course.class, it.course)
           log.debug(course)
-          inscription(id: it.id.id, courseId: course.id.id, course: course.id.id, name: course.name, type: course.type,
+          inscription(id: it.id.id, courseId: course.id.id, name: course.name, type: course.type,
                   professor: course.professor)
         }
       }
