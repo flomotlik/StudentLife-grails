@@ -2,15 +2,16 @@ import org.lecturious.FacebookMock
 import org.lecturious.User
 
 
-class ServiceFilters{
-
-    def filters = {
-        facebook(controller:"inscription", action:"*"){
-            before = {
-                /*if(session.user == null){
-                redirect(controller:"application")
-                }*/
-            }
+class ServiceFilters {
+  def filters = {
+    facebook(uri: "/app/**") {
+      before = {
+        log.debug("Filtering: ${request.forwardURI}")
+        if (session.user == null) {
+          log.debug("Session.user == null for $request.forwardURI")
+          return false
         }
+      }
     }
+  }
 }
