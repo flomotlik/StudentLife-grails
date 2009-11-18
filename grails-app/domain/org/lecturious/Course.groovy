@@ -25,6 +25,12 @@ class Course implements Serializable {
   @Persistent
   int points
 
+  @Persistent
+  List<Todo> todos;
+
+  @Persistent
+  List<Event> events;
+
   static constraints = {
     id(visible: false)
   }

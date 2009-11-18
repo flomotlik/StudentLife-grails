@@ -12,12 +12,30 @@ class CourseController {
   def keyService
 
   def add = {
+	log.debug("adding course")
     def university = universityKey()
     def course = new Course(params)
-    persistenceManager.makePersistent(course)
     university.courses << course
     persistenceManager.makePersistent(university)
     render course.id
+  }
+
+  def addEvent = {
+	def course = loadCourse()
+	log.debug("Creating Event: $params.description $params.date $params.duration")
+	def event = new Event(description:params.description, date:params.date, duration:params.duration)
+	course.events << event
+	persistenceManager.makePersistent(course)
+	render event.id
+  }
+
+  def addTodo = {
+	def course = loadCourse()
+	log.debug("Creating Todo: $params.description $params.date $params.duration")
+	def todo = new Todo(description:params.description, date:params.date)
+	course.todos << todo
+	persistenceManager.makePersistent(course)
+	render todo.id
   }
 
   def list = {
@@ -32,9 +50,30 @@ class CourseController {
     }
   }
 
+  def listEvents = {
+	def course = loadCourse()
+    render(builder: "json", contentType: "application/json") {
+	  events {
+		course.events.each {
+			event(id: it.id.id, description: it.description, date:it.date, duration:it.duration)
+		}
+	  }
+    }
+  }
+
+  def listTodos = {
+	def course = loadCourse()
+	render(builder: "json", contentType: "application/json") {
+		todos {
+			course.todos.each {
+				todo(id: it.id.id, description: it.description, date:it.date)
+			}
+		}
+	}
+  }
+
   def update = {
-    def course = persistenceManager.getObjectById(Course.class, keyService.courseKey(params.country, params.state,
-            params.city, params.university, params.course))
+	def course = loadCourse()
     course.properties = params
     persistenceManager.makePersistent(course)
     render course.id
@@ -67,4 +106,9 @@ class CourseController {
     persistenceManager.getObjectById(University.class, keyService.universityKey(params.country, params.state,
             params.city, params.university))
   }
+	
+  private def loadCourse(){
+	persistenceManager.getObjectById(Course.class, keyService.courseKey(params.country, params.state,
+			params.city, params.university, params.course))
+	}
 }
