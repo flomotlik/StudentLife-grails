@@ -10,3 +10,6 @@ lib
 FacebookConfig.groovy
 build
 *~
+classes
+*.launch
+*.tmproj
