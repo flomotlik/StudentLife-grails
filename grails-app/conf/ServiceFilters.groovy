@@ -9,6 +9,7 @@ class ServiceFilters {
         log.debug("Filtering: ${request.forwardURI}")
         if (session.user == null) {
           log.debug("Session.user == null for $request.forwardURI")
+          response.sendError(403)
           return false
         }
       }
