@@ -38,6 +38,14 @@ class CourseController {
 	render todo.id
   }
 
+  def addLink = {
+	def course = loadCourse()
+	def link = new Link(description:params.description, link:params.link)
+	course.links << link
+	persistenceManager.makePersistent(course)
+	render link.id
+  }
+
   def list = {
     def university = universityKey()
     render(builder: "json", contentType: "application/json") {
@@ -67,9 +75,20 @@ class CourseController {
 		todos {
 			course.todos.each {
 				todo(id: it.id.id, description: it.description, date:it.date)
+		    }
+	     }
+	 }
+  }
+
+  def listLinks = {
+	def course = loadCourse()
+	render(builder: "json", contentType: "application/json") {
+		link {
+			course.links.each {
+				todo(id: it.id.id, description: it.description, link:it.link)
 			}
 		}
-	}
+	 }
   }
 
   def update = {

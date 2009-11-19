@@ -31,6 +31,9 @@ class Course implements Serializable {
   @Persistent
   List<Event> events;
 
+  @Persistent
+  List<Link> links
+
   static constraints = {
     id(visible: false)
   }
