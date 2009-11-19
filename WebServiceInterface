@@ -1,0 +1,44 @@
+WebService Interfaces:
+This document describes the WebService Interface used in StudentLife. The Mapping Rules together with the according methods will be presented
+
+Mappings:
+Always have to provide all ID's for accessing lower items because of AppEngine(e.g. for accessing a university you have to provide id's for country, state and city)
+"/app/$controller/$action?/$country?/$state?/$city?/$university?/$course?"
+"/"(controller: "application")
+
+Controllers with their methods
+
+Application:
+/ -> Calls Index Method and sets up session.user for later requests; Has to be called before all other calls (for session to be created)
+
+Country:
+/app/country/add -> Create Country; "name" parameter given via POST request
+/app/country/list -> List all countries
+
+State:
+/app/state/list/5 -> List States from Country with ID 5
+/app/state/add/5 -> Add State to Country with ID 5; "name" parameter via POST request
+ 
+City:
+/app/city/list/5/6 -> List cities from Country with ID 5 and State with ID 6
+/app/city/add/5/6 -> Add a City to State; "name" parameter from POST request
+
+University:
+/app/university/list/5/6/7 -> List universites from City with id 7
+/app/city/add/5/6/7 -> Add University to City; "name" parameter from POST request
+
+Course:
+/app/course/list/5/6/7/8 -> List Courses from University with id 8
+/app/course/add/5/6/7/8 -> Add Course to University; "name, professor, identificator, type, points" parameter from POST request
+/app/course/update/5/6/7/8/9 -> Update Course; "name, professor, identificator, type, points" parameter from POST request
+/app/course/addEvent/5/6/7/8/9 -> Add Event to Course; "description, date (long in UTC), duration(long in minutes)" parameters from post request
+/app/course/addTodo/5/6/7/8/9 -> Add Todo to Course; "description, date (long in UTC)" parameters from post request
+/app/course/listEvents/5/6/7/8/9 -> Show all Events of the Course
+/app/course/listTodos/5/6/7/8/9 -> Show all Todos of the Course
+/app/course/showColleagues/5/6/7/8/9 -> JSON list of Colleagues (name, facebookId)
+
+User:
+/app/user/addUniversity/5/6/7/8 -> Add University to User
+/app/user/addCourse/5/6/7/8/9 -> Add Course to User; User has to have the University added the Course is held at
+/app/user/listUniversities/ -> List all Universities the User has added
+/app/user/listCourses/ -> List all Courses the User has added
