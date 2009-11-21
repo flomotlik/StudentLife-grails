@@ -1,3 +1,0 @@
-/**
- * Test classes for rendering
- */

@@ -1,4 +1,0 @@
-/**
- * qx.theme.classic package
- *
- */
