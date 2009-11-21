@@ -13,3 +13,4 @@ build
 classes
 *.launch
 *.tmproj
+web-app/plugins
