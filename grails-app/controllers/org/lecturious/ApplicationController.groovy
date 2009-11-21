@@ -11,7 +11,6 @@ class ApplicationController {
 
   def index = {
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
-      try {
         switch (grails.util.GrailsUtil.environment) {
           case "development":
             def facebookId = params.userId ?: "development_user"
@@ -25,6 +24,7 @@ class ApplicationController {
               log.debug("UserID: $user")
             }
             session.user = user
+            redirect(uri:"/source")
             break
 
           case "production":
@@ -43,14 +43,12 @@ class ApplicationController {
             }
 
             log.debug("User: ${session.user.name}")
+            redirect(uri:"/client")
             break
         }
-      } catch (e) {
-        log.debug(e)
-      }
     }
     log.debug("LoggedIn UserId: $session.user")
-    redirect(controller: "user", action: "listUniversities")
+    
   }
 
   private def loadUser(facebookUserId) {
