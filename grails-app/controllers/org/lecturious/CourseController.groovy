@@ -7,7 +7,7 @@ class CourseController {
 
   def index = { }
 
-  def persistenceManager
+  def persistenceService
 
   def keyService
 
@@ -16,7 +16,7 @@ class CourseController {
     def university = universityKey()
     def course = new Course(params)
     university.courses << course
-    persistenceManager.makePersistent(university)
+    persistenceService.makePersistent(university)
     render course.id
   }
 
@@ -25,7 +25,7 @@ class CourseController {
 	log.debug("Creating Event: $params.description $params.date $params.duration")
 	def event = new Event(description:params.description, date:params.date, duration:params.duration)
 	course.events << event
-	persistenceManager.makePersistent(course)
+	persistenceService.makePersistent(course)
 	render event.id
   }
 
@@ -34,7 +34,7 @@ class CourseController {
 	log.debug("Creating Todo: $params.description $params.date $params.duration")
 	def todo = new Todo(description:params.description, date:params.date)
 	course.todos << todo
-	persistenceManager.makePersistent(course)
+	persistenceService.makePersistent(course)
 	render todo.id
   }
 
@@ -42,7 +42,7 @@ class CourseController {
 	def course = loadCourse()
 	def link = new Link(description:params.description, link:params.link)
 	course.links << link
-	persistenceManager.makePersistent(course)
+	persistenceService.makePersistent(course)
 	render link.id
   }
 
@@ -94,16 +94,13 @@ class CourseController {
   def update = {
 	def course = loadCourse()
     course.properties = params
-    persistenceManager.makePersistent(course)
+    persistenceService.makePersistent(course)
     render course.id
   }
 
   def showColleagues = {
     def key = keyService.courseKey(params.country, params.state, params.city, params.university, params.course)
-    def query = persistenceManager.newQuery(Inscription.class)
-    query.setFilter("course == courseParam")
-    query.declareParameters("com.google.appengine.api.datastore.Key courseParam")
-    def inscriptions = query.execute(key)
+    def inscriptions = persistenceService.loadAllWithKey(Inscription.class, "course", key)
     log.debug("Inscriptions: $inscriptions")
     def users = []
     inscriptions.each {
@@ -113,7 +110,7 @@ class CourseController {
       colleagues {
         users.each {
           if (it.id != session.user) {
-            def user = persistenceManager.getObjectById(User.class, it)
+            def user = persistenceService.getObjectById(User.class, it)
             colleague(name: user.name, facebookId: user.facebookId)
           }
         }
@@ -122,12 +119,12 @@ class CourseController {
   }
 
   private def universityKey() {
-    persistenceManager.getObjectById(University.class, keyService.universityKey(params.country, params.state,
+    persistenceService.getObjectById(University.class, keyService.universityKey(params.country, params.state,
             params.city, params.university))
   }
 	
   private def loadCourse(){
-	persistenceManager.getObjectById(Course.class, keyService.courseKey(params.country, params.state,
+	persistenceService.getObjectById(Course.class, keyService.courseKey(params.country, params.state,
 			params.city, params.university, params.course))
 	}
 }

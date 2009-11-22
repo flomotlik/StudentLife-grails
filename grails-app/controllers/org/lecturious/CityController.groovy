@@ -4,16 +4,16 @@ class CityController {
 
   def index = { }
 
-  def persistenceManager
+  def persistenceService
 
   def keyService
 
   def add = {
     def state = stateKey()
     def city = new City(name: params.name)
-    persistenceManager.makePersistent(city)
+    persistenceService.makePersistent(city)
     state.cities << city
-    persistenceManager.makePersistent(state)
+    persistenceService.makePersistent(state)
     render city.id
   }
 
@@ -29,6 +29,6 @@ class CityController {
   }
 
   private def stateKey() {
-    persistenceManager.getObjectById(State.class, keyService.stateKey(params.country, params.state))
+    persistenceService.getObjectById(State.class, keyService.stateKey(params.country, params.state))
   }
 }

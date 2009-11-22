@@ -7,21 +7,20 @@ class UniversityController {
 
   def index = { }
 
-  def persistenceManager
+  def persistenceService
 
   def keyService
 
   def add = {
     def city = cityKey()
     def university = new University(name: params.name)
-    persistenceManager.makePersistent(university)
     city.universities << university
-    persistenceManager.makePersistent(city)
+    persistenceService.makePersistent(city)
     render university.id
   }
 
   def list = {
-    def city = cityKey()
+    def city = persistenceService.getObjectById(City.class, keyService.cityKey(params.country, params.state, params.city))
     render(builder: "json", contentType: "application/json") {
       universities {
         city.universities.each {
@@ -29,9 +28,5 @@ class UniversityController {
         }
       }
     }
-  }
-
-  private def cityKey() {
-    persistenceManager.getObjectById(City.class, keyService.cityKey(params.country, params.state, params.city))
   }
 }
