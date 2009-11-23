@@ -71,7 +71,7 @@ qx.Class.define("lecturious.Application",
       var mainSplit = new qx.ui.splitpane.Pane("horizontal");
       
       mainSplit.add(this.tabView(),1)
-      mainSplit.add(this.rightSide(),0);
+      //mainSplit.add(this.rightSide(),0);
 
       mainSplit.set({
 	width:760
@@ -191,10 +191,98 @@ qx.Class.define("lecturious.Application",
       return page;
     },
 
+    calendarPage : function() {
+      var page = new qx.ui.tabview.Page("Calendar");
+      page.setLayout(new qx.ui.layout.Grow());
+      var calendarSplit = new qx.ui.splitpane.Pane("horizontal");
+      //var layout = new qx.ui.layout.Basic();
+      //calendarSplit.setLayout(layout);
+      calendarSplit.add(this.sidebarCalendarSplit(),0);
+      calendarSplit.add(this.mainCalendarSplit(),1);
+      page.add(calendarSplit);
+      return page;
+    },
+
+    sidebarCalendarSplit : function() {
+      var layout = new qx.ui.layout.VBox();
+      layout.setSpacing(4); // apply spacing
+
+      var container = new qx.ui.container.Composite(layout);
+      container.add(this.attendingList());
+      container.add(this.abgabeList());
+      container.add(this.personalList());
+
+      container.set({
+	width:200
+      });
+      return container;
+    },
+  
+    attendingList : function () {
+      var widget = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
+	height:200,
+	backgroundColor: "blue"
+      });
+      var label = new qx.ui.basic.Label("Attending:");
+      widget.add(label);
+      return widget;
+    },
+    abgabeList : function () {
+      var widget = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
+	height:200,
+	backgroundColor: "red"
+      });
+      var label = new qx.ui.basic.Label("Deadlines:");
+      widget.add(label);
+      return widget;
+    },
+    personalList : function () {
+      var widget = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
+	height:100,
+	backgroundColor: "green"
+      });
+      var label = new qx.ui.basic.Label("Reminders");
+      widget.add(label);
+      return widget;
+    },
+
+    mainCalendarSplit : function() {
+      var layout = new qx.ui.layout.Grid();
+      layout.setSpacing(4); // apply spacing
+      //layout.setRowFlex(0, 1); // make row 0 flexible
+      //layout.setColumnWidth(1, 200); // set with of column 1 to 200 pixel
+      var container = new qx.ui.container.Composite(layout).set({
+	backgroundColor: "grey",
+        allowGrowX: true,
+        allowGrowY: true
+      
+      });
+      for (var x = 0; x < 6; x++) {
+	layout.setRowFlex(x, 1);
+	for(var y = 0; y < 7; y++) {
+	  layout.setColumnFlex(y, 1);	
+	  var labContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+	  var label = new qx.ui.basic.Label((x*7+y+1).toString()).set({
+	    font : new qx.bom.Font(28, ["Verdana", "sans-serif"]),
+	    alignX: "right",
+	    alignY: "bottom",
+	    textAlign: "center"
+	  });
+	  labContainer.set({
+	    backgroundColor: "white"
+	  });
+	  labContainer.add(label);
+	  container.add(labContainer, {row: x, column: y});  
+	}
+      }
+      return container;
+    },
+
     tabView : function() {
       var tabView = new qx.ui.tabview.TabView();
-      tabView.setWidth(500);
+      tabView.setWidth(700);
       tabView.add(this.updatesPage());
+      tabView.add(this.calendarPage());
       tabView.add(this.coursePage());
       tabView.add(this.friendsPage());
       tabView.add(this.universityPage());
@@ -211,8 +299,70 @@ qx.Class.define("lecturious.Application",
     },
 
     updatesPage : function() {
-      var page = new qx.ui.tabview.Page("Latest Updates");
-      page.setLayout(new qx.ui.layout.VBox(10));	
+      var page = new qx.ui.tabview.Page("Wall");
+      var layout = new qx.ui.layout.HBox(20);
+      page.setLayout(layout);
+      page.add(this.courseList(),{flex:1});
+      page.add(this.wall(), {flex:3});
+      page.add(this.attendenceList(), {flex:1});
+      return page;
+    },
+
+    courseList : function() {
+      var widget = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+      var list = new qx.ui.form.List();
+      var itemsList = this.server.subscriptions();
+      widget.set({
+	width:200,
+	backgroundColor:"green"
+      });
+      for (var x in itemsList) {
+	  var item = itemsList[x];
+	  list.add(new qx.ui.form.ListItem(item.name).set({model:item}));
+      }
+      list.addListener("changeSelection", function(e) {
+	  var subscription = e.getData()[0].getModel();
+	  this.debug(subscription);
+	  alert("change wall to course with id " + subscription.id + " not implemented (this message appears twice))");
+      });
+      widget.add(list);
+      return widget;
+    },
+
+  
+
+    attendenceList : function() {
+      var widget = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+      widget.set({
+	width:200,
+	backgroundColor:"red"
+      });
+
+      var list = new qx.ui.form.List();
+      var itemsList = this.server.courseUsers(0);
+      for (var x in itemsList) {
+	  var item = itemsList[x];
+	  list.add(new qx.ui.form.ListItem(item.name).set({model:item}));
+      };
+      /*
+      list.addListener("changeSelection", function(e) {
+	  var subscription = e.getData()[0].getModel();
+	  this.debug(subscription);
+	  alert("change wall to course with id " + subscription.id + " not implemented");
+      });
+      */
+      widget.add(list);
+
+      return widget;
+    },
+  
+    wall : function() {
+      var page = new qx.ui.container.Composite();
+      page.set({
+	layout:new qx.ui.layout.VBox(10),
+	backgroundColor:"yellow"
+      })
+      
       var updates = this.server.updates();
       var openCourse = this.openCourse;
       var openUser = this.openUser;

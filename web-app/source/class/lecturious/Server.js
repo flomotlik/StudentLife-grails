@@ -129,6 +129,15 @@ qx.Class.define("lecturious.Server",
 	  {type:"Note", userName:"Hans Huber", user:3, text:"Wie geht das?", course:7, courseName:"Hochbau"},
 	  {type:"Create", userName:"Karl Mexner", user:2, course:10, courseName:"Holzbau"}
 	];
+    },
+
+    courseUsers  : function(course) {
+      return [
+	  {id:1, name:"Elisabeth Maier"},
+	  {id:2, name:"Thomas Renner"},
+	  {id:3, name:"Michael Muster"}, 
+	  {id:4, name:"Eva Lauscher"}
+	  ];
     }
 
   }
