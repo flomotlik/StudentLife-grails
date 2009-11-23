@@ -5,26 +5,26 @@ import org.lecturious.User
 
 class ApplicationController {
 
-  def persistenceManager
+  def persistenceService
 
   def facebookService
 
   def index = {
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
-      try {
         switch (grails.util.GrailsUtil.environment) {
           case "development":
             def facebookId = params.userId ?: "development_user"
             log.debug("Development Mode User: $facebookId")
-            def user = loadUser(facebookId)
+            def user = persistenceService.loadAllKeys(User.class, "facebookId", facebookId)[0]
             if (!user) {
               def newUser = new User(name: "Name", facebookId: facebookId)
               log.debug("Persisting User")
-              persistenceManager.makePersistent(newUser)
+              persistenceService.makePersistent(newUser)
               user = newUser.id
               log.debug("UserID: $user")
             }
             session.user = user
+            redirect(uri:"/source")
             break
 
           case "production":
@@ -37,28 +37,17 @@ class ApplicationController {
             if (!user) {
               session.user = new User(facebookId: facebookUserId, name: username)
               log.debug("Persisting user ${session.user}")
-              persistenceManager.makePersistent(session.user)
+              persistenceService.makePersistent(session.user)
             } else {
               session.user = new User(facebookId: user.facebookId, name: user.name, id: user.id)
             }
 
             log.debug("User: ${session.user.name}")
+            redirect(uri:"/client")
             break
         }
-      } catch (e) {
-        log.debug(e)
-      }
     }
     log.debug("LoggedIn UserId: $session.user")
-    redirect(controller: "user", action: "listUniversities")
-  }
-
-  private def loadUser(facebookUserId) {
-    def query = persistenceManager.newQuery("select id from ${User.class.name}");
-    query.setFilter("facebookId == facebookIdParam");
-    query.declareParameters("String facebookIdParam");
-    def user = query.execute(facebookUserId.toString())[0]
-    log.debug("Loaded user: $user")
-    return user
+    
   }
 }

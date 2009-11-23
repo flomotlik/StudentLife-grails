@@ -1,4 +1,0 @@
-/**
- * qx.log.appender package
- *
- */

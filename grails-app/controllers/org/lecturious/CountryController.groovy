@@ -4,7 +4,7 @@ import org.lecturious.Country
 
 class CountryController {
 
-  def persistenceManager
+  def persistenceService
 
   def index = {
     redirect(action: 'list')
@@ -12,12 +12,12 @@ class CountryController {
 
   def add = {
     def country = new Country(name: params.name)
-    persistenceManager.makePersistent(country)
+    persistenceService.makePersistent(country)
     render country.id
   }
 
   def list = {
-    def allCountries = persistenceManager.newQuery(Country.class).execute()
+    def allCountries = persistenceService.loadAll(Country.class)
     render(builder: "json", contentType: "application/json") {
       countries {
         allCountries.each {

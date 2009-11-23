@@ -1,8 +1,10 @@
 How to setup for Lektor development
 
-1) Clone Repo from github at http://github.com/flomotlik/lecturious
+1) Clone Repo from github at http://github.com/flomotlik/StudentLife
 2) Install Grails on your machine www.grails.org (download, extract and dont forget to add binaries to PATH)
 3) Install AppEngine sdk for java on your machine http://code.google.com/intl/de-DE/appengine/downloads.html (download and Extract)
 4) Create grails-app/conf/BuildConfig.groovy (Sample in same Folder) and point it to the AppEngine Home Folder. Setting APPENGINE_HOME also possible
 5) Call "grails list-plugins" and check that app-engine plugin is installed
-6) Call "grails app-engine" to start the server
+6) Clone grails-qooxdoo plugin from github at http://github.com/flomotlik/grails-qooxdoo
+7) Package grails-qooxdoo plugin (grails package-plugin) and install it into StudentLife (grails install-plugin "path to grails-qooxdoo-x")
+8) Call "grails app-engine" to start the server

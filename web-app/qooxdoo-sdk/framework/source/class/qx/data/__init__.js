@@ -1,5 +1,0 @@
-/**
- * EXPERIMENTAL!
- * 
- * Data binding classes.
- */

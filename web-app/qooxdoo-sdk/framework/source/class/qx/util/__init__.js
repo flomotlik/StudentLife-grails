@@ -1,3 +1,0 @@
-/**
- * Utility and helper classes.
- */
