@@ -30,7 +30,7 @@
   "let" :
   {
     "APPLICATION"  : "lecturious",
-    "QOOXDOO_PATH" : "qooxdoo-sdk",
+    "QOOXDOO_PATH" : "plugins/qooxdoo-0.1/qooxdoo",
     "QXTHEME"      : "lecturious.theme.Theme",
     "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
     "LOCALES"      : [ "en" ],

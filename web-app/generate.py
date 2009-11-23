@@ -25,7 +25,7 @@
 import sys, os, re, subprocess
 
 CMD_PYTHON = 'python'
-QOOXDOO_PATH = '../qooxdoo-sdk'
+QOOXDOO_PATH = 'plugins/qooxdoo-0.1/qooxdoo'
 
 def getQxPath():
     path = QOOXDOO_PATH
