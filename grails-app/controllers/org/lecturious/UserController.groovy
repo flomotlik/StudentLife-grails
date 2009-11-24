@@ -1,9 +1,5 @@
 package org.lecturious
 
-import org.lecturious.Course
-import org.lecturious.Inscription
-import org.lecturious.University
-
 class UserController {
 
   def index = { }
@@ -60,6 +56,13 @@ class UserController {
           inscription(id: university.id.id, name: university.name)
         }
       }
+    }
+  }
+  
+  def show = {
+    def userObject = persistenceService.getObjectById(User.class, session.user)
+    render(builder:"json", contentType:"application/json"){
+      user(id:userObject.facebookId, name:userObject.name)
     }
   }
 }
