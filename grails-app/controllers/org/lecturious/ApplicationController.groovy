@@ -8,16 +8,19 @@ class ApplicationController {
   def persistenceService
 
   def facebookService
+  
+  static def allowedMethods = [index:'GET']
 
   def index = {
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
         switch (grails.util.GrailsUtil.environment) {
           case "development":
             def facebookId = params.userId ?: "development_user"
+            def name = params.name ?: "Name"
             log.debug("Development Mode User: $facebookId")
             def user = persistenceService.loadAllKeys(User.class, "facebookId", facebookId)[0]
             if (!user) {
-              def newUser = new User(name: "Name", facebookId: facebookId)
+              def newUser = new User(name: name, facebookId: facebookId)
               log.debug("Persisting User")
               persistenceService.makePersistent(newUser)
               user = newUser.id
@@ -48,6 +51,5 @@ class ApplicationController {
         }
     }
     log.debug("LoggedIn UserId: $session.user")
-    
   }
 }

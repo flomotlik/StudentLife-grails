@@ -6,6 +6,8 @@ class CountryController {
 
   def persistenceService
 
+  static def allowedMethods = [add:'POST', list:'GET']
+
   def index = {
     redirect(action: 'list')
   }
