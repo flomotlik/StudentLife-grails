@@ -14,5 +14,12 @@ class ServiceFilters {
         }
       }
     }
+    originAllow(controller:"*"){
+      after={
+        if(grails.util.GrailsUtil.environment == "development"){
+          response.addHeader("Access-Control-Allow-Origin", "*")
+        }
+      }
+    }
   }
 }
