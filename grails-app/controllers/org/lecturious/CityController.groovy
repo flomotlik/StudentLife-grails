@@ -9,7 +9,7 @@ class CityController {
   def keyService
 
   def add = {
-    def state = stateKey()
+    def state = loadState()
     def city = new City(name: params.name)
     persistenceService.makePersistent(city)
     state.cities << city
@@ -18,7 +18,7 @@ class CityController {
   }
 
   def list = {
-    def state = stateKey()
+    def state = loadState()
     render(builder: "json", contentType:"application/json") {
       cities {
         state.cities.each {
@@ -28,7 +28,7 @@ class CityController {
     }
   }
 
-  private def stateKey() {
+  private def loadState() {
     persistenceService.getObjectById(State.class, keyService.stateKey(params.country, params.state))
   }
 }

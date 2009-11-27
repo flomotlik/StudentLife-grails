@@ -51,7 +51,7 @@ class CourseController {
     render(builder: "json", contentType: "application/json") {
       courses {
         university.courses.each {
-          course(id: it.id.id, name: it.name, professor: it.professor, identificatr: it.identificator,
+          course(id: it.id.id, name: it.name, professor: it.professor, identificator: it.identificator,
                   type: it.type, points: it.points)
         }
       }
@@ -83,9 +83,9 @@ class CourseController {
   def listLinks = {
 	def course = loadCourse()
 	render(builder: "json", contentType: "application/json") {
-		link {
+		links {
 			course.links.each {
-				todo(id: it.id.id, description: it.description, link:it.link)
+				aLink(id: it.id.id, description: it.description, link:it.link)
 			}
 		}
 	 }

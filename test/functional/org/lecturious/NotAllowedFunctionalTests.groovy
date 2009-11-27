@@ -22,6 +22,7 @@ class NotAllowedFunctionalTests extends functionaltestplugin.FunctionalTestCase 
       collect{ it[3].toLowerCase()+it[4..-1] }
       //Removing all getters that shouldn't be called
       methods -= noControllerMethod
+      println "$controller: $methods"
       methods.each{ method ->
         testURL("$mainURL/$controllerName/$method")   
       }
