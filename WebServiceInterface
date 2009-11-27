@@ -12,31 +12,31 @@ Application:
 / -> Calls Index Method and sets up session.user for later requests; Has to be called before all other calls (for session to be created)
 
 Country:
-/app/country/add -> Create Country; "name" parameter given via POST request
-/app/country/list -> List all countries
+/app/country/add -> Create Country; "name" parameter given via POST request -> Returns Long id of new country
+/app/country/list -> List all countries -> Returns {"countries":[{"id":2,"name":"Name"}]}
 
 State:
-/app/state/list/5 -> List States from Country with ID 5
+/app/state/list/5 -> List States from Country with ID 5 -> Returns {"states":[{"id":95,"name":"Name"}]}
 /app/state/add/5 -> Add State to Country with ID 5; "name" parameter via POST request
  
 City:
-/app/city/list/5/6 -> List cities from Country with ID 5 and State with ID 6
+/app/city/list/5/6 -> List cities from Country with ID 5 and State with ID 6 -> Returns {"cities":[{"id":96,"name":"Name"}]}
 /app/city/add/5/6 -> Add a City to State; "name" parameter from POST request
 
 University:
-/app/university/list/5/6/7 -> List universities from City with id 7
+/app/university/list/5/6/7 -> List universities from City with id 7 -> Returns {"universities":[{"id":97,"name":"Name"}]}
 /app/city/add/5/6/7 -> Add University to City; "name" parameter from POST request
 
 Course:
-/app/course/list/5/6/7/8 -> List Courses from University with id 8
+/app/course/list/5/6/7/8 -> List Courses from University with id 8 -> Returns {"courses":[{"id":98,"name":"Name","professor":"Baron","identificator":"123","type":"Type","points":3}]}
 /app/course/add/5/6/7/8 -> Add Course to University; "name, professor, identificator, type, points" parameter from POST request
 /app/course/update/5/6/7/8/9 -> Update Course; "name, professor, identificator, type, points" parameter from POST request
 /app/course/addEvent/5/6/7/8/9 -> Add Event to Course; "description, date (long in UTC), duration(long in minutes)" parameters from post request
 /app/course/addTodo/5/6/7/8/9 -> Add Todo to Course; "description, date (long in UTC)" parameters from post request
 /app/course/addLink/5/6/7/8/9 -> Add Link to Course; "description, link" parameters from post request
-/app/course/listEvents/5/6/7/8/9 -> Show all Events of the Course
-/app/course/listTodos/5/6/7/8/9 -> Show all Todos of the Course
-/app/course/listLinks/5/6/7/8/9 -> Show all Links of the Course
+/app/course/listEvents/5/6/7/8/9 -> Show all Events of the Course -> {"events":[{"id":148,"description":"descriptin","date":123456,"duration":1}]}
+/app/course/listTodos/5/6/7/8/9 -> Show all Todos of the Course -> {"todos":[{"id":149,"description":"descriptin","date":123456}]}
+/app/course/listLinks/5/6/7/8/9 -> Show all Links of the Course -> Returns {"links":[{"id":150,"description":"descriptin","link":"Link"}]}
 /app/course/showColleagues/5/6/7/8/9 -> JSON list of Colleagues (name, facebookId)
 
 User:
