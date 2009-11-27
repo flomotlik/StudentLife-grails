@@ -62,7 +62,7 @@ class UserController {
   def show = {
     def userObject = persistenceService.getObjectById(User.class, session.user)
     render(builder:"json", contentType:"application/json"){
-      user(id:userObject.facebookId, name:userObject.name)
+      user(facebookId:userObject.facebookId, name:userObject.name)
     }
   }
 }
