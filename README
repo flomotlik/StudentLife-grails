@@ -8,3 +8,9 @@ How to setup for Lektor development
 6) Clone grails-qooxdoo plugin from github at http://github.com/flomotlik/grails-qooxdoo
 7) Package grails-qooxdoo plugin (grails package-plugin) and install it into StudentLife (grails install-plugin "path to grails-qooxdoo-x.zip")
 8) Call "grails app-engine" to start the server
+
+
+Plugins to be installed:
+app-engine
+grails-qooxdoo
+functional-test
