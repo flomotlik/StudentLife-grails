@@ -14,5 +14,6 @@ qx.Theme.define("lecturious.theme.Appearance",
 
   appearances :
   {
+    
   }
 });

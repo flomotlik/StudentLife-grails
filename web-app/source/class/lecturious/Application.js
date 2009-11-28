@@ -56,12 +56,16 @@ qx.Class.define("lecturious.Application",
       -------------------------------------------------------------------------
       */
 
-      this.server = new lecturious.Server();
+      this.server = new lecturious.ServerRemote();
       var doc = this.getRoot();
-      this._doc_ = doc;
-      this._userPage_ = this.mainSplit();
-      doc.add(this._userPage_);
-      doc.set({backgroundColor:"white"});
+      this.info("AppearanceID" + doc.getAppearance());
+      this._doc = doc;
+      this._userPage = this.mainSplit();
+      doc.add(this._userPage);
+      doc.set({
+	backgroundColor:"white",
+	decorator: "rootBackground"
+      });
     },
 
     server: null,
@@ -281,11 +285,13 @@ qx.Class.define("lecturious.Application",
     tabView : function() {
       var tabView = new qx.ui.tabview.TabView();
       tabView.setWidth(700);
+      tabView.add(this.universityPage());
+      tabView.add(this.testPage());
       tabView.add(this.updatesPage());
       tabView.add(this.calendarPage());
       tabView.add(this.coursePage());
       tabView.add(this.friendsPage());
-      tabView.add(this.universityPage());
+      
 
       return tabView;
     },
@@ -307,6 +313,19 @@ qx.Class.define("lecturious.Application",
       page.add(this.attendenceList(), {flex:1});
       return page;
     },
+
+    testPage : function() {
+      var page = new qx.ui.tabview.Page("Test");
+      var layout = new qx.ui.layout.HBox(20);
+      page.setLayout(layout);
+      var image = new qx.ui.basic.Image("/home/mike/git/flo/StudentLife/web-app/source/background.png");
+      image.set({
+	backgroundColor: "green"
+      });
+      page.add(image);
+      return page;
+    },
+
 
     courseList : function() {
       var widget = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -481,14 +500,13 @@ qx.Class.define("lecturious.Application",
       //var label = new qx.ui.basic.Label("Add university");
       //var textfield = new qx.ui.form.TextField();
       var button = new qx.ui.form.Button("Add university");
-      var app = this;
       button.addListener("execute", function(e) {	
-	app.uni_wizard(app, function() {
-	  app._doc_.removeAll();
-	  app._doc_.add(app._userPage_);
+	  this.uni_wizard(function() {
+	  this._doc.removeAll();
+	  this._doc.add(this._userPage);
 	  alert("Updating university table not implemented!");
-	});
-      }); 
+	}, this);
+      }, this); 
 
       var composite = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
 
@@ -501,51 +519,51 @@ qx.Class.define("lecturious.Application",
       return composite;
     },
 
-    uni_wizard : function(app, done) {
-      var container = app.container;
-      var server = app.server;
-      var doc = app._doc_;
+    uni_wizard : function(done) {
+      //var container = app.container;
+      //var server = app.server;
+      var app = this;
       var afterUni = function(uni) {
 	app._university = uni;
-	server.inscribe(uni);
+	app.server.inscribe(app._country, app._state, app._city, app._university);
 	done();
       };
 
       var afterCity = function(city) {
-	app._city_ = city;
-	doc.removeAll();
+	app._city = city;
+	app._doc.removeAll();
 	var c = container("Hello, what's your university or school?", 
 	  "Your university or school is not in list? Please enter below!", 
-	  server.universities(city), server.addUniversity, afterUni);
-	doc.add(c, {edge: 0});
+	  app.server.universities, [app._country, app._state, app._city], app.server.addUniversity, app.afterUni);
+	app._doc.add(c, {edge: 0});
       };
 
       var afterState = function(state) {
 	app._state = state;
-	doc.removeAll();
+	app._doc.removeAll();
 	var c = container("Hello, in which city is your university or school?", 
 	  "Your city is not in list? Please enter below!", 
-	  server.cities(state), server.addcity, afterCity);
-	doc.add(c, {edge: 0});
+	  server.cities, [app._country, app._state], server.addcity, afterCity);
+	app._doc.add(c, {edge: 0});
       };
 
       var afterCountry = function(country) {
-	app._country_ = country;
-	doc.removeAll();
-	var c = container("Hello, in which state is your university or school?", 
+	app._country = country;
+	app._doc.removeAll();
+	var c = this.container("Hello, in which state is your university or school?", 
 	  "Your state is not in list? Please enter below!", 
-	  server.states(country), server.addState, afterState);
-	doc.add(c, {edge: 0});
+	  app.server.states, [app._country],  app.server.addState, afterState);
+	app._doc.add(c, {edge: 0});
       };
 
-      var c = container("Hello, in which country is your university or school?", 
+      var c = this.container("Hello, in which country is your university or school?", 
 	"Your country is not in list? Please enter below!", 
-	server.countries(), server.addCountry, afterCountry);
-      doc.removeAll();
-      doc.add(c, {edge: 0});
+	app.server.countries, [], app.server.addCountry, afterCountry);
+      app._doc.removeAll();
+      app._doc.add(c, {edge: 0});
     },
 
-   container : function(msg1, msg2, itemsList, addMethod, nextMethod) {
+   container : function(msg1, msg2, request, requestParams, addMethod, nextMethod) {
 
       var layout = new qx.ui.layout.VBox();
       layout.setSpacing(4); // apply spacing
@@ -565,32 +583,56 @@ qx.Class.define("lecturious.Application",
 	width:200px
       });
 */
-      
-      //var itemsList = serverMethod();
-      for (var x in itemsList) {
-	  var item = itemsList[x];
-	  list.add(new qx.ui.form.ListItem(item.name).set({model:item}));
-      }
+
+      var callback = {
+	caller : this, 
+	success : function(result) {
+	  this.info("success:" + result);
+	  var items = result["countries"];
+	  this.info("items:" + items);
+	  for (var x in items) {
+	    var item = items[x];
+	    this.info("adding:" + item["name"]);
+	    list.add(new qx.ui.form.ListItem(item["name"]).set({model:item}));
+	  }
+	},
+	failure : function(msg) {
+	  alert(msg);
+	}
+      };
+
+      request.call(this.server, callback, requestParams);
 
       var label2 = new qx.ui.basic.Label().set({
 	value: msg2
       });
       var nextButton = new qx.ui.form.Button("Next Step>");
 
-      nextButton.addListener("execute", function(e) {
-	  nextMethod(list.getSelection()[0].getModel());
-      });
 
-      var newCountry = new qx.ui.form.TextField("");
+      nextButton.addListener("execute", function(e) {
+	  nextMethod.call(this, list.getSelection()[0].getModel()["id"]);
+      }, this);
+
+      var newEntry = new qx.ui.form.TextField("");
       /*
       newCountry.set({
 	width:200px
       });
       */
+      var addCallback = {
+	caller : this, 
+	success : function(result) {
+	  alert("Successfully added. Needs refresh of list");
+	},
+	failure : function(msg) {
+	  alert(msg);
+	}
+      };
+
       var addButton = new qx.ui.form.Button("Add country");
       addButton.addListener("execute", function(e) {
-	  addMethod(newCountry.getValue());
-      });
+	  addMethod.call(this.server, addCallback, requestParams, newEntry.getValue());
+      }, this);
 
       var mainHBox = new qx.ui.layout.HBox();
       mainHBox.set({
@@ -610,7 +652,7 @@ qx.Class.define("lecturious.Application",
       
       var bottomContainer = new qx.ui.container.Composite(bottomHBox);
       bottomContainer.add(new qx.ui.core.Widget().set({width:50}));
-      bottomContainer.add(newCountry.set({height:25, width:150}));
+      bottomContainer.add(newEntry.set({height:25, width:150}));
       bottomContainer.add(addButton.set({height:25, width:100, allowGrowY:false}));
       // Document is the application root
 
