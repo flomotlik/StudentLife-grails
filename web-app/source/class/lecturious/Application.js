@@ -526,24 +526,24 @@ qx.Class.define("lecturious.Application",
       var afterUni = function(uni) {
 	app._university = uni;
 	app.server.inscribe(app._country, app._state, app._city, app._university);
-	done();
+	done.call(this);
       };
 
       var afterCity = function(city) {
 	app._city = city;
 	app._doc.removeAll();
-	var c = container("Hello, what's your university or school?", 
+	var c = this.container("Hello, what's your university or school?", 
 	  "Your university or school is not in list? Please enter below!", 
-	  app.server.universities, [app._country, app._state, app._city], app.server.addUniversity, app.afterUni);
+	  app.server.universities, [app._country, app._state, app._city], app.server.addUniversity, afterUni);
 	app._doc.add(c, {edge: 0});
       };
 
       var afterState = function(state) {
 	app._state = state;
 	app._doc.removeAll();
-	var c = container("Hello, in which city is your university or school?", 
+	var c = this.container("Hello, in which city is your university or school?", 
 	  "Your city is not in list? Please enter below!", 
-	  server.cities, [app._country, app._state], server.addcity, afterCity);
+	  app.server.cities, [app._country, app._state], app.server.addcity, afterCity);
 	app._doc.add(c, {edge: 0});
       };
 
@@ -588,7 +588,7 @@ qx.Class.define("lecturious.Application",
 	caller : this, 
 	success : function(result) {
 	  this.info("success:" + result);
-	  var items = result["countries"];
+	  var items = result;
 	  this.info("items:" + items);
 	  for (var x in items) {
 	    var item = items[x];

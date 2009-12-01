@@ -34,13 +34,13 @@ qx.Class.define("lecturious.ServerRemote",
   {
 
   
-    ajaxCall : function(callback, url, requestType) {
+    ajaxCall : function(callback, url, requestType,  postProcessing) {
         this.info("Url:" + url);
 	var req = new qx.io.remote.Request(url, requestType, "application/json");
         //req.setCrossDomain(true);
 	req.addListener("completed", function(e) {
                 this.info("completed:" + e);
-	  	callback["success"].call(callback["caller"], e.getContent());
+	  	callback["success"].call(callback["caller"], postProcessing(e.getContent()));
 	});
         var failed = function(e) {
 	    callback["failure"].call(callback["caller"], e);
@@ -52,48 +52,61 @@ qx.Class.define("lecturious.ServerRemote",
     },
   
     serverUrl : "http://localhost:8080",
+
+    defaultPostProcessing : function(result) {
+      return result;
+    },
+    
   
     countries : function(callback) {
-      var req = this.ajaxCall(callback, this.serverUrl + "/app/country/list", "GET");
+      var req = this.ajaxCall(callback, this.serverUrl + "/app/country/list", "GET", function(result) {
+	return result["countries"];
+      });
       req.send();
       //return [{id:1, name:"Österreich"}, {id:2, name:"Deutschland"},{id:3, name:"Schweiz"}];
     },
 
     addCountry : function(callback, name) {
-      var request = this.ajaxCall(callback, this.serverUrl +  "/app/country/add", "POST");
+      var request = this.ajaxCall(callback, this.serverUrl +  "/app/country/add", "POST", this.defaultPostProcessing);
       request.setParameter("name", name);
       request.send();
     },
     
     states : function(callback, params) {
-      var req = this.ajaxCall(callback, this.serverUrl + "/app/state/list/" + params[0], "GET");
+      var req = this.ajaxCall(callback, this.serverUrl + "/app/state/list/" + params[0], "GET", function(result) {
+	  return result["states"];
+      });
       req.send();
     },
 
     addState : function(callback, params, name) {
-      var request = this.ajaxCall(callback, this.serverUrl +  "/app/state/add/" + params[0], "POST");
+      var request = this.ajaxCall(callback, this.serverUrl +  "/app/state/add/" + params[0], "POST", this.defaultPostProcessing);
       request.setParameter("name", name);
       request.send();
     },
     
     cities : function(callback, params) {
-      var req = this.ajaxCall(callback, this.serverUrl + "/app/city/list/" + params[0] + "/" + params[1], "GET");
+      var req = this.ajaxCall(callback, this.serverUrl + "/app/city/list/" + params[0] + "/" + params[1], "GET", function(result) {	
+	return result["cities"];
+      });
       req.send();
     },	
 
     addCity : function(callback, params, name) {
-      var request = this.ajaxCall(callback, this.serverUrl +  "/app/city/add/" + params[0] + "/" + params[1], "POST");
+      var request = this.ajaxCall(callback, this.serverUrl +  "/app/city/add/" + params[0] + "/" + params[1], "POST", this.defaultPostProcessing);
       request.setParameter("name", name);
       request.send();
     },
 
     universities : function(callback, params) {
-      var req = this.ajaxCall(callback, this.serverUrl + "/app/university/list/" + params[0] + "/" + params[1] + "/" + params[2],  "GET");
+      var req = this.ajaxCall(callback, this.serverUrl + "/app/university/list/" + params[0] + "/" + params[1] + "/" + params[2],  "GET", function(result) {
+	return result["universities"];
+      });
       req.send();
     },
      
     addUniversity : function(callback, params, name) {
-      var request = this.ajaxCall(callback, this.serverUrl +  "/app/university/add/" + params[0] + "/" + params[1]+ "/" + params[2], "POST");
+      var request = this.ajaxCall(callback, this.serverUrl +  "/app/university/add/" + params[0] + "/" + params[1]+ "/" + params[2], "POST", this.defaultPostProcessing);
       request.setParameter("name", name);
       request.send();
     },
