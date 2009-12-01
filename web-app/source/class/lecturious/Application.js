@@ -103,7 +103,7 @@ qx.Class.define("lecturious.Application",
     courseTable : function() 
     {
       var server = this.server;
-      var tableModel = this._tableModel = new qx.ui.table.model.Simple();
+      var tableModel = this._courseTableModel = new qx.ui.table.model.Simple();
 
       var data = this.server.subscriptions();
       tableModel.setColumnIds([ "id", "name", "time", "prof", "uni", "remove"]);
@@ -150,9 +150,7 @@ qx.Class.define("lecturious.Application",
     universityTable : function() 
     {
       
-      var tableModel = this._tableModel = new qx.ui.table.model.Simple();
-
-      var data = this.server.inscriptions();
+      var tableModel = this._uniTableModel = new qx.ui.table.model.Simple();
       tableModel.setColumnIds([ "id", "name", "city", "state", "country"]);
       tableModel.setColumns(["ID", "Name", "City", "State", "Country"]);  
       tableModel.setColumnEditable(1, false);
@@ -160,9 +158,6 @@ qx.Class.define("lecturious.Application",
       tableModel.setColumnSortable(3, false);
       tableModel.setColumnEditable(4, false);
       tableModel.setColumnEditable(5, false);
-      
-      tableModel.setDataAsMapArray(data);
-      //tableModel.setData([["A1","A2","A3"]["B1","B2","B3"]])
 
       var table = new qx.ui.table.Table(tableModel); // call after finished all set operation on  model
       table.setColumnWidth(0, 20);
@@ -174,12 +169,25 @@ qx.Class.define("lecturious.Application",
         decorator : null
       });
 
-      this.info(data);
+      this.refreshUniTable();
       return table;
     },
 
+    refreshUniTable : function() {
+      var callback = {
+	caller : this, 
+	success : function(result) {
+	  this._uniTableModel.setDataAsMapArray(result);
+	},
+	failure : function(msg) {
+	  alert(msg);
+	}
+      };
+      this.server.inscriptions(callback);
+    },
 
-    coursePage : function() {	
+
+    coursePage : function() {
       var page = new qx.ui.tabview.Page("Courses");
       page.setLayout(new qx.ui.layout.VBox(10));
       page.add(this.searchCourse());
@@ -499,25 +507,29 @@ qx.Class.define("lecturious.Application",
     addUniversity: function() {
       //var label = new qx.ui.basic.Label("Add university");
       //var textfield = new qx.ui.form.TextField();
-      var button = new qx.ui.form.Button("Add university");
-      button.addListener("execute", function(e) {	
+      var addButton = new qx.ui.form.Button("Add university");
+      var content = this._doc.getChildren[0];
+      addButton.addListener("execute", function(e) {	
 	  this.uni_wizard(function() {
 	  this._doc.removeAll();
-	  this._doc.add(this._userPage);
-	  alert("Updating university table not implemented!");
+	  this._doc.add(content);
 	}, this);
       }, this); 
 
-      var composite = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+      var refreshButton = new qx.ui.form.Button("Refresh");
+      refreshButton.addListener("execute", function(e) {	
+	  this.refreshUniTable();
+      }, this);
 
-      //composite.setLayout(new qx.ui.layout.HBox(5));
-	
-      //composite.add(label);
-      //composite.add(textfield);
-      composite.add(button, {top:"0%", right:"0%"});
-    
+
+      var flowLayout = new qx.ui.layout.Flow();
+      flowLayout.setAlignX("right");
+      var composite = new qx.ui.container.Composite(flowLayout);
+      composite.add(addButton);
+      composite.add(refreshButton);
       return composite;
     },
+
 
     uni_wizard : function(done) {
       //var container = app.container;
@@ -525,45 +537,56 @@ qx.Class.define("lecturious.Application",
       var app = this;
       var afterUni = function(uni) {
 	app._university = uni;
-	app.server.inscribe(app._country, app._state, app._city, app._university);
-	done.call(this);
+	var callback = {
+	  caller : this, 
+	  success : function(result) {
+	    done.call(this);
+	  },
+	  failure : function(msg) {
+	    alert(msg);
+	  }
+	};
+	app.server.inscribe(callback, [app._country, app._state, app._city, app._university]);
       };
 
       var afterCity = function(city) {
 	app._city = city;
+	var last = app._doc.getChildren();
 	app._doc.removeAll();
 	var c = this.container("Hello, what's your university or school?", 
 	  "Your university or school is not in list? Please enter below!", 
-	  app.server.universities, [app._country, app._state, app._city], app.server.addUniversity, afterUni);
+	  app.server.universities, [app._country, app._state, app._city], app.server.addUniversity, afterUni, last);
 	app._doc.add(c, {edge: 0});
       };
 
       var afterState = function(state) {
 	app._state = state;
+	var last = app._doc.getChildren();
 	app._doc.removeAll();
 	var c = this.container("Hello, in which city is your university or school?", 
 	  "Your city is not in list? Please enter below!", 
-	  app.server.cities, [app._country, app._state], app.server.addcity, afterCity);
+	  app.server.cities, [app._country, app._state], app.server.addCity, afterCity, last);
 	app._doc.add(c, {edge: 0});
       };
 
       var afterCountry = function(country) {
 	app._country = country;
+	var last = app._doc.getChildren()[0];
 	app._doc.removeAll();
 	var c = this.container("Hello, in which state is your university or school?", 
 	  "Your state is not in list? Please enter below!", 
-	  app.server.states, [app._country],  app.server.addState, afterState);
+	  app.server.states, [app._country],  app.server.addState, afterState, last);
 	app._doc.add(c, {edge: 0});
       };
 
-      var c = this.container("Hello, in which country is your university or school?", 
+      var start = this.container("Hello, in which country is your university or school?", 
 	"Your country is not in list? Please enter below!", 
-	app.server.countries, [], app.server.addCountry, afterCountry);
+	app.server.countries, [], app.server.addCountry, afterCountry, null);
       app._doc.removeAll();
-      app._doc.add(c, {edge: 0});
+      app._doc.add(start, {edge: 0});
     },
 
-   container : function(msg1, msg2, request, requestParams, addMethod, nextMethod) {
+   container : function(msg1, msg2, request, requestParams, addMethod, nextMethod, lastContainer) {
 
       var layout = new qx.ui.layout.VBox();
       layout.setSpacing(4); // apply spacing
@@ -607,10 +630,16 @@ qx.Class.define("lecturious.Application",
 	value: msg2
       });
       var nextButton = new qx.ui.form.Button("Next Step>");
-
+      
 
       nextButton.addListener("execute", function(e) {
 	  nextMethod.call(this, list.getSelection()[0].getModel()["id"]);
+      }, this);
+
+      var backButton = new qx.ui.form.Button("Back");
+      backButton.addListener("execute", function(e) {
+	 this._doc.removeAll();
+	 this._doc.add(lastContainer);
       }, this);
 
       var newEntry = new qx.ui.form.TextField("");
@@ -622,7 +651,8 @@ qx.Class.define("lecturious.Application",
       var addCallback = {
 	caller : this, 
 	success : function(result) {
-	  alert("Successfully added. Needs refresh of list");
+	  alert("Successfully added" + result);
+	  nextMethod.call(this, result);
 	},
 	failure : function(msg) {
 	  alert(msg);
@@ -642,6 +672,7 @@ qx.Class.define("lecturious.Application",
       var mainContainer = new qx.ui.container.Composite(mainHBox);
       //mainContainer.set({allowGrowY:false});
       mainContainer.add(new qx.ui.core.Widget().set({width:50}));
+      mainContainer.add(backButton.set({height:25, width:100, allowGrowY:false}));
       mainContainer.add(list.set({width:150}));
       mainContainer.add(nextButton.set({height:25, width:100, allowGrowY:false}));
 

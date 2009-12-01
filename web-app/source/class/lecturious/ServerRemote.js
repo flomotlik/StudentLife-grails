@@ -66,9 +66,9 @@ qx.Class.define("lecturious.ServerRemote",
       //return [{id:1, name:"Österreich"}, {id:2, name:"Deutschland"},{id:3, name:"Schweiz"}];
     },
 
-    addCountry : function(callback, name) {
+    addCountry : function(callback, params, name) {
       var request = this.ajaxCall(callback, this.serverUrl +  "/app/country/add", "POST", this.defaultPostProcessing);
-      request.setParameter("name", name);
+      request.setFormField("name", name);
       request.send();
     },
     
@@ -81,7 +81,7 @@ qx.Class.define("lecturious.ServerRemote",
 
     addState : function(callback, params, name) {
       var request = this.ajaxCall(callback, this.serverUrl +  "/app/state/add/" + params[0], "POST", this.defaultPostProcessing);
-      request.setParameter("name", name);
+      request.setFormField("name", name);
       request.send();
     },
     
@@ -94,7 +94,7 @@ qx.Class.define("lecturious.ServerRemote",
 
     addCity : function(callback, params, name) {
       var request = this.ajaxCall(callback, this.serverUrl +  "/app/city/add/" + params[0] + "/" + params[1], "POST", this.defaultPostProcessing);
-      request.setParameter("name", name);
+      request.setFormField("name", name);
       request.send();
     },
 
@@ -107,12 +107,15 @@ qx.Class.define("lecturious.ServerRemote",
      
     addUniversity : function(callback, params, name) {
       var request = this.ajaxCall(callback, this.serverUrl +  "/app/university/add/" + params[0] + "/" + params[1]+ "/" + params[2], "POST", this.defaultPostProcessing);
-      request.setParameter("name", name);
+      request.setFormField("name", name);
       request.send();
     },
 
-    inscriptions : function() {
-      return [{id:1, name: "TU Wien", city:"Wien", state:"Wien", country:"Österreich"},{id:2, name:"Universität Wien", city:"Wien", state:"Wien", country:"Austria"}];
+    inscriptions : function(callback) {
+      var request = this.ajaxCall(callback, this.serverUrl +  "/app/user/listUniversities", "GET", function(result) {
+	return result["universities"];
+      });
+      request.send();
     },
 
     subscriptions : function() {
@@ -137,9 +140,9 @@ qx.Class.define("lecturious.ServerRemote",
       return [];
     },
 
-    inscribe : function(university) {
-      alert("inscribe() is not implemented!");
-      return "Not implemented";
+    inscribe : function(callback, params) {
+      var request = this.ajaxCall(callback, this.serverUrl +  "/app/user/addUniversity/" + params[0] + "/" + params[1]+ "/" + params[2] + "/" + params[3], "POST", this.defaultPostProcessing);
+      request.send();
     },
     
     subscribe : function(course) {
