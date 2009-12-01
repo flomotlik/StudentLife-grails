@@ -10,13 +10,19 @@ class UserController {
 
   def addCourse = {
     def courseKey = keyService.courseKey(params.country, params.state, params.city, params.university, params.course)
-    def inscribtion = new Inscription(course: courseKey)
-    persistenceService.makePersistent(inscribtion)
+    def inscription = new Inscription(course: courseKey)
+    def universityKey = courseKey.parent
     def user = persistenceService.getObjectById(User.class, session.user)
-    user.inscriptions = user.inscriptions ?: []
-    user.inscriptions << inscribtion
-    persistenceService.makePersistent(user)
-    render inscribtion.id
+    def canAddCourse =  universityKey in user.universities
+    def hasInscription = user.inscriptions.any{ it == inscription}
+    log.debug ("Can add course: $canAddCourse HasInscription: $hasInscription")
+    if(canAddCourse && !hasInscription){
+      user.inscriptions << inscription
+      persistenceService.makePersistent(user)
+      render inscription.id
+    }else{
+      response.sendError(403)
+    }
   }
 
   def addUniversity = {
@@ -27,13 +33,15 @@ class UserController {
             !user.universities.contains(universityKey)) {
       user.universities << universityKey
       persistenceService.makePersistent(user)
+      render universityKey
+    }else{
+      response.sendError(403)
     }
-    render universityKey
   }
 
   def listCourses = {
     render(builder: "json", contentType: "application/json") {
-      inscriptions {
+      courses {
         def user = persistenceService.getObjectById(User.class, session.user)
         log.debug("$user.inscriptions")
         user.inscriptions?.each {

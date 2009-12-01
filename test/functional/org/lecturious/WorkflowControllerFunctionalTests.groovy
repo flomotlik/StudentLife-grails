@@ -38,7 +38,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.states.size() == 1
-    def stateId = json.states[-1].id.toString()
+    def stateId = json.states[-1].id
     assert json.states[-1].name == name
     
     //Testing City
@@ -51,7 +51,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.cities.size() == 1
-    def cityId = json.cities[-1].id.toString()
+    def cityId = json.cities[-1].id
     assert json.cities[-1].name == name
     
     //Testing University
@@ -64,7 +64,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.universities.size() == 1
-    def universityId = json.universities[-1].id.toString()
+    def universityId = json.universities[-1].id
     assert json.universities[-1].name == name
     
     //Testing Course
@@ -81,7 +81,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.courses.size() == 1
-    def courseId = json.courses[-1].id.toString()
+    def courseId = json.courses[-1].id
     assert json.courses[-1].name == name
     assert json.courses[-1].professor == professor
     assert json.courses[-1].identificator == identificator
@@ -131,5 +131,34 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assert json.links.size() == 1
     assert json.links[-1].description == description
     assert json.links[-1].link == link
+    
+    post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")
+    assertStatus 403
+    
+    post("$mainAppURL/user/addUniversity/$countryId/$stateId/$cityId/$universityId")
+    assertStatus 200
+    
+    //Same University can't be added twice
+    post("$mainAppURL/user/addUniversity/$countryId/$stateId/$cityId/$universityId")
+    assertStatus 403
+    
+    get("$mainAppURL/user/listUniversities")
+    assertStatus 200
+    json = JSON.parse(response.contentAsString)
+//    assert json.universities.size() == 1
+    assert json.universities[0].id == universityId
+    
+    post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")
+    assertStatus 200
+    
+    //Same course can't be added twice
+    post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")
+    assertStatus 403
+    
+    get("$mainAppURL/user/listCourses")
+    assertStatus 200
+    json = JSON.parse(response.contentAsString)
+    assert json.courses.size() == 1
+    assert json.courses[0].courseId == courseId
   }
 }
