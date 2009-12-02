@@ -17,7 +17,7 @@ class CourseController {
     def course = new Course(params)
     university.courses << course
     persistenceService.makePersistent(university)
-    render course.id
+    render course.id.id
   }
 
   def addEvent = {
@@ -26,7 +26,7 @@ class CourseController {
 	def event = new Event(description:params.description, date:params.date, duration:params.duration)
 	course.events << event
 	persistenceService.makePersistent(course)
-	render event.id
+	render event.id.id
   }
 
   def addTodo = {
@@ -35,7 +35,7 @@ class CourseController {
 	def todo = new Todo(description:params.description, date:params.date)
 	course.todos << todo
 	persistenceService.makePersistent(course)
-	render todo.id
+	render todo.id.id
   }
 
   def addLink = {
@@ -43,7 +43,7 @@ class CourseController {
 	def link = new Link(description:params.description, link:params.link)
 	course.links << link
 	persistenceService.makePersistent(course)
-	render link.id
+	render link.id.id
   }
 
   def list = {

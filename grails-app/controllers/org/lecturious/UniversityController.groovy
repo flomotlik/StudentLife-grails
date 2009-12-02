@@ -16,7 +16,7 @@ class UniversityController {
     def university = new University(name: params.name)
     city.universities << university
     persistenceService.makePersistent(city)
-    render university.id
+    render university.id.id
   }
 
   def list = {

@@ -13,7 +13,7 @@ class StateController {
     def state = new State(name: params.name)
     country.states << state
     persistenceService.makePersistent(country)
-    render state.id
+    render state.id.id
   }
 
   def list = {

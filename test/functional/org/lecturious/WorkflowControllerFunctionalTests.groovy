@@ -7,6 +7,12 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     redirectEnabled=false
     def mainURL = "http://localhost:8080"
     def mainAppURL = "$mainURL/app"
+    def assertResponse = {
+      def id = response.contentAsString
+      println  "CheckId: $id"
+      assert id ==~ /\d+/
+      assertStatus 200
+    }
     get(mainURL)
     assertRedirectUrl "$mainURL/source"
     //Testing Country
@@ -16,15 +22,14 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name" }
     }
-    assertStatus 200
+    assertResponse()
     def countryId = response.contentAsString
     def idNumber = Integer.parseInt(countryId)
-    assert countryId ==~ /\d+/
     //Testing list
     get("$mainAppURL/country/list")
     assertStatus 200
     def json = JSON.parse(response.contentAsString)
-    //    assert json.countries.size() == 1
+    assert json.countries.size() == 1
     assert json.countries[-1].id.toString() == countryId
     assert json.countries[-1].name == name
     
@@ -33,7 +38,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/state/list/$countryId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
@@ -46,7 +51,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/city/list/$countryId/$stateId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
@@ -59,12 +64,13 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/university/list/$countryId/$stateId/$cityId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.universities.size() == 1
     def universityId = json.universities[-1].id
+    
     assert json.universities[-1].name == name
     
     //Testing Course
@@ -76,7 +82,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name&professor=$professor&identificator=$identificator&type=$type&points=$points" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/course/list/$countryId/$stateId/$cityId/$universityId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
@@ -96,7 +102,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "description=$description&date=$date&duration=$duration" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/course/listEvents/$countryId/$stateId/$cityId/$universityId/$courseId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
@@ -110,7 +116,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "description=$description&date=$date" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/course/listTodos/$countryId/$stateId/$cityId/$universityId/$courseId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
@@ -124,7 +130,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "description=$description&link=$link" }
     }
-    assertStatus 200
+    assertResponse()
     get("$mainAppURL/course/listLinks/$countryId/$stateId/$cityId/$universityId/$courseId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
@@ -145,7 +151,7 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     get("$mainAppURL/user/listUniversities")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
-//    assert json.universities.size() == 1
+    assert json.universities.size() == 1
     assert json.universities[0].id == universityId
     
     post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")

@@ -14,7 +14,7 @@ class CityController {
     persistenceService.makePersistent(city)
     state.cities << city
     persistenceService.makePersistent(state)
-    render city.id
+    render city.id.id
   }
 
   def list = {
