@@ -5,28 +5,27 @@ import org.lecturious.User
 
 class ApplicationController {
 
-  def persistenceService
-
   def facebookService
   
   static def allowedMethods = [index:'GET']
 
   def index = {
+    log.debug("Session.user $session.user")
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
         switch (grails.util.GrailsUtil.environment) {
           case "development":
             def facebookId = params.userId ?: "development_user"
             def name = params.name ?: "Name"
             log.debug("Development Mode User: $facebookId")
-            def user = persistenceService.loadAllKeys(User.class, "facebookId", facebookId)[0]
+            def user = User.findByFacebookId(facebookId)?.id
             if (!user) {
               def newUser = new User(name: name, facebookId: facebookId)
-              log.debug("Persisting User")
-              persistenceService.makePersistent(newUser)
+              newUser.save()
               user = newUser.id
               log.debug("UserID: $user")
             }
             session.user = user
+            log.debug("Session.User: $session.user")
             redirect(uri:"/source")
             break
 

@@ -1,25 +1,28 @@
 package org.lecturious
 
-import org.lecturious.Country
-
 class CountryController {
-
-  def persistenceService
-
-  static def allowedMethods = [add:'POST', list:'GET']
-
+  
+  //  static def allowedMethods = [add:'POST', list:'GET']
+  
   def index = {
     redirect(action: 'list')
   }
-
+  
   def add = {
     def country = new Country(name: params.name)
-    persistenceService.makePersistent(country)
-    render country.id
+    if(!country.save()){
+      country.errors.each{
+        println it
+      }
+      render "Not Working"
+    }else{
+      log.debug("Saved: $country")
+      render country.id
+    }
   }
-
+  
   def list = {
-    def allCountries = persistenceService.loadAll(Country.class)
+    def allCountries = Country.list()
     render(builder: "json", contentType: "application/json") {
       countries {
         allCountries.each {

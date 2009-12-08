@@ -11,7 +11,7 @@ import grails.converters.JSON;
  */
 class NotAllowedFunctionalTests extends functionaltestplugin.FunctionalTestCase {
   void testCountryController() {
-    def mainURL = "http://localhost:8080/app"
+    def mainURL = "http://localhost:8080/studentlife/app"
     def controllers = [CountryController, StateController, CityController, UniversityController, CourseController, UserController]
     //Fields that are not methods calls
     def noControllerMethod = ["keyService", "metaClass", "persistenceService", "allowedMethods", "property", "class"]

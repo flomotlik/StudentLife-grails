@@ -1,105 +1,101 @@
 package org.lecturious
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-
 class CourseController {
-
-  def index = { }
-
-  def persistenceService
-
-  def keyService
-
+  
   def add = {
-	log.debug("adding course")
-    def university = universityKey()
+    def university = University.get(params.id)
     def course = new Course(params)
-    university.courses << course
-    persistenceService.makePersistent(university)
-    render course.id.id
+    university.addToCourses(course)
+    course.setUniversity(university)
+    course.save()
+    def save = university.save()
+    log.debug("Save $save $course.id")
+    render course.id
   }
-
+  
   def addEvent = {
-	def course = loadCourse()
-	log.debug("Creating Event: $params.description $params.date $params.duration")
-	def event = new Event(description:params.description, date:params.date, duration:params.duration)
-	course.events << event
-	persistenceService.makePersistent(course)
-	render event.id.id
+    def course = loadCourse()
+    log.debug("Creating Event: $params.description $params.date $params.duration")
+    def event = new Event(description:params.description, date:params.date, duration:params.duration)
+    event.save()
+    course.addToEvents(event)
+    course.save()
+    render event.id
   }
-
+  
   def addTodo = {
-	def course = loadCourse()
-	log.debug("Creating Todo: $params.description $params.date $params.duration")
-	def todo = new Todo(description:params.description, date:params.date)
-	course.todos << todo
-	persistenceService.makePersistent(course)
-	render todo.id.id
+    def course = loadCourse()
+    log.debug("Creating Todo: $params.description $params.date $params.duration")
+    def todo = new Todo(description:params.description, date:params.date)
+    todo.save()
+    course.addToTodos(todo)
+    course.save()
+    render todo.id
   }
-
+  
   def addLink = {
-	def course = loadCourse()
-	def link = new Link(description:params.description, link:params.link)
-	course.links << link
-	persistenceService.makePersistent(course)
-	render link.id.id
+    def course = loadCourse()
+    def link = new Link(description:params.description, link:params.link)
+    link.save()
+    course.addToLinks(link)
+    course.save()
+    render link.id
   }
-
+  
   def list = {
-    def university = universityKey()
+    def university = University.get(params.id)
     render(builder: "json", contentType: "application/json") {
       courses {
         university.courses.each {
-          course(id: it.id.id, name: it.name, professor: it.professor, identificator: it.identificator,
-                  type: it.type, points: it.points)
+          course(id: it.id, name: it.name, professor: it.professor, identificator: it.identificator,
+          type: it.type, points: it.points)
         }
       }
     }
   }
-
+  
   def listEvents = {
-	def course = loadCourse()
+    def course = loadCourse()
     render(builder: "json", contentType: "application/json") {
-	  events {
-		course.events.each {
-			event(id: it.id.id, description: it.description, date:it.date, duration:it.duration)
-		}
-	  }
+      events {
+        course.events.each {
+          event(id: it.id, description: it.description, date:it.date, duration:it.duration)
+        }
+      }
     }
   }
-
+  
   def listTodos = {
-	def course = loadCourse()
-	render(builder: "json", contentType: "application/json") {
-		todos {
-			course.todos.each {
-				todo(id: it.id.id, description: it.description, date:it.date)
-		    }
-	     }
-	 }
+    def course = loadCourse()
+    render(builder: "json", contentType: "application/json") {
+      todos {
+        course.todos.each {
+          todo(id: it.id, description: it.description, date:it.date)
+        }
+      }
+    }
   }
-
+  
   def listLinks = {
-	def course = loadCourse()
-	render(builder: "json", contentType: "application/json") {
-		links {
-			course.links.each {
-				aLink(id: it.id.id, description: it.description, link:it.link)
-			}
-		}
-	 }
+    def course = loadCourse()
+    render(builder: "json", contentType: "application/json") {
+      links {
+        course.links.each {
+          aLink(id: it.id, description: it.description, link:it.link)
+        }
+      }
+    }
   }
-
+  
   def update = {
-	def course = loadCourse()
+    def course = loadCourse()
     course.properties = params
-    persistenceService.makePersistent(course)
+    course.save
     render course.id
   }
-
+  
   def showColleagues = {
-    def key = keyService.courseKey(params.country, params.state, params.city, params.university, params.course)
+    //TODO
     def inscriptions = persistenceService.loadAllWithKey(Inscription.class, "course", key)
     log.debug("Inscriptions: $inscriptions")
     def users = []
@@ -117,14 +113,12 @@ class CourseController {
       }
     }
   }
-
+  
   private def universityKey() {
-    persistenceService.getObjectById(University.class, keyService.universityKey(params.country, params.state,
-            params.city, params.university))
+    University.get(params.id)
   }
-	
+  
   private def loadCourse(){
-	persistenceService.getObjectById(Course.class, keyService.courseKey(params.country, params.state,
-			params.city, params.university, params.course))
-	}
+    Course.get(params.id)
+  }
 }

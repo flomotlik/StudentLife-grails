@@ -3,7 +3,7 @@ package org.lecturious;
 import grails.converters.JSON;
 
 class UserControllerFunctionalTests extends functionaltestplugin.FunctionalTestCase {
-  void testUserShow() {
+    void testUserShow() {
     redirectEnabled=false
     def facebookId = "12345"
     def name = "Name"

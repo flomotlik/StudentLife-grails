@@ -1,55 +1,57 @@
 package org.lecturious
 
 class UserController {
-
-  def index = { }
-
-  def keyService
-
-  def persistenceService
-
+  
+  def index = {
+  }
+  
   def addCourse = {
-    def courseKey = keyService.courseKey(params.country, params.state, params.city, params.university, params.course)
-    def inscription = new Inscription(course: courseKey)
-    def universityKey = courseKey.parent
-    def user = persistenceService.getObjectById(User.class, session.user)
-    def canAddCourse =  universityKey in user.universities
-    def hasInscription = user.inscriptions.any{ it == inscription}
-    log.debug ("Can add course: $canAddCourse HasInscription: $hasInscription")
-    if(canAddCourse && !hasInscription){
-      user.inscriptions << inscription
-      persistenceService.makePersistent(user)
+    def course = Course.get(params.id)
+    def inscription = new Inscription(course: course)
+    def universityKey = course.university
+    def user = User.get(session.user)
+    log.debug("User: $user - UserId: $session.user")
+    log.debug("Universities $user.universities")
+    log.debug("University: $universityKey")
+    user.universities.each{log.debug (it == universityKey)
+    }
+    def alreadyContains =  user.universities.any{it.id == universityKey.id
+    }
+    def hasInscription = user.inscriptions.any{it == inscription
+    }
+    log.debug ("Contains: $alreadyContains HasInscription: $hasInscription")
+    if(alreadyContains && !hasInscription){
+      user.addToInscriptions(inscription)
+      inscription.save()
+      user.save()
       render inscription.id
     }else{
       response.sendError(403)
     }
   }
-
+  
   def addUniversity = {
-    def universityKey = keyService.universityKey(params.country, params.state, params.city, params.university)
-    def user = persistenceService.getObjectById(User.class, session.user)
-    user.universities = user.universities ?: []
-    if (persistenceService.getObjectById(University.class, universityKey) &&
-            !user.universities.contains(universityKey)) {
-      user.universities << universityKey
-      persistenceService.makePersistent(user)
-      render universityKey
+    def universityKey = University.get(params.id)
+    log.debug("University: $universityKey")
+    def user = User.get(session.user)
+    if (University.exists(params.id) && !user.universities.contains(universityKey)) {
+      user.addToUniversities(universityKey)
+      user.save()
+      render universityKey.id
     }else{
       response.sendError(403)
     }
   }
-
+  
   def listCourses = {
     render(builder: "json", contentType: "application/json") {
       courses {
-        def user = persistenceService.getObjectById(User.class, session.user)
+        def user = User.get(session.user)
         log.debug("$user.inscriptions")
         user.inscriptions?.each {
           log.debug("$user $it")
-          def course = persistenceService.getObjectById(Course.class, it.course)
-          log.debug(course)
-          inscription(id: it.id.id, courseId: course.id.id, name: course.name, type: course.type,
-                  professor: course.professor)
+          inscription(id: it.id, courseId: it.course.id, name: it.course.name, type: it.course.type,
+          professor: it.course.professor)
         }
       }
     }
@@ -57,18 +59,16 @@ class UserController {
   def listUniversities = {
     render(builder: "json", contentType: "application/json") {
       universities {
-        def user = persistenceService.getObjectById(User.class, session.user)
-        log.debug(user.universities)
+        def user = User.get(session.user)
         user.universities?.each {
-          def university = persistenceService.getObjectById(University.class, it)
-          inscription(id: university.id.id, name: university.name)
+          inscription(id: it.id, name: it.name)
         }
       }
     }
   }
   
   def show = {
-    def userObject = persistenceService.getObjectById(User.class, session.user)
+    def userObject = User.get(session.user)
     render(builder:"json", contentType:"application/json"){
       user(facebookId:userObject.facebookId, name:userObject.name)
     }

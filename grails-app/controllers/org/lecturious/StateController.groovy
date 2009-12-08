@@ -3,31 +3,28 @@ package org.lecturious
 import org.lecturious.Country
 
 class StateController {
-
+  
+//  static def allowedMethods = [add:'POST', list:'GET']
+  
   def index = { }
 
-  def persistenceService
-
   def add = {
-    def country = loadCountry()
+    def country = Country.get(params.id)
     def state = new State(name: params.name)
-    country.states << state
-    persistenceService.makePersistent(country)
-    render state.id.id
+    state.save()
+    country.addToStates(state)
+    country.save()
+    render state.id
   }
 
   def list = {
-    log.debug("Country: ${params.country}")
-    def country = loadCountry()
+    def country = Country.get(params.id)
     render(builder: "json", contentType: "application/json") {
       states {
         country.states.each {
-          state(id: it.id.getId(), name: it.name)
+          state(id: it.id, name: it.name)
         }
       }
     }
-  }
-  def loadCountry() {
-    persistenceService.getObjectById(Country.class, Long.valueOf(params.country))
   }
 }

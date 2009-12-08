@@ -1,34 +1,26 @@
 package org.lecturious
 
 class CityController {
-
-  def index = { }
-
-  def persistenceService
-
-  def keyService
-
+  
+//  static def allowedMethods = [add:'POST', list:'GET']
+  
   def add = {
-    def state = loadState()
+    def state = State.get(params.id)
     def city = new City(name: params.name)
-    persistenceService.makePersistent(city)
-    state.cities << city
-    persistenceService.makePersistent(state)
-    render city.id.id
+    city.save()
+    state.addToCities(city)
+    state.save()
+    render city.id
   }
 
   def list = {
-    def state = loadState()
+    def state = State.get(params.id)
     render(builder: "json", contentType:"application/json") {
       cities {
         state.cities.each {
-          city(id: it.id.getId(), name: it.name)
+          city(id: it.id, name: it.name)
         }
       }
     }
-  }
-
-  private def loadState() {
-    persistenceService.getObjectById(State.class, keyService.stateKey(params.country, params.state))
   }
 }

@@ -1,11 +1,10 @@
 class UrlMappings {
   static mappings = {
-    "/app/$controller/$action?/$country?/$state?/$city?/$university?/$course?" {
+    "/app/$controller/$action/$id?" {
       constraints{
        controller(notEquals:"application")
       }
      }
-    "/appEngineReload/index"(controller:"appEngineReload")
     "/"(controller: "application")
     "500"(view: '/error')
   }

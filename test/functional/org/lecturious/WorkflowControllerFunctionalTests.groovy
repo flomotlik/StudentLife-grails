@@ -3,18 +3,20 @@ package org.lecturious;
 import grails.converters.JSON;
 
 class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalTestCase {
-  void testCountryController() {
-    redirectEnabled=false
-    def mainURL = "http://localhost:8080"
+    void testCountryController() {
+    
+    //    redirectEnabled=false
+    javaScriptEnabled = false
+    def mainURL = "http://localhost:8080/studentlife"
     def mainAppURL = "$mainURL/app"
     def assertResponse = {
       def id = response.contentAsString
+      assertStatus 200
       println  "CheckId: $id"
       assert id ==~ /\d+/
-      assertStatus 200
     }
     get(mainURL)
-    assertRedirectUrl "$mainURL/source"
+    //    assertRedirectUrl "$mainURL/source/"
     //Testing Country
     //Testing add
     def name = "Name"
@@ -47,12 +49,12 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assert json.states[-1].name == name
     
     //Testing City
-    post("$mainAppURL/city/add/$countryId/$stateId"){
+    post("$mainAppURL/city/add/$stateId"){
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name" }
     }
     assertResponse()
-    get("$mainAppURL/city/list/$countryId/$stateId")
+    get("$mainAppURL/city/list/$stateId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.cities.size() == 1
@@ -60,12 +62,12 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assert json.cities[-1].name == name
     
     //Testing University
-    post("$mainAppURL/university/add/$countryId/$stateId/$cityId"){
+    post("$mainAppURL/university/add/$cityId"){
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name" }
     }
     assertResponse()
-    get("$mainAppURL/university/list/$countryId/$stateId/$cityId")
+    get("$mainAppURL/university/list/$cityId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.universities.size() == 1
@@ -78,12 +80,12 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     def identificator = "123"
     def type = "Type"
     def points = 3
-    post("$mainAppURL/course/add/$countryId/$stateId/$cityId/$universityId"){
+    post("$mainAppURL/course/add/$universityId"){
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "name=$name&professor=$professor&identificator=$identificator&type=$type&points=$points" }
     }
     assertResponse()
-    get("$mainAppURL/course/list/$countryId/$stateId/$cityId/$universityId")
+    get("$mainAppURL/course/list/$universityId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.courses.size() == 1
@@ -98,12 +100,12 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     def description = "descriptin"
     def date = 123456
     def duration = 1
-    post("$mainAppURL/course/addEvent/$countryId/$stateId/$cityId/$universityId/$courseId"){
+    post("$mainAppURL/course/addEvent/$courseId"){
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "description=$description&date=$date&duration=$duration" }
     }
     assertResponse()
-    get("$mainAppURL/course/listEvents/$countryId/$stateId/$cityId/$universityId/$courseId")
+    get("$mainAppURL/course/listEvents/$courseId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.events.size() == 1
@@ -112,12 +114,12 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assert json.events[-1].duration == duration
     
     //Test Todo
-    post("$mainAppURL/course/addTodo/$countryId/$stateId/$cityId/$universityId/$courseId"){
+    post("$mainAppURL/course/addTodo/$courseId"){
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "description=$description&date=$date" }
     }
     assertResponse()
-    get("$mainAppURL/course/listTodos/$countryId/$stateId/$cityId/$universityId/$courseId")
+    get("$mainAppURL/course/listTodos/$courseId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.todos.size() == 1
@@ -126,26 +128,26 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     
     //Test Link
     def link = "Link"
-    post("$mainAppURL/course/addLink/$countryId/$stateId/$cityId/$universityId/$courseId"){
+    post("$mainAppURL/course/addLink/$courseId"){
       headers['Content-Type'] = "application/x-www-form-urlencoded"
       body{ "description=$description&link=$link" }
     }
     assertResponse()
-    get("$mainAppURL/course/listLinks/$countryId/$stateId/$cityId/$universityId/$courseId")
+    get("$mainAppURL/course/listLinks/$courseId")
     assertStatus 200
     json = JSON.parse(response.contentAsString)
     assert json.links.size() == 1
     assert json.links[-1].description == description
     assert json.links[-1].link == link
     
-    post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")
+    post("$mainAppURL/user/addCourse/$courseId")
     assertStatus 403
     
-    post("$mainAppURL/user/addUniversity/$countryId/$stateId/$cityId/$universityId")
+    post("$mainAppURL/user/addUniversity/$universityId")
     assertStatus 200
     
     //Same University can't be added twice
-    post("$mainAppURL/user/addUniversity/$countryId/$stateId/$cityId/$universityId")
+    post("$mainAppURL/user/addUniversity/$universityId")
     assertStatus 403
     
     get("$mainAppURL/user/listUniversities")
@@ -154,11 +156,11 @@ class WorkflowControllerFunctionalTests extends functionaltestplugin.FunctionalT
     assert json.universities.size() == 1
     assert json.universities[0].id == universityId
     
-    post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")
+    post("$mainAppURL/user/addCourse/$courseId")
     assertStatus 200
     
     //Same course can't be added twice
-    post("$mainAppURL/user/addCourse/$countryId/$stateId/$cityId/$universityId/$courseId")
+    post("$mainAppURL/user/addCourse/$courseId")
     assertStatus 403
     
     get("$mainAppURL/user/listCourses")
