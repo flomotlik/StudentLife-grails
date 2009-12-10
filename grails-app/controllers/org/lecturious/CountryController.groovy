@@ -4,20 +4,14 @@ class CountryController {
   
   //  static def allowedMethods = [add:'POST', list:'GET']
   
-  def index = {
-    redirect(action: 'list')
-  }
-  
   def add = {
     def country = new Country(name: params.name)
     if(!country.save()){
-      country.errors.each{
-        println it
-      }
-      render "Not Working"
+      log.debug("Country wasn't saved $params.name")
+      render(status:400)
     }else{
       log.debug("Saved: $country")
-      render country.id
+      render country.id.toString()
     }
   }
   
