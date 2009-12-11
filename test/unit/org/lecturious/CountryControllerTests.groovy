@@ -1,8 +1,10 @@
 package org.lecturious
 
+import grails.converters.JSON;
 import grails.test.ControllerUnitTestCase;
 
-class CountryControllerTests extends ControllerUnitTestCase{
+class CountryControllerTests extends StudentLifeControllerTest{
+  
   protected void setUp() {
     super.setUp()
   }
@@ -13,7 +15,6 @@ class CountryControllerTests extends ControllerUnitTestCase{
   
   void testAdd() {
     mockDomain(Country)
-    def name = "name"
     mockParams.name = name
     controller.add()
     assert "1" == controller.response.contentAsString
@@ -22,11 +23,27 @@ class CountryControllerTests extends ControllerUnitTestCase{
   }
   
   void testAddFails(){
-    mockLogging(CountryController)
     def saveFalse = mockFor(Country.class)
     saveFalse.demand.save(){-> false}
     controller.add()
-    assert controller.response.contentAsString == ""
-    assert controller.renderArgs.status == 400
+    assertBadRequest()
+  }
+  
+  void testAddFailsNoId(){
+    controller.add()
+    assertBadRequest()
+  }
+  
+  void testAllowedMethods(){
+    assert controller.allowedMethods == [add:'POST', list:"GET"]
+  }
+  
+  void testList(){
+    mockDomain(Country, [new Country(name:name)])
+    controller.list()
+    def json = JSON.parse(controller.response.contentAsString)
+    assert json.size() == 1
+    assert json[0].id == 1 
+    assert json[0].name == name
   }
 }

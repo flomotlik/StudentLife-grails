@@ -16,3 +16,4 @@ classes
 *.pyc
 web-app/plugins
 test/reports
+stacktrace.log
