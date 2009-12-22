@@ -11,4 +11,9 @@ class StudentLifeControllerTest extends ControllerUnitTestCase{
     assert controller.response.contentAsString == ""
     assert controller.renderArgs.status == 400
   }
+  
+  def assertGoodRequest = {
+    println "Status: $controller.renderArgs.status"
+    assert controller.renderArgs.status == 200
+  }
 }
