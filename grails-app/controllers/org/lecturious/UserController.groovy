@@ -1,5 +1,7 @@
 package org.lecturious
 
+import grails.converters.JSON;
+
 class UserController {
   
   def addCourse = {
@@ -33,46 +35,54 @@ class UserController {
   }
   
   def addUniversity = {
-    def universityKey = University.get(params.id)
-    log.debug("University: $universityKey")
-    def user = User.get(session.user)
-    if (University.exists(params.id) && !user.universities.contains(universityKey)) {
-      user.addToUniversities(universityKey)
-      user.save()
-      render universityKey.id
-    }else{
-      response.sendError(403)
+    def status = 200
+    def text = ""
+    if(params.id && session.user){
+      def universityKey = University.get(params.id)
+      log.debug("University: $universityKey")
+      def user = User.get(session.user)
+      if (University.exists(params.id) && !user.universities.contains(universityKey)) {
+        user.addToUniversities(universityKey)
+        user.save()
+        text = universityKey.id.toString()
+      }else{
+        status = 400
+      }
+    } else{
+      status = 400 
     }
+    render(status:status, text:text)
   }
   
   def listCourses = {
-    render(builder: "json", contentType: "application/json") {
-      courses {
-        def user = User.get(session.user)
-        log.debug("$user.inscriptions")
-        user.inscriptions?.each {
-          log.debug("$user $it")
-          inscription(id: it.id, courseId: it.course.id, name: it.course.name, type: it.course.type,
-          professor: it.course.professor)
-        }
-      }
+    if(session.user && User.exists(session.user)){
+      def user = User.get(session.user)
+      render user.inscriptions.collect{[id:it.id, courseId: it.course.id, name: it.course.name, type: it.course.type,
+        professor: it.course.professor, identificator: it.course.identificator]
+      } as JSON
+    }else{
+      render(status:400)
     }
   }
+  
   def listUniversities = {
-    render(builder: "json", contentType: "application/json") {
-      universities {
-        def user = User.get(session.user)
-        user.universities?.each {
-          inscription(id: it.id, name: it.name)
-        }
-      }
+    def status = 200
+    if(session.user && User.exists(session.user)){
+      def user = User.get(session.user)
+      render user.universities.collect{[id:it.id, name: it.name]
+      } as JSON
+    }else{
+      render(status:400)
     }
   }
   
   def show = {
-    def userObject = User.get(session.user)
-    render(builder:"json", contentType:"application/json"){
-      user(facebookId:userObject.facebookId, name:userObject.name)
+    if(session.user && User.exists(session.user)){
+      def userObject = User.get(session.user)
+      def map = [facebookId:userObject.facebookId, name:userObject.name] 
+      render map as JSON
+    }else{
+      render(status:400)     
     }
   }
 }
