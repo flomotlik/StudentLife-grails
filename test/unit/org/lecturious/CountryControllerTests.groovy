@@ -24,9 +24,11 @@ class CountryControllerTests extends StudentLifeControllerTest{
   
   void testAddFails(){
     def saveFalse = mockFor(Country.class)
+    mockParams.name = "Name"
     saveFalse.demand.save(){-> false}
     controller.add()
     assertBadRequest()
+    saveFalse.verify()
   }
   
   void testAddFailsNoId(){
