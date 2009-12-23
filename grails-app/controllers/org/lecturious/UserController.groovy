@@ -2,32 +2,34 @@ package org.lecturious
 
 class UserController {
   
-  def index = {
-  }
-  
   def addCourse = {
-    def course = Course.get(params.id)
-    def inscription = new Inscription(course: course)
-    def universityKey = course.university
-    def user = User.get(session.user)
-    log.debug("User: $user - UserId: $session.user")
-    log.debug("Universities $user.universities")
-    log.debug("University: $universityKey")
-    user.universities.each{log.debug (it == universityKey)
-    }
-    def alreadyContains =  user.universities.any{it.id == universityKey.id
-    }
-    def hasInscription = user.inscriptions.any{it == inscription
-    }
-    log.debug ("Contains: $alreadyContains HasInscription: $hasInscription")
-    if(alreadyContains && !hasInscription){
-      user.addToInscriptions(inscription)
-      inscription.save()
-      user.save()
-      render inscription.id
+    def status = 200
+    def text = ""
+    if(params.id && session.user){
+      def course = Course.get(params.id)
+      def inscription = new Inscription(course: course)
+      def universityKey = course.university
+      def user = User.get(session.user)
+      log.debug("User: $user - UserId: $session.user")
+      log.debug("Universities $user.universities")
+      log.debug("University: $universityKey")
+      def alreadyContains =  user.universities.any{it.id == universityKey.id
+      }
+      def hasInscription = user.inscriptions.any{it == inscription
+      }
+      log.debug ("Contains: $alreadyContains HasInscription: $hasInscription")
+      if(alreadyContains && !hasInscription){
+        user.addToInscriptions(inscription)
+        inscription.user = user
+        user.save()
+        text = inscription.id.toString()
+      }else{
+        status = 400
+      }
     }else{
-      response.sendError(403)
+      status = 400 
     }
+    render(status:status, text:text)
   }
   
   def addUniversity = {
