@@ -3,7 +3,7 @@ This document describes the WebService Interface used in StudentLife. The Mappin
 
 Mappings:
 Always have to provide all ID's for accessing lower items because of AppEngine(e.g. for accessing a university you have to provide id's for country, state and city)
-"/app/$controller/$action?/$country?/$state?/$city?/$university?/$course?"
+"/app/$controller/$action?/$id?"
 "/"(controller: "application")
 
 Controllers with their methods
@@ -13,34 +13,34 @@ Application:
 
 Country:
 /app/country/add -> Create Country; "name" parameter given via POST request -> Returns Long id of new country
-/app/country/list -> List all countries -> Returns {"countries":[{"id":2,"name":"Name"}]}
+/app/country/list -> List all countries -> Returns [{"id":2,"name":"Name"}]
 
 State:
-/app/state/list/5 -> List States from Country with ID 5 -> Returns {"states":[{"id":95,"name":"Name"}]}
+/app/state/list/5 -> List States from Country with ID 5 -> Returns [{"id":95,"name":"Name"}]
 /app/state/add/5 -> Add State to Country with ID 5; "name" parameter via POST request
  
 City:
-/app/city/list/5/6 -> List cities from Country with ID 5 and State with ID 6 -> Returns {"cities":[{"id":96,"name":"Name"}]}
-/app/city/add/5/6 -> Add a City to State; "name" parameter from POST request
+/app/city/list/5 -> List cities from State with ID 5 -> Returns [{"id":96,"name":"Name"}]
+/app/city/add/5 -> Add a City to State; "name" parameter from POST request
 
 University:
-/app/university/list/5/6/7 -> List universities from City with id 7 -> Returns {"universities":[{"id":97,"name":"Name"}]}
-/app/city/add/5/6/7 -> Add University to City; "name" parameter from POST request
+/app/university/list/5/ -> List universities from City with id 5 -> Returns [{"id":97,"name":"Name"}]
+/app/city/add/5/ -> Add University to City; "name" parameter from POST request
 
 Course:
-/app/course/list/5/6/7/8 -> List Courses from University with id 8 -> Returns {"courses":[{"id":98,"name":"Name","professor":"Baron","identificator":"123","type":"Type","points":3}]}
-/app/course/add/5/6/7/8 -> Add Course to University; "name, professor, identificator, type, points" parameter from POST request
-/app/course/update/5/6/7/8/9 -> Update Course; "name, professor, identificator, type, points" parameter from POST request
-/app/course/addEvent/5/6/7/8/9 -> Add Event to Course; "description, date (long in UTC), duration(long in minutes)" parameters from post request
-/app/course/addTodo/5/6/7/8/9 -> Add Todo to Course; "description, date (long in UTC)" parameters from post request
-/app/course/addLink/5/6/7/8/9 -> Add Link to Course; "description, link" parameters from post request
-/app/course/listEvents/5/6/7/8/9 -> Show all Events of the Course -> {"events":[{"id":148,"description":"descriptin","date":123456,"duration":1}]}
-/app/course/listTodos/5/6/7/8/9 -> Show all Todos of the Course -> {"todos":[{"id":149,"description":"descriptin","date":123456}]}
-/app/course/listLinks/5/6/7/8/9 -> Show all Links of the Course -> Returns {"links":[{"id":150,"description":"descriptin","link":"Link"}]}
-/app/course/showColleagues/5/6/7/8/9 -> JSON list of Colleagues (name, facebookId)
+/app/course/list/5 -> List Courses from University with id 5 -> Returns [{"id":98,"name":"Name","professor":"Baron","identificator":"123","type":"Type","points":3}]
+/app/course/add/5 -> Add Course to University; "name, professor, identificator, type, points" parameter from POST request
+/app/course/update/5 -> Update Course; "name, professor, identificator, type, points" parameter from POST request
+/app/course/addEvent/5 -> Add Event to Course; "description, date (long in UTC), duration(long in minutes)" parameters from post request
+/app/course/addTodo/5 -> Add Todo to Course; "description, date (long in UTC)" parameters from post request
+/app/course/addLink/5 -> Add Link to Course; "description, link" parameters from post request
+/app/course/listEvents/5 -> Show all Events of the Course -> [{"id":148,"description":"descriptin","date":123456,"duration":1}]
+/app/course/listTodos/5 -> Show all Todos of the Course -> [{"id":149,"description":"descriptin","date":123456}]
+/app/course/listLinks/5 -> Show all Links of the Course -> Returns [{"id":150,"description":"descriptin","link":"Link"}]
+/app/course/colleagues/5 -> JSON list of Colleagues -> [{"name":"Name", "facebookId":"123456"}]
 
 User:
-/app/user/addUniversity/5/6/7/8 -> Add University to User
-/app/user/addCourse/5/6/7/8/9 -> Add Course to User; User has to have the University added the Course is held at
-/app/user/listUniversities/ -> List all Universities the User has added
-/app/user/listCourses/ -> List all Courses the User has added
+/app/user/addUniversity/5 -> Add University to User
+/app/user/addCourse/5/ -> Add Course to User; User has to have the University added the Course is held at
+/app/user/listUniversities/ -> List all Universities the User has added -> [{"id":1, "name":"Name"}]
+/app/user/listCourses/ -> List all Courses the User has added -> [{"id":98,"name":"Name","professor":"Baron","identificator":"123","type":"Type","points":3}]
