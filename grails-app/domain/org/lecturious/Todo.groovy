@@ -5,4 +5,6 @@ class Todo{
   
   //Date stored in UTC
   long date
+  
+  static belongsTo = [course:Course]
 }

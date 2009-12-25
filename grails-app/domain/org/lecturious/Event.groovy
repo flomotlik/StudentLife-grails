@@ -9,4 +9,6 @@ class Event {
   
   //Duration in Minutes
   int duration
+  
+  static belongsTo = [course:Course]
 }
