@@ -10,7 +10,7 @@ class Course implements Serializable {
   
   String type
   
-  static hasMany = [todos:Todo, events:Event, links:Link]
+  static hasMany = [todos:Todo, events:Event, links:Link, messages:Message]
   
   static belongsTo = [university:University]
 }
