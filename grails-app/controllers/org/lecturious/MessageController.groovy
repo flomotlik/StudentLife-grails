@@ -1,24 +1,20 @@
 package org.lecturious
 
-import grails.converters.JSON;
+import grails.converters.JSON 
+
 
 class MessageController {
   
   static def allowedMethods = [add:'POST', list:'GET']
   
+  def workflowService
+  
   def add = {
-    def status = 200
-    def text = ""
-    if(params.id && Course.exists(params.id)){
+    render workflowService.saveWithParent(params.id, Course, {
       def message = new Message(message:params.message)
       def course= Course.get(params.id)
       course.addToMessages(message)
-      course.save(flush:true) ? (text = message.id.toString()) : (status = 400)
-    }else{
-      status = 400
-    }
-    log.debug("Text: $text Status: $status")
-    render(text:text, status:status)
+    })
   }
   
   def list = {

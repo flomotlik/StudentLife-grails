@@ -1,9 +1,13 @@
 package org.lecturious
 
-class State implements Serializable {
+class State{
   String name
   
   static hasMany = [cities:City]
   
   static belongsTo = [country:Country]
+  
+  static mapping = {
+    sort name:"asc" 
+  }
 }

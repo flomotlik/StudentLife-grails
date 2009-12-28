@@ -1,27 +1,16 @@
 package org.lecturious
 
-import grails.converters.JSON;
+import grails.converters.JSON 
 
-class CountryController {
+class CountryController{
   
   static def allowedMethods = [add:'POST', list:'GET']
   
+  def workflowService
+  
   def add = {
-    def text = ""
-    def status = 200
-    if(params.name){
-      def country = new Country(name: params.name)
-      if(!country.save()){
-        log.debug("Country wasn't saved $params.name")
-        status = 400
-      }else{
-        log.debug("Saved: $country")
-        text = country.id.toString()
-      }
-    }else{
-      status = 400 
-    }
-    render(text:text, status:status)
+    render workflowService.save(params.name, {new Country(name: params.name)
+    })
   }
   
   def list = {

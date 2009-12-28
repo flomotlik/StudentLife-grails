@@ -1,13 +1,14 @@
 package org.lecturious
 
-import grails.converters.JSON;
+import grails.converters.JSON 
 
 class UserController {
   
+  def workflowService
+  
   def addCourse = {
-    def status = 200
-    def text = ""
-    if(params.id && session.user){
+    render workflowService.save(params.id && session.user && 
+    User.exists(session.user) && Course.exists(params.id), {
       def course = Course.get(params.id)
       def inscription = new Inscription(course: course)
       def universityKey = course.university
@@ -22,26 +23,21 @@ class UserController {
       log.debug ("Contains: $alreadyContains HasInscription: $hasInscription")
       if(alreadyContains && !hasInscription){
         user.addToInscriptions(inscription)
-        inscription.user = user
-        user.save()
-        text = inscription.id.toString()
       }else{
-        status = 400
+        user = null
       }
-    }else{
-      status = 400 
-    }
-    render(status:status, text:text)
+      return user
+    })
   }
   
   def addUniversity = {
     def status = 200
     def text = ""
-    if(params.id && session.user){
+    if(params.id && session.user && University.exists(params.id)){
       def universityKey = University.get(params.id)
       log.debug("University: $universityKey")
       def user = User.get(session.user)
-      if (University.exists(params.id) && !user.universities.contains(universityKey)) {
+      if (!user.universities?.contains(universityKey)) {
         user.addToUniversities(universityKey)
         user.save()
         text = universityKey.id.toString()

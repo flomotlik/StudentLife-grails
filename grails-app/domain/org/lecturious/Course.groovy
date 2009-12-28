@@ -1,6 +1,6 @@
 package org.lecturious
 
-class Course implements Serializable {
+class Course {
   
   String name
   
@@ -13,4 +13,8 @@ class Course implements Serializable {
   static hasMany = [todos:Todo, events:Event, links:Link, messages:Message]
   
   static belongsTo = [university:University]
+  
+  static mapping = {
+    sort name:"asc" 
+  }
 }

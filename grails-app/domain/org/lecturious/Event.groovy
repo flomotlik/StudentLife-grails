@@ -11,4 +11,8 @@ class Event {
   int duration
   
   static belongsTo = [course:Course]
+  
+  static mapping = {
+    sort date:"asc" 
+  }
 }

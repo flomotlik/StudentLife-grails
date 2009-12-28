@@ -6,4 +6,8 @@ class University{
   static hasMany = [courses:Course]
   
   static belongsTo = [city:City]
+  
+  static mapping = {
+    sort name:"asc" 
+  }
 }

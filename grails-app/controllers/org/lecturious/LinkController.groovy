@@ -1,24 +1,20 @@
 package org.lecturious
 
-import grails.converters.JSON;
+import grails.converters.JSON 
+
 
 class LinkController {
   
   static def allowedMethods = [add:'POST', list:'GET']
   
+  def workflowService
+  
   def add = {
-    def status = 200
-    def text = ""
-    if(params.id && Course.exists(params.id)){
+    render workflowService.saveWithParent(params.id, Course, {
       def link = new Link(description:params.description, link:params.link)
       def course= Course.get(params.id)
-      course.addToLinks(link)
-      course.save(flush:true) ? (text = link.id.toString()) : (status = 400)
-    }else{
-      status = 400
-    }
-    log.debug("Text: $text Status: $status")
-    render(text:text, status:status)
+      course.addToLinks(link) 
+    } )
   }
   
   def list = {

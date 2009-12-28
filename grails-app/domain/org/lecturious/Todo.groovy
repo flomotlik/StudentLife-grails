@@ -7,4 +7,8 @@ class Todo{
   long date
   
   static belongsTo = [course:Course]
+  
+  static mapping = {
+    sort date:"asc" 
+  }
 }

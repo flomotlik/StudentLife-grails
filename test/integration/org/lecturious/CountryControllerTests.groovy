@@ -1,7 +1,5 @@
 package org.lecturious
 
-import grails.converters.JSON;
-import grails.test.ControllerUnitTestCase;
 
 class CountryControllerTests extends StudentLifeControllerTest{
   
@@ -14,21 +12,20 @@ class CountryControllerTests extends StudentLifeControllerTest{
   }
   
   void testAdd() {
-    mockDomain(Country)
     mockParams.name = name
     controller.add()
-    assert "1" == controller.response.contentAsString
+    assertGoodRequest()
     assert 1 == Country.list().size()
-    assert name == Country.get(1).name
+    assert name == Country.list()[0].name
   }
   
-  void testAddFails(){
-    def saveFalse = mockFor(Country.class)
+  void testWorkflowCalled(){
+    def workflow = mockFor(WorkflowService)
     mockParams.name = "Name"
-    saveFalse.demand.save(){-> false}
+    workflow.demand.save(){name, closure-> assert name == "Name"; []}
+    controller.workflowService = workflow.createMock()
     controller.add()
-    assertBadRequest()
-    saveFalse.verify()
+    workflow.verify()
   }
   
   void testAddFailsNoId(){
@@ -41,11 +38,12 @@ class CountryControllerTests extends StudentLifeControllerTest{
   }
   
   void testList(){
-    mockDomain(Country, [new Country(name:name)])
+    new Country(name:"Z").save()
+    new Country(name:"A").save()
     controller.list()
-    def json = JSON.parse(controller.response.contentAsString)
-    assert json.size() == 1
-    assert json[0].id == 1 
-    assert json[0].name == name
+    def json = parse()
+    assert json.size() == 2
+    assert json[0].name == "A"
+    assert json[1].name == "Z"
   }
 }
