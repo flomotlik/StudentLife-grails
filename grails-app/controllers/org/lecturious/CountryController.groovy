@@ -15,8 +15,6 @@ class CountryController{
   
   def list = {
     def allCountries = Country.list()
-    render allCountries.collect{
-      [id:it.id, name:it.name]
-    } as JSON
+    render workflowService.collect (Country.list(), ["id", "name"]) as JSON
   }
 }

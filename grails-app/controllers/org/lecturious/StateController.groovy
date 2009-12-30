@@ -18,13 +18,6 @@ class StateController {
   }
   
   def list = {
-    if(params.id && Country.exists(params.id)){
-      def country = Country.get(params.id)
-      def states = State.findAllByCountry(country)
-      render states.collect{[id:it.id, name:it.name]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, Country, State, ["id", "name"])
   }
 }

@@ -18,14 +18,7 @@ class CourseController {
   }
   
   def list = {
-    if(params.id && University.exists(params.id)){
-      def university = University.get(params.id)
-      def courses = Course.findAllByUniversity(university)
-      render courses.collect{[id: it.id, name: it.name, professor: it.professor, identificator: it.identificator, type: it.type]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, University, Course, ["id", "name", "professor", "identificator", "type"])
   }
   
   def update = {

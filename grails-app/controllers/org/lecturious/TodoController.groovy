@@ -18,13 +18,6 @@ class TodoController {
   }
   
   def list = {
-    if(params.id && Course.exists(params.id)){
-      def course = Course.get(params.id)
-      def todos = Todo.findAllByCourse(course)
-      render todos.collect{[id: it.id, description: it.description, date:it.date]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, Course, Todo, ["id", "description", "date"])
   }
 }

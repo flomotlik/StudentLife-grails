@@ -18,12 +18,6 @@ class LinkController {
   }
   
   def list = {
-    if(params.id && Course.exists(params.id)){
-      def course = Course.get(params.id)
-      render course.links.collect{[id: it.id, description: it.description, link:it.link]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, Course, Link, ["id", "description", "link"])
   }
 }

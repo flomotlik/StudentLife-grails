@@ -18,13 +18,6 @@ class UniversityController {
   }
   
   def list = {
-    if(params.id && City.exists(params.id)){
-      def city = City.get(params.id)
-      def universities = University.findAllByCity(city)
-      render universities.collect{[id:it.id, name:it.name]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, City, University, ["id", "name"])
   }
 }

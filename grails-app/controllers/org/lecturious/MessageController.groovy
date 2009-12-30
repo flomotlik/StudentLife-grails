@@ -18,12 +18,6 @@ class MessageController {
   }
   
   def list = {
-    if(params.id && Course.exists(params.id)){
-      def course = Course.get(params.id)
-      render course.messages.collect{[id: it.id, message:it.message]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, Course, Message, ["id", "message"])
   }
 }

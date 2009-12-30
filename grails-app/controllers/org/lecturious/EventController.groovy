@@ -18,13 +18,6 @@ class EventController {
   }
   
   def list = {
-    if(params.id && Course.exists(params.id)){
-      def course = Course.get(params.id)
-      def events = Event.findAllByCourse(course)
-      render events.collect{[id: it.id, description: it.description, date:it.date, duration:it.duration]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, Course, Event, ["id", "description", "date", "duration"])
   }
 }

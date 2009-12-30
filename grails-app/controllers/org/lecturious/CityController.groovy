@@ -17,13 +17,6 @@ class CityController {
   }
   
   def list = {
-    if(params.id && State.exists(params.id)){
-      def state = State.get(params.id)
-      def cities = City.findAllByState(state)
-      render cities.collect{[id:it.id, name:it.name]
-      } as JSON
-    }else{
-      render(status:400)     
-    }
+    render workflowService.listWithParent(params.id, State, City, ["id", "name"])
   }
 }
