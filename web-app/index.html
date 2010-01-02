@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>StudentLife</title>
+<link rel="stylesheet" type="text/css" href="css/studentlife.css"/>
+<script type="text/javascript" src="dojo/dojo.js" djConfig="parseOnLoad:true, isDebug:true"></script>
+
+<script type="text/javascript" src="typeface/typeface-0.14.js"></script>
+<script type="text/javascript" src="typeface/apex_new_medium.typeface.js"></script>
+<script type="text/javascript">
+  function test_json() {
+        //Look up the node we'll stick the text under.
+        var targetNode = dojo.byId("course_menu");
+
+        //The parameters to pass to xhrGet, the url, how to handle it, and the callbacks.
+        var jsonArgs = {
+            url: "user/listCourses",
+	    handleAs: "json",
+            load: function(data) {
+                //Set the data from the search into the viewbox in nicely formatted JSON
+                targetNode.innerHTML = "<pre>" + dojo.toJson(data, true) + "</pre>";
+            },
+            error: function(error) {
+                targetNode.innerHTML = "An unexpected error occurred: " + error;
+            }
+        };
+	dojo.xhrGet(jsonArgs);
+  
+
+        /*dojo.io.script.get(jsonpArgs);*/
+    }
+    dojo.addOnLoad(test_json);
+
+/*
+    dojo.require("dijit.Menu");
+    dojo.addOnLoad(function() {
+        var list =["Mathematik1", "Mikroteilchen 1 - Einführung in die Teilchenlehre", "Physik 2"];
+        var pMenu = dojo.query("#course_menu");
+	var item = new dijit.MenuItem({
+            label: "Simple menu item"
+        });
+        dojo.place(item, pMenu);
+
+        for(var x in list) {
+	  pMenu.appendChild(new dijit.MenuItem({
+            label: list[x],
+            onClick: function() {
+                alert(list[x] + 'i was clicked')
+            },
+	    iconClass: "dijitEditorIcon dijitEditorIconCut"
+	  }));
+	};
+     });
+*/
+    
+</script>
+
+<head>
+<body>
+<div id="main">
+  <img id="logo" src="images/logo.png" alt="StudentLife Logo"/>
+  <div id="left" class="typeface-js">
+    <img src="images/mycourses.png" alt="my courses"/>
+    <div id="course_menu"></div>
+  </div>
+  <div id="menu">
+  <div id="leftmenu">
+    <img class="menuimage" src="images/menu-agenda.png" alt="Menu Agenda" style="padding:3,0,0,4"/>
+    <img class="menuimage" src="images/menu-courses.png" alt="Menu Courses" style="padding:3,0,0,1"/>	
+  </div> <!-- leftmenu -->
+  <div id="rightmenu">
+    <img class="menuimage" src="images/menu-coursesettings.png" alt="Menu Course Settings" style="padding:4,0,0,0"/>
+    <img class="menuimage" src="images/menu-vborder.png" alt="border element" style="padding:1,6,0,6"/>
+  </div> <!-- rightmenu -->
+  </div> <!-- menu --> 
+<div id="middle">Middle</div>
+<div id="right"></div>
+<div id="ad">
+  <div class="ad-item, ad-line"></div>
+  <img class="ad-item" id="adlogo" src="images/payedAD.png" alt="Ad" />
+  <div class="ad-item, ad-line"></div>
+  <div class="ad-item, typeface-js">paid ad<div>
+</div> <!-- ad -->
+    </div> <!-- main -->
+  </body>
+</html>

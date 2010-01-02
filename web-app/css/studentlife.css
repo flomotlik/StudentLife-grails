@@ -1,0 +1,76 @@
+   body, div, img {
+      position:absolute;
+   }
+   .typeface-js {
+      font-family: Apex New;
+   }
+
+   #main {
+      width:760;
+      height:578;
+      background-color:white;
+  }
+  #logo {
+    right:22px;
+    top:15px; 
+  }
+  #left{
+    top:73px;
+    left:17px;
+    width:154px;
+    background-color:white;
+    max-height:447px;
+    height: 100%;
+  }
+  #right {
+    top:73px;
+    right:23px;
+    width:154px;
+    max-height:256px;
+    background-color:BLUE;
+    height: 100%;
+  }
+  #middle {
+    top: 73px;
+    left: 195px;
+    background-color:GREEN;
+    height: 352px;
+    width:363px;
+  }
+  #menu{
+    top:32px;
+    left:17px;
+    height:14px;
+    width: 493px;
+    background-color:white;
+    background-image:url(../images/bg-menu.png);
+    background-repeat:repeat-x;
+  }
+  #ad{
+    top:445px;
+    left:195px;
+  }
+  #leftmenu {
+    left:0px;
+  }
+
+  #rightmenu {
+    right:0px;
+  }
+
+  .menuimage {
+    position:static;
+    padding-bottom: 5px;
+  }
+  .ad-line {
+    background-image:url(../images/bg-adcontainer.png);
+    background-repeat:repeat-x;
+    margin: 
+  }
+  .ad-item {
+    position:static;
+  }
+  #adlogo {
+    margin:2 0 2 0;
+  }
+
