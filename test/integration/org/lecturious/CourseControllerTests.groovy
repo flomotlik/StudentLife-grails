@@ -108,4 +108,41 @@ class CourseControllerTests extends StudentLifeControllerTest{
     assert json[0].name == "Name2"
     assert json[0].facebookId == "ID2"
   }
+  
+  void testSearch(){
+    def user = createUser()
+    def course = createCourse()
+    def course2 = createCourse()
+    user.addToUniversities(course.university)
+    user.save()
+    assert Course.list().size() == 2
+    mockParams.id = "Name"
+    mockSession.user = user.id
+    controller.search()
+    def json = parse()
+    assert json.size() == 1
+    assert json[0].id == course.id
+    courseMap.each{
+      assert json[0]."$it.key" == it.value
+    }
+  }
+  
+  void testSearchFailsNoSearchParameter(){
+    mockSession.user = 1
+    controller.search()
+    assertBadRequest()
+  }
+  
+  void testSearchFailsNoSessionUser(){
+    mockParams.id = "1"
+    controller.search()
+    assertBadRequest()
+  }
+  
+  void testSearchFailsUserDoesntExist(){
+    mockParams.id == 1
+    mockSession.user = 1
+    controller.search()
+    assertBadRequest()
+  }
 }

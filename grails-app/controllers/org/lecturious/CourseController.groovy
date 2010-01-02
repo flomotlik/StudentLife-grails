@@ -7,6 +7,8 @@ class CourseController {
   
   static def allowedMethods = [add:'POST', list:'GET', update:'POST', colleagues:'GET']
   
+  def courseParams = ["id", "name", "professor", "identificator", "type"]
+  
   def workflowService
   
   def add = {
@@ -18,7 +20,7 @@ class CourseController {
   }
   
   def list = {
-    render workflowService.listWithParent(params.id, University, Course, ["id", "name", "professor", "identificator", "type"])
+    render workflowService.listWithParent(params.id, University, Course, courseParams)
   }
   
   def update = {
@@ -43,5 +45,18 @@ class CourseController {
     }
     log.debug("Collected: $collected")
     render collected as JSON
+  }
+  
+  def search = {
+    def status = 200
+    def text = ""
+    if(params.id && session.user && User.exists(session.user)){
+      User user = User.get(session.user)
+      def courses = Course.findAllByUniversityInListAndNameIlike(user.universities, params.id)
+      text = workflowService.collect(courses, courseParams) as JSON
+    }else{
+      status = 400     
+    }
+    render (status:status, text:text)
   }
 }
