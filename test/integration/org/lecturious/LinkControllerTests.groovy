@@ -22,7 +22,6 @@ class LinkControllerTests extends StudentLifeControllerTest{
     controller.add()
     def links = Link.list()
     assert links.size() == 1
-    assert "1" == controller.response.contentAsString
     assertObject(linkParams, links[0])
   }
   
