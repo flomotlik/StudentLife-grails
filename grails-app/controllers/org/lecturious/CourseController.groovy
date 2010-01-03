@@ -59,4 +59,15 @@ class CourseController {
     }
     render (status:status, text:text)
   }
+  
+  def show = {
+    def course = Course.get(params.id)
+    def user = User.get(session.user)
+    def colleagues = Inscription.findAllByCourse(course)*.user
+    colleagues -= user
+    log.debug("Users: $colleagues")
+    def model = [course:Course.get(params.id), colleagues:colleagues]
+    log.debug("Model: $model")
+    render (template:"show", model:model)
+  }
 }

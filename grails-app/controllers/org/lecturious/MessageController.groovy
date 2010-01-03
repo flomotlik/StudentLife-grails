@@ -10,11 +10,11 @@ class MessageController {
   def workflowService
   
   def add = {
-    render workflowService.saveWithParent(params.id, Course, {
-      def message = new Message(message:params.message)
-      def course= Course.get(params.id)
-      course.addToMessages(message)
-    })
+    def message = new Message(message:params.message)
+    def course= Course.get(params.id)
+    course.addToMessages(message)
+    course.save()
+    render (template:"/course/showCourse", model:[course:course])
   }
   
   def list = {

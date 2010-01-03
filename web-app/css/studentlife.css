@@ -5,7 +5,7 @@
       font-family: Apex New;
    }
 
-   #main {
+   body {
       width:760;
       height:578;
       background-color:white;
@@ -14,29 +14,45 @@
     right:22px;
     top:15px; 
   }
-  #left{
-    top:73px;
+  #showCourses{
     left:17px;
     width:154px;
     background-color:white;
     max-height:447px;
     height: 100%;
   }
-  #right {
-    top:73px;
-    right:23px;
-    width:154px;
-    max-height:256px;
-    background-color:BLUE;
-    height: 100%;
-  }
-  #middle {
-    top: 73px;
-    left: 195px;
+  
+  #showCourse {
     background-color:GREEN;
     height: 352px;
     width:363px;
   }
+  
+  #showCourse form, #showCourse input{
+    width: 100%;
+  }
+  
+  #showColleagues {
+    right:23px;
+    width:154px;
+    max-height:256px;
+    background-color:BLUE;
+    height: 300px;
+    border: 1px solid black;
+  }
+  
+  #course{
+    left: 195px;
+    height:505px;
+    width:565px;
+  }
+  
+  #content{
+    top: 73px;
+    height: 100%;
+    width: 760px;
+  }
+  
   #menu{
     top:32px;
     left:17px;
@@ -47,7 +63,7 @@
     background-repeat:repeat-x;
   }
   #ad{
-    top:445px;
+    top:372px;
     left:195px;
   }
   #leftmenu {
