@@ -15,6 +15,6 @@ class Course {
   static belongsTo = [university:University]
   
   static mapping = {
-    sort name:"asc" 
+    sort name:"asc"
   }
 }
