@@ -1,8 +1,13 @@
-   body, div, img {
+  body {
+      font-size : 13;
+      font-family: "Verdana", "sans-serif";
+  } 
+  body, div, img {
       position:absolute;
    }
    .typeface-js {
       font-family: Apex New;
+      font-size: 13; 
    }
 
    #main {
@@ -27,7 +32,7 @@
     right:23px;
     width:154px;
     max-height:256px;
-    background-color:BLUE;
+    background-color:white;
     height: 100%;
   }
   #middle {
@@ -58,6 +63,13 @@
     right:0px;
   }
 
+  .course-item {
+    background-image:url(../images/columnborder.png);
+    background-position:bottom left;
+    background-repeat: no-repeat;
+    margin:0 0 1 0px;
+  }
+
   .menuimage {
     position:static;
     padding-bottom: 5px;
@@ -73,4 +85,52 @@
   #adlogo {
     margin:2 0 2 0;
   }
+
+  #attending_list {
+    list-style-type:none;
+    padding: 0;
+    margin-left: 0;
+    position:relative;	
+    
+  }
+  .attending-item {
+    height: 52px;
+  }
+
+  .attending-image {
+    position:relative;
+    left:5px;
+    top: 5px;
+
+    width: 30px;
+    height: 52px;
+    margin: 0 4 0 1;
+    float:left;
+    
+  }
+
+  .attending-box {
+    position:relative;
+    left:5px;
+  }
+
+  .attending-name {
+    position:relative;
+    color: #264393;
+    padding: 2 0 0 0;
+    top: 2px;
+  }
+  .attending-info {
+    position:relative;
+    padding: 2 0 0 0;
+    
+  }
+  .addlink {
+    position:relative;
+/*
+    left:42px;
+    top:100px;
+*/
+  }
+
 

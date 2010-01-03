@@ -3,64 +3,19 @@
 <title>StudentLife</title>
 <link rel="stylesheet" type="text/css" href="css/studentlife.css"/>
 <script type="text/javascript" src="dojo/dojo.js" djConfig="parseOnLoad:true, isDebug:true"></script>
-
 <script type="text/javascript" src="typeface/typeface-0.14.js"></script>
 <script type="text/javascript" src="typeface/apex_new_medium.typeface.js"></script>
-<script type="text/javascript">
-  function test_json() {
-        //Look up the node we'll stick the text under.
-        var targetNode = dojo.byId("course_menu");
+<script type="text/javascript" src="typeface/helvetiker_regular.typeface.js"></script>
+<script type="text/javascript" src="studentlife.js"></script>
 
-        //The parameters to pass to xhrGet, the url, how to handle it, and the callbacks.
-        var jsonArgs = {
-            url: "user/listCourses",
-	    handleAs: "json",
-            load: function(data) {
-                //Set the data from the search into the viewbox in nicely formatted JSON
-                targetNode.innerHTML = "<pre>" + dojo.toJson(data, true) + "</pre>";
-            },
-            error: function(error) {
-                targetNode.innerHTML = "An unexpected error occurred: " + error;
-            }
-        };
-	dojo.xhrGet(jsonArgs);
-  
-
-        /*dojo.io.script.get(jsonpArgs);*/
-    }
-    dojo.addOnLoad(test_json);
-
-/*
-    dojo.require("dijit.Menu");
-    dojo.addOnLoad(function() {
-        var list =["Mathematik1", "Mikroteilchen 1 - Einführung in die Teilchenlehre", "Physik 2"];
-        var pMenu = dojo.query("#course_menu");
-	var item = new dijit.MenuItem({
-            label: "Simple menu item"
-        });
-        dojo.place(item, pMenu);
-
-        for(var x in list) {
-	  pMenu.appendChild(new dijit.MenuItem({
-            label: list[x],
-            onClick: function() {
-                alert(list[x] + 'i was clicked')
-            },
-	    iconClass: "dijitEditorIcon dijitEditorIconCut"
-	  }));
-	};
-     });
-*/
-    
-</script>
 
 <head>
 <body>
 <div id="main">
   <img id="logo" src="images/logo.png" alt="StudentLife Logo"/>
-  <div id="left" class="typeface-js">
+  <div id="left" class="typeface-js" style="font-family: Helvetiker">
     <img src="images/mycourses.png" alt="my courses"/>
-    <div id="course_menu"></div>
+    <ul id="course_menu" style="list-style-type:none;padding: 0;margin-left: 0;"></ul>
   </div>
   <div id="menu">
   <div id="leftmenu">
@@ -73,7 +28,10 @@
   </div> <!-- rightmenu -->
   </div> <!-- menu --> 
 <div id="middle">Middle</div>
-<div id="right"></div>
+<div id="right" class="typeface-js">
+  <img src="images/alsoattending.png" alt="also attending"/>
+  <ul id="attending_list"></ul>
+</div>
 <div id="ad">
   <div class="ad-item, ad-line"></div>
   <img class="ad-item" id="adlogo" src="images/payedAD.png" alt="Ad" />
