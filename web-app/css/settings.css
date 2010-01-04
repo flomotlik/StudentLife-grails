@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+#joinCourse,#joinCourse select {
+	width: 493px;
+	height: 300px;
+}
+
+#searchText {
+	width: 400px;
+}
+
+#searchSubmit {
+	width: 90px;
+}

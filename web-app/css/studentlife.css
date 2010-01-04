@@ -15,7 +15,6 @@
     top:15px; 
   }
   #showCourses{
-    left:17px;
     width:154px;
     background-color:white;
     max-height:447px;
@@ -42,12 +41,13 @@
   }
   
   #course{
-    left: 195px;
+    left: 178px;
     height:505px;
     width:565px;
   }
   
   #content{
+    left:17px;
     top: 73px;
     height: 100%;
     width: 760px;
@@ -77,7 +77,14 @@
   .menuimage {
     position:static;
     padding-bottom: 5px;
+    padding: 3, 0, 0, 1;
+    border-style: none;
   }
+  
+  #menu a{
+  border-style: none;
+  }
+  
   .ad-line {
     background-image:url(../images/bg-adcontainer.png);
     background-repeat:repeat-x;

@@ -6,10 +6,12 @@ class UserController {
   
   def workflowService
   
-  def addCourse = {
-    render workflowService.save(params.id && session.user && 
-    User.exists(session.user) && Course.exists(params.id), {
-      def course = Course.get(params.id)
+  def joinCourse = {
+    def courseId = params.course?.getAt(0)
+    log.debug("${courseId.toString()} - ${params.course.toString()}")
+    if(courseId && session.user && 
+    User.exists(session.user) && Course.exists(courseId)) {
+      def course = Course.get(courseId)
       def inscription = new Inscription(course: course)
       def universityKey = course.university
       def user = User.get(session.user)
@@ -23,14 +25,17 @@ class UserController {
       log.debug ("Contains: $alreadyContains HasInscription: $hasInscription")
       if(alreadyContains && !hasInscription){
         user.addToInscriptions(inscription)
+        user.save()
+        render(template:"/course/index", model:[courses:user.inscriptions*.course])
       }else{
-        user = null
+        render(status:400)
       }
-      return user
-    })
+    }else{
+      render(status:400)
+    }
   }
   
-  def addUniversity = {
+  def joinUniversity = {
     def status = 200
     def text = ""
     if(params.id && session.user && University.exists(params.id)){

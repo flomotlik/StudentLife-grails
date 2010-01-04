@@ -48,16 +48,18 @@ class CourseController {
   }
   
   def search = {
-    def status = 200
-    def text = ""
-    if(params.id && session.user && User.exists(session.user)){
+    if(params.q && session.user && User.exists(session.user)){
       User user = User.get(session.user)
-      def courses = Course.findAllByUniversityInListAndNameIlike(user.universities, params.id)
-      text = workflowService.collect(courses, courseParams) as JSON
+      log.debug(user.universities)
+      log.debug(user.universities*.courses*.name)
+      log.debug(params.q)
+      def courses = Course.findAllByUniversityInListAndNameIlike(user.universities, "%$params.q%")
+      log.debug(courses)
+      render (template:"/settings/searchResults", model:[courses:courses])
     }else{
-      status = 400     
+      render (status:400)     
     }
-    render (status:status, text:text)
+    
   }
   
   def show = {
