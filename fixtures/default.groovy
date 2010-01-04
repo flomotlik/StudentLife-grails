@@ -21,6 +21,7 @@ fixture {
   user(org.lecturious.User){
     facebookId = "development_user"
     name = "Name"
+    universities = [uni]
   }
   user2(org.lecturious.User){
     facebookId = "user2"
