@@ -14,6 +14,7 @@ class MenuController {
   }
   
   def settings = {
-    render (template:"/settings/index")
+    def user = User.get(session.user)
+    render (template:"/settings/index", model:[user:user])
   }
 }
