@@ -12,3 +12,7 @@
 #searchSubmit {
 	width: 90px;
 }
+
+#content label{
+	display: block;
+}

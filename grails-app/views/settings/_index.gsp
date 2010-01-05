@@ -1,4 +1,5 @@
 <g:remoteLink controller="university" action="join" update="content">Add University</g:remoteLink>
+<g:remoteLink controller="course" action="renderAdd" update="content">Add Course</g:remoteLink>
 <ul>
   <g:each in="${user.universities}" var="university">
     <li>${university.name}</li>

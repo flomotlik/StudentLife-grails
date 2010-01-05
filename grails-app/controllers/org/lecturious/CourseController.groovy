@@ -12,11 +12,15 @@ class CourseController {
   def workflowService
   
   def add = {
-    render workflowService.saveWithParent(params.id, University, {
-      def course = new Course(params)
-      def university = University.get(params.id)
-      university.addToCourses(course)
-    })
+    def course = new Course(params)
+    def university = University.get(params.university)
+    university.addToCourses(course)
+    university.save()
+    redirect(controller:"menu", action:"settings")
+  }
+  
+  def renderAdd = {
+    render(template:"/course/add", model:[universities:User.get(session.user).universities.toList()])
   }
   
   def list = {
