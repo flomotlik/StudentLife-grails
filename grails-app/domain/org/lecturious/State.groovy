@@ -1,6 +1,8 @@
 package org.lecturious
 
-class State{
+import java.io.Serializable;
+
+class State implements Serializable{
   String name
   
   static hasMany = [cities:City]

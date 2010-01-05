@@ -1,6 +1,8 @@
 package org.lecturious
 
-class University{
+import java.io.Serializable;
+
+class University implements Serializable{
   String name
   
   static hasMany = [courses:Course]
