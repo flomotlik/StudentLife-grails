@@ -5,7 +5,7 @@ class Event {
   String description
   
   //Date stored in UTC
-  long date
+  Date date
   
   //Duration in Minutes
   int duration

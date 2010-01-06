@@ -2,6 +2,7 @@
 <head>
 <title>StudentLife</title>
 <link rel="stylesheet" type="text/css" href="css/studentlife.css" />
+<link rel="stylesheet" type="text/css" href="css/calendar.css" />
 <link rel="stylesheet" type="text/css" href="css/settings.css" />
 <g:javascript library="prototype" />
 </head>
