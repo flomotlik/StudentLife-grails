@@ -1,7 +1,7 @@
 package org.lecturious
 
-import grails.converters.JSON 
-
+import grails.converters.JSON
+import java.util.GregorianCalendar;
 
 class TodoController {
   
@@ -10,11 +10,17 @@ class TodoController {
   def workflowService
   
   def add = {
-    render workflowService.saveWithParent(params.id, Course, {
-      def todo = new Todo(description:params.description, date:params.date)
-      def course= Course.get(params.id)
-      course.addToTodos(todo)
-    } )
+    def year = params.year.toInteger()
+    def month = params.month.toInteger() - 1
+    def day = params.day.toInteger()
+    def hour = params.hour.toInteger()
+    def minute = params.minute.toInteger()
+    def calendar = new GregorianCalendar(year, month, day, hour, minute);
+    def todo = new Todo(description:params.description, date:calendar.time)
+    def course= Course.get(params.courseId)
+    course.addToTodos(todo)
+    course.save()
+    redirect(controller:"menu", action:"agenda")
   }
   
   def list = {
