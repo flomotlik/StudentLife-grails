@@ -7,3 +7,15 @@
 	height: 100%;
 	width: 565px;
 }
+
+.todo {
+	background-color: blue;
+}
+
+.event {
+	background-color: green;
+}
+
+.both {
+	background-color: red;
+}

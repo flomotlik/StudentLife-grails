@@ -1,13 +1,16 @@
 package org.lecturious
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 class MenuController {
   
+  def days = [6,0,1,2,3,4,5]
+  
+  def calendarService 
+  
   def agenda = {
-    def courses = User.get(session.user).inscriptions*.course
-    def todos = Todo.findAllByCourseInList(courses)
-    def events = Event.findAllByCourseInList(courses)
-    def rows = new CalendarHelper().calendar(2010, 1)
-    render (template:"/calendar/index", model:[rows:rows, todos:todos, events:events, year:2010, month:0])
+    render (template:"/calendar/index", model:calendarService.calendar(session.user))
   }
   
   def course = {
