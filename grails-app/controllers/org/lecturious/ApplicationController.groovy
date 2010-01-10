@@ -58,6 +58,7 @@ class ApplicationController {
   def load = {
     if (grails.util.GrailsUtil.environment == "development") {
       User.list()*.delete()
+      Country.list()*.delete()
       def fixture = fixtureLoader.load("default")
       fixture.load("extensions")
       log.debug("Inscription $fixture.inscription.id")

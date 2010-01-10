@@ -1,6 +1,8 @@
 package org.lecturious
 
-class User{
+import java.io.Serializable;
+
+class User implements Serializable{
   String facebookId
   
   String name

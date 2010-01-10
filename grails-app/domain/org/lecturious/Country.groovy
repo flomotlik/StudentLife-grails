@@ -1,6 +1,8 @@
 package org.lecturious
 
-class Country{
+import java.io.Serializable;
+
+class Country implements Serializable{
   
   String name
   

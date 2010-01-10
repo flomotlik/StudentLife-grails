@@ -4,7 +4,7 @@ class Todo{
   String description
   
   //Date stored in UTC
-  long date
+  Date date
   
   static belongsTo = [course:Course]
   
