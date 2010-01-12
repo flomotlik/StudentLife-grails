@@ -87,7 +87,7 @@ class UniversityController {
         def universityKey = flow.city.universities.find{it.name == params.item
         }
         log.debug("University: $universityKey")
-        def user = User.get(session.user)
+        def user = Student.get(session.user)
         if (!user.universities?.contains(universityKey) && flow.country.save()) {
           user.addToUniversities(universityKey)
           user.save()

@@ -1,7 +1,6 @@
 package org.lecturious
 
 import grails.util.GrailsUtil
-import org.lecturious.User
 
 class CalendarController {
   
@@ -30,11 +29,11 @@ class CalendarController {
   
   def addCourseDate = {
     render(template:"/calendar/addCourseDate", model:[year:params.year, month:params.month, 
-    day:params.day, courses:User.get(session.user).inscriptions*.course])
+    day:params.day, courses:Student.get(session.user).inscriptions*.course])
   }
   
   def addDeadline = {
     render(template:"/calendar/addTodo", model:[year:params.year, month:params.month, 
-    day:params.day, courses:User.get(session.user).inscriptions*.course])
+    day:params.day, courses:Student.get(session.user).inscriptions*.course])
   }
 }

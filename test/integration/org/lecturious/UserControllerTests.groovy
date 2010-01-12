@@ -19,7 +19,7 @@ class UserControllerTests extends StudentLifeControllerTest{
     mockParams.id = course.id
     controller.addCourse()
     assert status() == 200
-    def assertUser = User.get(user.id)
+    def assertUser = Student.get(user.id)
     def inscriptions = assertUser.inscriptions.toList()
     assert inscriptions.size() == 1
     def inscription = inscriptions[0]
@@ -81,7 +81,7 @@ class UserControllerTests extends StudentLifeControllerTest{
     mockSession.user = user.id
     controller.addUniversity()
     assertGoodRequest()
-    def universities = User.get(user.id).universities.toList()
+    def universities = Student.get(user.id).universities.toList()
     assert universities.size() == 1
     assert universities[0].name == name
   }
@@ -160,7 +160,7 @@ class UserControllerTests extends StudentLifeControllerTest{
   }
   
   void testShow(){
-    mockDomain(User, [new User(facebookId:"1", name:"Name")])
+    mockDomain(Student, [new Student(facebookId:"1", name:"Name")])
     def user = createUser()
     mockSession.user = 1
     controller.show()

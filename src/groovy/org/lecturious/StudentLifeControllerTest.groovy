@@ -90,7 +90,7 @@ class StudentLifeControllerTest extends ControllerUnitTestCase{
   }
   
   def createUser(){
-    def user = new User(facebookId: "1", name:name).save()
+    def user = new Student(facebookId: "1", name:name).save()
     assert user
     return user
   }

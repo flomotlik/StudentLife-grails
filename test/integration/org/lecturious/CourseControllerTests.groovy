@@ -95,8 +95,8 @@ class CourseControllerTests extends StudentLifeControllerTest{
   }
   
   void testShowColleagues(){
-    def user1 = new User(id:1, name:"Name1", facebookId:"ID1").save()
-    def user2 = new User(id:2, name:"Name2", facebookId:"ID2").save()
+    def user1 = new Student(id:1, name:"Name1", facebookId:"ID1").save()
+    def user2 = new Student(id:2, name:"Name2", facebookId:"ID2").save()
     def course = createCourse()
     new Inscription(course:course, user:user1).save()
     new Inscription(course:course, user:user2).save()

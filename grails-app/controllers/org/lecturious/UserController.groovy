@@ -10,11 +10,11 @@ class UserController {
     def courseId = params.course?.getAt(0)
     log.debug("${courseId.toString()} - ${params.course.toString()}")
     if(courseId && session.user && 
-    User.exists(session.user) && Course.exists(courseId)) {
+    Student.exists(session.user) && Course.exists(courseId)) {
       def course = Course.get(courseId)
       def inscription = new Inscription(course: course)
       def universityKey = course.university
-      def user = User.get(session.user)
+      def user = Student.get(session.user)
       log.debug("User: $user - UserId: $session.user")
       log.debug("Universities $user.universities")
       log.debug("University: $universityKey")
@@ -41,7 +41,7 @@ class UserController {
     if(params.id && session.user && University.exists(params.id)){
       def universityKey = University.get(params.id)
       log.debug("University: $universityKey")
-      def user = User.get(session.user)
+      def user = Student.get(session.user)
       if (!user.universities?.contains(universityKey)) {
         user.addToUniversities(universityKey)
         user.save()
@@ -56,8 +56,8 @@ class UserController {
   }
   
   def listCourses = {
-    if(session.user && User.exists(session.user)){
-      def user = User.get(session.user)
+    if(session.user && Student.exists(session.user)){
+      def user = Student.get(session.user)
       render user.inscriptions.collect{[id:it.id, courseId: it.course.id, name: it.course.name, type: it.course.type,
         professor: it.course.professor, identificator: it.course.identificator]
       } as JSON
@@ -68,8 +68,8 @@ class UserController {
   
   def listUniversities = {
     def status = 200
-    if(session.user && User.exists(session.user)){
-      def user = User.get(session.user)
+    if(session.user && Student.exists(session.user)){
+      def user = Student.get(session.user)
       render user.universities.collect{[id:it.id, name: it.name]
       } as JSON
     }else{
@@ -78,8 +78,8 @@ class UserController {
   }
   
   def show = {
-    if(session.user && User.exists(session.user)){
-      def userObject = User.get(session.user)
+    if(session.user && Student.exists(session.user)){
+      def userObject = Student.get(session.user)
       def map = [facebookId:userObject.facebookId, name:userObject.name] 
       render map as JSON
     }else{

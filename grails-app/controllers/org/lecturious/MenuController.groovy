@@ -14,14 +14,14 @@ class MenuController {
   }
   
   def course = {
-    def user = User.get(session.user)
+    def user = Student.get(session.user)
     def model = [courses:user.inscriptions*.course.sort{it.name
     }]
     render (template:"/course/index", model:model) 
   }
   
   def settings = {
-    def user = User.get(session.user)
+    def user = Student.get(session.user)
     render (template:"/settings/index", model:[user:user])
   }
 }

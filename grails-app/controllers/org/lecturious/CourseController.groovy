@@ -20,7 +20,7 @@ class CourseController {
   }
   
   def renderAdd = {
-    render(template:"/course/add", model:[universities:User.get(session.user).universities.toList()])
+    render(template:"/course/add", model:[universities:Student.get(session.user).universities.toList()])
   }
   
   def list = {
@@ -39,7 +39,7 @@ class CourseController {
   
   def colleagues = {
     def course = Course.get(params.id)
-    def user = User.get(session.user)
+    def user = Student.get(session.user)
     def inscriptions = Inscription.findAllByCourse(course)
     log.debug("Inscriptions: $inscriptions")
     def users = inscriptions*.user
@@ -52,8 +52,8 @@ class CourseController {
   }
   
   def search = {
-    if(params.q && session.user && User.exists(session.user)){
-      User user = User.get(session.user)
+    if(params.q && session.user && Student.exists(session.user)){
+      Student user = Student.get(session.user)
       log.debug(user.universities)
       log.debug(user.universities*.courses*.name)
       log.debug(params.q)
@@ -68,7 +68,7 @@ class CourseController {
   
   def show = {
     def course = Course.get(params.id)
-    def user = User.get(session.user)
+    def user = Student.get(session.user)
     def colleagues = Inscription.findAllByCourse(course)*.user
     colleagues -= user
     log.debug("Users: $colleagues")

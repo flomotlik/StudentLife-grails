@@ -3,7 +3,7 @@ package org.lecturious
 public class Inscription {
   Course course
   
-  static belongsTo = [user:User]
+  static belongsTo = [user:Student]
   
   boolean equals(toCompare){
     log.debug("Equals: $toCompare.course $course")
