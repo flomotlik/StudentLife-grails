@@ -1,12 +1,7 @@
 package org.lecturious
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 class MenuController {
-  
-  def days = [6,0,1,2,3,4,5]
-  
+
   def calendarService 
   
   def agenda = {

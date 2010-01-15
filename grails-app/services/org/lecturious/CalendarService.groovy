@@ -1,7 +1,5 @@
 package org.lecturious;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import grails.util.GrailsNameUtils;
 
 class CalendarService {
