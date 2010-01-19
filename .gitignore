@@ -1,10 +1,12 @@
 .classpath
 .project
 .settings
+.idea
 BuildConfig.groovy
-lecturious.iws
-lecturious.iml
-lecturious.ipr
+studentlife.iws
+studentlife.iml
+studentlife.ipr
+studentlife-grailsPlugins.iml
 target
 lib
 FacebookConfig.groovy

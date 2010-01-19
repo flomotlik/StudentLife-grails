@@ -1,25 +1,6 @@
 package org.lecturious
 
-import grails.converters.JSON 
-
-
 class UniversityController {
-  
-  static def allowedMethods = [add:'POST', list:'GET']
-  
-  def workflowService
-  
-  def add = {
-    render workflowService.saveWithParent(params.id, City, {
-      def university= new University(name: params.name)
-      def city = City.get(params.id)
-      city.addToUniversities(university)
-    })
-  }
-  
-  def list = {
-    render workflowService.listWithParent(params.id, City, University, ["id", "name"])
-  }
   
   def joinFlow = {
     initialize {
@@ -87,7 +68,7 @@ class UniversityController {
         def universityKey = flow.city.universities.find{it.name == params.item
         }
         log.debug("University: $universityKey")
-        def user = User.get(session.user)
+        def user = Student.get(session.user)
         if (!user.universities?.contains(universityKey) && flow.country.save()) {
           user.addToUniversities(universityKey)
           user.save()

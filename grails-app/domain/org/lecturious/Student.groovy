@@ -2,7 +2,7 @@ package org.lecturious
 
 import java.io.Serializable;
 
-class User implements Serializable{
+class Student implements Serializable{
   String facebookId
   
   String name

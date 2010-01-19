@@ -25,6 +25,7 @@
   alt="border element" style="padding: 1, 6, 0, 6" /></div>
 <!-- rightmenu --></div>
 <!-- menu -->
+<p>${user.name} - ${user.id}</p>
 <div id=content><g:render template="/course/index" /></div>
 <!-- main -->
 </body>

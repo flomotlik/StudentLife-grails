@@ -1,7 +1,5 @@
 package org.lecturious;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import grails.util.GrailsNameUtils;
 
 class CalendarService {
@@ -69,7 +67,7 @@ class CalendarService {
   def courseElements(user, from, to){
     log.debug("From: $from")
     log.debug("To: $to")
-    def courses = User.get(user).inscriptions*.course
+    def courses = Student.get(user).inscriptions*.course
     def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
     def events = Event.findAllByCourseInListAndDateBetween(courses, from, to)
     [todos:todos, events:events]

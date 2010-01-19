@@ -1,13 +1,6 @@
 package org.lecturious
 
-import grails.converters.JSON 
-
-
 class EventController {
-  
-  static def allowedMethods = [add:'POST', list:'GET']
-  
-  def workflowService
   
   def add = {
     def year = params.year.toInteger()
@@ -21,9 +14,5 @@ class EventController {
     course.addToEvents(event)
     course.save()
     redirect(controller:"menu", action:"agenda")
-  }
-  
-  def list = {
-    render workflowService.listWithParent(params.id, Course, Event, ["id", "description", "date", "duration"])
   }
 }
