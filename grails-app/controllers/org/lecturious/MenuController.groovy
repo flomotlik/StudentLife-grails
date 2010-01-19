@@ -17,6 +17,7 @@ class MenuController {
   
   def settings = {
     def user = Student.get(session.user)
+	log.debug("params[\"message\"]" + params["message"]);
     render (template:"/settings/index", model:[user:user])
   }
 }

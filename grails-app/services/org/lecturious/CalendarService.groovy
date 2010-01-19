@@ -14,6 +14,7 @@ class CalendarService {
   }
   
   def calendar(user, year, month){
+    log.debug("Query calendar for user:" + user);
     def calendar = new GregorianCalendar(year, month, 1)
     def calendar2 = new GregorianCalendar(year, month + 1, 1)
     def daysOfLastMonth = days[calendar.get(Calendar.DAY_OF_WEEK) - 1];
@@ -67,9 +68,15 @@ class CalendarService {
   def courseElements(user, from, to){
     log.debug("From: $from")
     log.debug("To: $to")
-    def courses = Student.get(user).inscriptions*.course
-    def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
-    def events = Event.findAllByCourseInListAndDateBetween(courses, from, to)
-    [todos:todos, events:events]
+    def inscriptions = Student.get(user).inscriptions;
+    log.debug("Inscriptions: " + inscriptions); 
+    def courses = inscriptions*.course
+    log.debug("Found courses:" + courses);
+    if (! courses?.isEmpty()) {
+      def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
+      def events = Event.findAllByCourseInListAndDateBetween(courses, from, to)
+      [todos:todos, events:events]
+    }
+    [todos:[], events:[]]
   }
 }
