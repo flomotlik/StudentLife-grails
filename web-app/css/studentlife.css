@@ -191,9 +191,7 @@
   	position:static;
   	float:left;
   	width:30px;
-    border-width:1px;
-    border-style:solid;
-    border-color: red;
+    background-color:red;
   }
 
   .ci4 {
