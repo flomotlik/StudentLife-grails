@@ -9,7 +9,11 @@ class ApplicationController {
   def fixtureLoader
   
   static def allowedMethods = [index:'GET']
-  
+
+   /**
+    *  checks if user already logged in.
+    *  in development mode you can change the logged in user by adding userId
+    */
   def index = {
     log.debug("Session.user $session.user")
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
