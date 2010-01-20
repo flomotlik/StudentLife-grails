@@ -183,7 +183,7 @@
   
   .calendar_row {
   	position:static;
-  	width:210px;
+  	width:230px;
   	clear:left;
   }
   
@@ -191,14 +191,26 @@
   	position:static;
   	float:left;
   	width:30px;
-  	height:30px;
+    border-width:1px;
+    border-style:solid;
+    border-color: red;
+  }
+
+  .ci4 {
+    height:75px;
   }
   
+  .ci5 {
+    height:60px;
+  }
+
+  .ci6 {
+    height:50px;
+  }
   
   .calendar_links {
    	position:static;
    	clear:left;
-  
   }
 
   #item {

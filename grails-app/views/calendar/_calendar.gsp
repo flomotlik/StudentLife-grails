@@ -11,7 +11,7 @@
   <g:each in="${rows}" var="row">
     <div class="calendar_row">
       <g:each in="${row}" var="item">
-      	<div class="calendar_item">
+      	<div class="calendar_item ci${rows.size()}">
       	<sl:calendarItem item="${item}" year="${year}" month="${month}"/>
       	</div>
       </g:each>
