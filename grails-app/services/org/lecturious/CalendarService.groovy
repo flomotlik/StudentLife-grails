@@ -1,7 +1,5 @@
 package org.lecturious;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import grails.util.GrailsNameUtils;
 
 class CalendarService {
@@ -16,6 +14,7 @@ class CalendarService {
   }
   
   def calendar(user, year, month){
+    log.debug("Query calendar for user:" + user);
     def calendar = new GregorianCalendar(year, month, 1)
     def calendar2 = new GregorianCalendar(year, month + 1, 1)
     def daysOfLastMonth = days[calendar.get(Calendar.DAY_OF_WEEK) - 1];
@@ -32,7 +31,12 @@ class CalendarService {
       lastMonth << [day:(lastDayOfBeforeMonth - daysOfLastMonth + 1 + it)]
     }
     //    log.debug("LastMonth $lastMonth")
-    def thisMonth = (1..daysInMonth).collect{[day:it] }
+    
+    def thisMonth = (1..daysInMonth).collect{[
+                                              year: year, month: month, day:it, 
+                                              events:courseElements.events.findAll{it.day == it}, 
+                                              todos:courseElements.todos.findAll{it.day == it}] }
+    
     //    log.debug("ThisMonth $thisMonth")
     def nextMonth = [] 
     daysOfNextMonth.times{
@@ -69,9 +73,15 @@ class CalendarService {
   def courseElements(user, from, to){
     log.debug("From: $from")
     log.debug("To: $to")
-    def courses = Student.get(user).inscriptions*.course
-    def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
-    def events = Event.findAllByCourseInListAndDateBetween(courses, from, to)
-    [todos:todos, events:events]
+    def inscriptions = Student.get(user).inscriptions;
+    log.debug("Inscriptions: " + inscriptions); 
+    def courses = inscriptions*.course
+    log.debug("Found courses:" + courses);
+    if (! courses?.isEmpty()) {
+      def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
+      def events = Event.findAllByCourseInListAndDateBetween(courses, from, to)
+      [todos:todos, events:events]
+    }
+    [todos:[], events:[]]
   }
 }

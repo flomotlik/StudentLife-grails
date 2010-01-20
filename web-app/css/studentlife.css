@@ -1,8 +1,16 @@
-   body, div, img {
+  body {
+      font-size : 13;
+      font-family: "Verdana", "sans-serif";
+      
+  } 
+  
+  body, div, img {
       position:absolute;
    }
+   
    .typeface-js {
       font-family: Apex New;
+      font-size: 13; 
    }
 
    body {
@@ -11,10 +19,12 @@
       background-color:white;
   }
   #logo {
+  	position:absolute;
     right:22px;
     top:15px; 
   }
   #showCourses{
+  	position:absolute;
     width:154px;
     background-color:white;
     max-height:447px;
@@ -22,6 +32,7 @@
   }
   
   #showCourse {
+  	position:absolute;
     background-color:GREEN;
     height: 352px;
     width:363px;
@@ -32,21 +43,24 @@
   }
   
   #showColleagues {
+  	position:absolute;
     right:23px;
     width:154px;
     max-height:256px;
-    background-color:BLUE;
+    background-color:white;
     height: 300px;
     border: 1px solid black;
   }
   
   #course{
+  	position:absolute;
     left: 178px;
     height:505px;
     width:565px;
   }
   
   #content{
+  	position:absolute;
     left:17px;
     top: 73px;
     height: 100%;
@@ -54,6 +68,7 @@
   }
   
   #menu{
+  	position:absolute;
     top:32px;
     left:17px;
     height:14px;
@@ -63,15 +78,24 @@
     background-repeat:repeat-x;
   }
   #ad{
+  	position:absolute;
     top:372px;
     left:195px;
   }
   #leftmenu {
+  	position:absolute;
     left:0px;
   }
 
   #rightmenu {
     right:0px;
+  }
+
+  .course-item {
+    background-image:url(../images/columnborder.png);
+    background-position:bottom left;
+    background-repeat: no-repeat;
+    margin:0 0 1 0px;
   }
 
   .menuimage {
@@ -97,3 +121,86 @@
     margin:2 0 2 0;
   }
 
+  #attending_list {
+    list-style-type:none;
+    padding: 0;
+    margin-left: 0;
+    position:relative;	
+    
+  }
+  .attending-item {
+    height: 52px;
+  }
+
+  .attending-image {
+    position:relative;
+    left:5px;
+    top: 5px;
+
+    width: 30px;
+    height: 52px;
+    margin: 0 4 0 1;
+    float:left;
+    
+  }
+
+  .attending-box {
+    position:relative;
+    left:5px;
+  }
+
+  .attending-name {
+    position:relative;
+    color: #264393;
+    padding: 2 0 0 0;
+    top: 2px;
+  }
+  .attending-info {
+    position:relative;
+    padding: 2 0 0 0;
+    
+  }
+  .addlink {
+    position:relative;
+/*
+    left:42px;
+    top:100px;
+*/
+  }
+  
+  #calendar {
+  	position:relative;
+  	width:210px;
+  }
+  
+  div.calendar {
+  	position:static;
+  }
+  
+  .calendar {
+  	position:static;
+  }
+  
+  .calendar_row {
+  	position:static;
+  	width:210px;
+  	clear:left;
+  }
+  
+  .calendar_item {
+  	position:static;
+  	float:left;
+  	width:30px;
+  	height:30px;
+  }
+  
+  
+  .calendar_links {
+   	position:static;
+   	clear:left;
+  
+  }
+
+  #item {
+  		width:250px;
+  }

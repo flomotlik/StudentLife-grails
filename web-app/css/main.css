@@ -44,6 +44,11 @@ input, select, textarea {
 select {
    padding: 2px 2px 2px 0;
 }
+
+#wizard_select {
+	width: 250px;
+}
+
 textarea {
 	width: 250px;
 	height: 150px;

@@ -1,32 +1,13 @@
 package org.lecturious
 
-import grails.converters.JSON 
-
-
 class UniversityController {
-  
-  static def allowedMethods = [add:'POST', list:'GET']
-  
-  def workflowService
-  
-  def add = {
-    render workflowService.saveWithParent(params.id, City, {
-      def university= new University(name: params.name)
-      def city = City.get(params.id)
-      city.addToUniversities(university)
-    })
-  }
-  
-  def list = {
-    render workflowService.listWithParent(params.id, City, University, ["id", "name"])
-  }
   
   def joinFlow = {
     initialize {
       action {
         def countries = Country.list()
         log.debug(countries)
-        [ collection:countries]
+        [ collection:countries, currentType:"Country"]
       }
       on ("success").to "showCountries"      
     }
@@ -36,13 +17,13 @@ class UniversityController {
       on("select"){
         def country = Country.get(params.item)
         flow.country = country
-        [selected:country, collection:country.states]
+        [selected:country, collection:country.states, currentType:"State"]
       } .to "showStates"
       on("add"){
         def country = new Country(params)
         log.debug(country)
         flow.country = country
-        [selected:country, collection:country.states]
+        [selected:country, collection:country.states, currentType:"State"]
       }.to "showStates"
     }
     showStates{
@@ -50,7 +31,7 @@ class UniversityController {
       on("select"){
         def state = State.get(params.item)
         flow.state = state
-        [selected:state, collection:state.cities]
+        [selected:state, collection:state.cities, currentType:"City"]
       } .to "showCities"
       on("add"){
         def state = new State(params)
@@ -58,7 +39,7 @@ class UniversityController {
         country.addToStates(state)
         flow.state = state
         log.debug("state - $state.name")
-        [selected:state, collection:state.cities]
+        [selected:state, collection:state.cities, currentType:"City"]
       }.to "showCities"
     }
     showCities{
@@ -69,7 +50,7 @@ class UniversityController {
         def collection = city.universities.collect {[name:it.name]
         }
         log.debug("Collection: $collection")
-        [selected:city, collection:collection]
+        [selected:city, collection:collection, currentType:"University"]
       } .to "showUniversities"
       on("add"){
         def city = new City(params)
@@ -77,7 +58,7 @@ class UniversityController {
         state.addToCities(city)
         log.debug(city)
         flow.city = city
-        [selected:city, collection:[]]
+        [selected:city, collection:[], currentType:"University"]
       }.to "showUniversities"
     }
     showUniversities{
