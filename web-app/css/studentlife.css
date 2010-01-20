@@ -1,10 +1,13 @@
   body {
       font-size : 13;
       font-family: "Verdana", "sans-serif";
+      
   } 
+  
   body, div, img {
       position:absolute;
    }
+   
    .typeface-js {
       font-family: Apex New;
       font-size: 13; 
@@ -16,10 +19,12 @@
       background-color:white;
   }
   #logo {
+  	position:absolute;
     right:22px;
     top:15px; 
   }
   #showCourses{
+  	position:absolute;
     width:154px;
     background-color:white;
     max-height:447px;
@@ -27,6 +32,7 @@
   }
   
   #showCourse {
+  	position:absolute;
     background-color:GREEN;
     height: 352px;
     width:363px;
@@ -37,6 +43,7 @@
   }
   
   #showColleagues {
+  	position:absolute;
     right:23px;
     width:154px;
     max-height:256px;
@@ -46,12 +53,14 @@
   }
   
   #course{
+  	position:absolute;
     left: 178px;
     height:505px;
     width:565px;
   }
   
   #content{
+  	position:absolute;
     left:17px;
     top: 73px;
     height: 100%;
@@ -59,6 +68,7 @@
   }
   
   #menu{
+  	position:absolute;
     top:32px;
     left:17px;
     height:14px;
@@ -68,10 +78,12 @@
     background-repeat:repeat-x;
   }
   #ad{
+  	position:absolute;
     top:372px;
     left:195px;
   }
   #leftmenu {
+  	position:absolute;
     left:0px;
   }
 
@@ -154,6 +166,39 @@
     left:42px;
     top:100px;
 */
+  }
+  
+  #calendar {
+  	position:relative;
+  	width:210px;
+  }
+  
+  div.calendar {
+  	position:static;
+  }
+  
+  .calendar {
+  	position:static;
+  }
+  
+  .calendar_row {
+  	position:static;
+  	width:210px;
+  	clear:left;
+  }
+  
+  .calendar_item {
+  	position:static;
+  	float:left;
+  	width:30px;
+  	height:30px;
+  }
+  
+  
+  .calendar_links {
+   	position:static;
+   	clear:left;
+  
   }
 
   #item {

@@ -31,7 +31,12 @@ class CalendarService {
       lastMonth << [day:(lastDayOfBeforeMonth - daysOfLastMonth + 1 + it)]
     }
     //    log.debug("LastMonth $lastMonth")
-    def thisMonth = (1..daysInMonth).collect{[day:it] }
+    
+    def thisMonth = (1..daysInMonth).collect{[
+                                              year: year, month: month, day:it, 
+                                              events:courseElements.events.findAll{it.day == it}, 
+                                              todos:courseElements.todos.findAll{it.day == it}] }
+    
     //    log.debug("ThisMonth $thisMonth")
     def nextMonth = [] 
     daysOfNextMonth.times{
