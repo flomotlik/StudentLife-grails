@@ -1,8 +1,10 @@
 <html>
 <head>
+<script type='text/javascript' 
+        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
 <style type="text/css">
    body {
-    position:absolute:
+    position:absolute;
   }
    #container {
     position:relative;
@@ -19,9 +21,59 @@
     height:30px;
     float:left;
   }
+  .aa_container {
+    position:absolute;
+    font-family: "Verdana";
+    font-size: 11;
+  }
+  
+  .aa_box { 
+    background-color:#FFEEFF;
+    position:relative;
+    height:60px;
+    width:200px;
+  }
+  .aa_image {
+    position:absolute;
+    top:10px;
+    left:2px;
+    height:30px;
+    width:30px;
+  }
+  .aa_name {
+    position:absolute;
+    top:0px;
+    left:35px;
+    height:20px;
+    width:150px;
+  }
+  .aa_info {
+    position:absolute;
+    top:15px;
+    left:35px;
+    height:20px;
+    width:150px;
+  }
+  .aa_link {
+    position:absolute;
+    top:30px;
+    left:35px;
+    width:150px;
+    height:20px;
+  }
+
+  .aa_separator {
+    heigth:1px;
+    width:200px;
+  }
+
+  div {
+  }
+
 </style>
 </head>
 <body>
+<!--
 <div id="container">
 <div class="cal_row">
   <div class="cal_item">1</div>
@@ -62,5 +114,28 @@
   <div class="cal_item">7</div>
 </div>
 </div> 
+-->
+<div class="aa_container">
+  <div class="aa_box">
+    <img class="aa_image" src="images/testprofilepic1.png"/>
+    <div class="aa_name"><a href="#link">Hans Moser</a></div>
+    <div class="aa_info">attending x equal courses</div>
+    <div class="aa_link"><a href="#link">Add as friend</a></div>
+  </div>
+  <img src="images/columnborder.png" class="aa_separator"/>
+  <div class="aa_box">
+    <img class="aa_image" src="images/testprofilepic1.png"/>
+    <div class="aa_name"><a href="#link">Thomas Muster</a></div>
+    <div class="aa_info">attending x equal courses</div>
+    <div class="aa_link"><a href="#link">Add as friend</a></div>
+  </div>
+  <img src="images/columnborder.png" class="aa_separator"/>
+  <div class="aa_box">
+    <img class="aa_image" src="images/testprofilepic1.png"/>
+    <div class="aa_name"><a href="#link">Herbert Bauer</a></div>
+    <div class="aa_info">attending x equal courses</div>
+    <div class="aa_link"><a href="#link">Add as friend</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -19,6 +19,7 @@ class ApplicationController {
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
       switch (grails.util.GrailsUtil.environment) {
         case "development":
+	case "test":
         def facebookId = params.userId ?: "development_user"
         def name = params.name ?: "Name"
         log.debug("Development Mode User: $facebookId")
@@ -56,6 +57,18 @@ class ApplicationController {
     def inscriptions = Inscription.findAllByUser(user)
     [user:user, courses:inscriptions*.course.sort{it.name
     }]
+  }
+
+  def change = {	
+    def name = params.userId;
+    def facebookId = name; 
+    def newUser = new Student(name: name, facebookId: facebookId)
+    newUser.save()
+    def user = newUser.id
+    //log.debug("UserID: $user")
+    session.user = user
+    //log.debug("Session.User: $session.user")
+    render("Success");
   }
   
   def load = {

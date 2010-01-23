@@ -3,6 +3,7 @@ package org.lecturious
 class EventController {
   
   def add = {
+    log.debug("EventController.add() called")
     def year = params.year.toInteger()
     def month = params.month.toInteger() - 1
     def day = params.day.toInteger()
@@ -13,6 +14,7 @@ class EventController {
     def course= Course.get(params.courseId)
     course.addToEvents(event)
     course.save()
+    log.debug("Saved event: " + course.events);
     redirect(controller:"menu", action:"agenda")
   }
 }
