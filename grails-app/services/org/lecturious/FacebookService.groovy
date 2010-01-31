@@ -10,8 +10,8 @@ class FacebookService implements Serializable {
   static scope = 'session'
   
   def getFacebookConnection(request, response) {
-    def api_key = ""
-    def secret = ""
+    def api_key = grailsApplication.config.facebook.api_key
+    def secret = grailsApplication.config.facebook.secret
     def facebook = new FacebookJsonRestClient(api_key, secret);
     FacebookWebappHelper<Object> facebookHelper = new FacebookWebappHelper<Object>(request, response, api_key, secret, facebook);
     String nextPage = "http://apps.facebook.com/student-life"
