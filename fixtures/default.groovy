@@ -24,12 +24,12 @@ fixture {
   city(org.lecturious.City){ name = "City" }
   state(org.lecturious.State, name:"Vienna")
   country(org.lecturious.Country){ name = "Country" }
-  user(org.lecturious.User){
+  user(org.lecturious.Student){
     facebookId = "development_user"
     name = "Name"
     universities = [uni]
   }
-  user2(org.lecturious.User){
+  user2(org.lecturious.Student){
     facebookId = "user2"
     name = "Second"
   }
