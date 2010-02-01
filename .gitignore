@@ -3,9 +3,9 @@
 .settings
 .idea
 BuildConfig.groovy
-studentlife.iws
-studentlife.iml
-studentlife.ipr
+*.iws
+*.iml
+*.ipr
 studentlife-grailsPlugins.iml
 target
 lib
