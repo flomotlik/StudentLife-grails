@@ -6,6 +6,9 @@ class ServiceFilters {
     facebook(uri: "/**") {
       before = {
         log.debug("Filtering: ${request.forwardURI}")
+        if(grails.util.GrailsUtil.environment == "development"){
+            return;
+        }
         if (!okController.contains(controllerName) && session.user == null) {
           log.debug("Session.user == null for $request.forwardURI")
           response.sendError(403)
