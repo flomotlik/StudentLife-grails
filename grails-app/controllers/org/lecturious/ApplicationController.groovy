@@ -19,24 +19,23 @@ class ApplicationController {
     if (session.user == null || grails.util.GrailsUtil.environment == "development") {
       switch (grails.util.GrailsUtil.environment) {
         case "development":
-	case "test":
-        def facebookId = params.userId ?: "development_user"
-        def name = params.name ?: "Name"
-        log.debug("Development Mode User: $facebookId")
-        def user = Student.findByFacebookId(facebookId)?.id
-        if (!user) {
-          def newUser = new Student(name: name, facebookId: facebookId)
-          newUser.save()
-          user = newUser.id
-          log.debug("UserID: $user")
-        }
-        session.user = user
-        log.debug("Session.User: $session.user")
-        break
-        
+//        def facebookId = params.userId ?: "development_user"
+//        def name = params.name ?: "Name"
+//        log.debug("Development Mode User: $facebookId")
+//        def user = Student.findByFacebookId(facebookId)?.id
+//        if (!user) {
+//          def newUser = new Student(name: name, facebookId: facebookId)
+//          newUser.save()
+//          user = newUser.id
+//          log.debug("UserID: $user")
+//        }
+//        session.user = user
+//        log.debug("Session.User: $session.user")
+//        break
+        case "test":
         case "production":
         def facebook = facebookService.getFacebookConnection(request, response)
-        
+
         def facebookId = facebook.users_getLoggedInUser();
         def username = facebook.users_getInfo([facebookId], ["name"]).get(0).name
         

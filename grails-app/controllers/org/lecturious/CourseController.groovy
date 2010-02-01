@@ -7,6 +7,8 @@ class CourseController {
 
   def courseParams = ["id", "name", "professor", "identificator", "type"]
 
+  def facebookService
+
   def add = {
     def course = new Course(params)
     def university = University.get(params.university)
@@ -58,7 +60,9 @@ class CourseController {
     def colleagues = Inscription.findAllByCourse(course)*.user
     colleagues -= user
     log.debug("Users: $colleagues")
-    def model = [course:Course.get(params.id), colleagues:colleagues]
+
+    def userInfo = facebookService.getStudentInfos(course.messages.student*.facebookId);
+    def model = [course:Course.get(params.id), colleagues:colleagues, userInfo:userInfo]
     log.debug("Model: $model")
     render (template:"show", model:model)
   }

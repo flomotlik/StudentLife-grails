@@ -25,7 +25,7 @@ fixture {
   state(org.lecturious.State, name:"Vienna")
   country(org.lecturious.Country){ name = "Country" }
   user(org.lecturious.Student){
-    facebookId = "development_user"
+    facebookId = "1062883815"
     name = "Name"
     universities = [uni]
   }

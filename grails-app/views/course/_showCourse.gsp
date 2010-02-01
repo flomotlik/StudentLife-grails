@@ -8,7 +8,12 @@
 </g:if>
 <ul>
   <g:each in="${course?.messages}" var="message">
-    <li>${message.message}</li>
+    <li>
+      ${userInfo[message.user.facebookId].image}
+      ${userInfo[message.user.facebookId].name}
+      ${message.message}
+      ${message.dateCreated}
+    </li>
   </g:each>
 </ul>
 </div>

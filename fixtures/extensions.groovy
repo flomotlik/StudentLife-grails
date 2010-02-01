@@ -11,7 +11,10 @@ fixture {
     course = course
     user = user2
   }
-  message(org.lecturious.Message){ message = "Message" }
+  message(org.lecturious.Message){
+    message = "Message"
+    student = user
+    }
   todo1(org.lecturious.Todo){
     description = "todo1"
     date = new Date()
