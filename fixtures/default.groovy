@@ -21,6 +21,14 @@ fixture {
     name="University" 
     courses = [course, course2, course3]
   }
+  uni2(org.lecturious.University){
+    name="TU"
+    courses = []
+  }
+  uni3(org.lecturious.University){
+    name="TV"
+    courses = []
+  }
   city(org.lecturious.City){ name = "City" }
   state(org.lecturious.State, name:"Vienna")
   country(org.lecturious.Country){ name = "Country" }

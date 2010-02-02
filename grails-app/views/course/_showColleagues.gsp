@@ -1,5 +1,3 @@
-<g:render template="/course/showCourse" model="['course':course]" />
-
 <div id="showColleagues">
 <div class="aa_container">
   <g:each in="${colleagues}" var="colleague">

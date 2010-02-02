@@ -1,16 +1,34 @@
 package org.lecturious
 
-import grails.converters.JSON 
+import grails.converters.JSON
 
 class UserController {
-  
+
   def workflowService
-  
+
+  def joinUniversity = {
+    def universityId = params.university
+    if (universityId && session.user && University.exists(universityId)) {
+      def universityKey = University.get(universityId)
+      log.debug("University: $universityKey")
+      def user = Student.get(session.user)
+      if (!user.universities?.contains(universityKey)) {
+        user.addToUniversities(universityKey)
+        user.save()
+      } else {
+      }
+    } else {
+    }
+    redirect(controller:"university", action:"index")
+  }
+
+
   def joinCourse = {
-    def courseId = params.course?.getAt(0)
+    def courseId = params.course
     log.debug("${courseId.toString()} - ${params.course.toString()}")
-    if(courseId && session.user && 
-    Student.exists(session.user) && Course.exists(courseId)) {
+    log.debug(Course.exists(courseId))
+    if (courseId && session.user &&
+            Student.exists(session.user) && Course.exists(courseId)) {
       def course = Course.get(courseId)
       def inscription = new Inscription(course: course)
       def universityKey = course.university
@@ -18,20 +36,20 @@ class UserController {
       log.debug("User: $user - UserId: $session.user")
       log.debug("Universities $user.universities")
       log.debug("University: $universityKey")
-      def alreadyContains =  user.universities.any{it.id == universityKey.id
+      def alreadyContains = user.universities.any {
+        it.id == universityKey.id
       }
-      def hasInscription = user.inscriptions.any{it == inscription
+      def hasInscription = user.inscriptions.any {
+        it == inscription
       }
-      log.debug ("Contains: $alreadyContains HasInscription: $hasInscription")
-      if(alreadyContains && !hasInscription){
+      log.debug("Contains: $alreadyContains HasInscription: $hasInscription")
+      if (alreadyContains && !hasInscription) {
         user.addToInscriptions(inscription)
         user.save()
-        render(template:"/course/index", model:[courses:user.inscriptions*.course])
-      }else{
-        render(status:400)
+      } else {
       }
-    }else{
-      render(status:400)
+    } else {
     }
+    redirect(controller: "settings", action: "index")
   }
 }

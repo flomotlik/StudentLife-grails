@@ -1,9 +1,18 @@
-<g:formRemote name="joinCourse" id="joinCourse"
-  url="[controller:'user', action:'joinCourse']" update="[success:'content']">
-  <select id="course" name="course" multiple="multiple">
-    <g:each in="${courses}" var="eachCourse">
-      <option value="${eachCourse.id}">${eachCourse.type} ${eachCourse.name} - ${eachCourse.professor} - ${eachCourse.university.name}</option>
-    </g:each>
-  </select>
-  <input type="submit" value="Join Course" id="joinCourseSubmit" />
-</g:formRemote>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Professor</th>
+    <th>University</th>
+    <th>Join</th>
+  </tr>
+  <g:each in="${courses}" var="eachCourse">
+    <tr>
+      <td>${eachCourse.name}</td>
+      <td>${eachCourse.type}</td>
+      <td>${eachCourse.professor}</td>
+      <td>${eachCourse.university.name}</td>
+      <td><g:link controller="user" action="joinCourse" params="[course:eachCourse.id]">Join</g:link></td>
+    </tr>
+  </g:each>
+</table>
