@@ -1,7 +1,9 @@
   body {
       font-size : 13;
       font-family: "Verdana", "sans-serif";
-      
+      width:732px;
+      height:432px;
+      background-color:white;
   } 
   
   body, div, img {
@@ -13,11 +15,6 @@
       font-size: 13; 
    }
 
-   body {
-      width:760;
-      height:578;
-      background-color:white;
-  }
   #logo {
   	position:absolute;
     right:22px;
@@ -55,22 +52,20 @@
   #subContent{
   	position:absolute;
     left: 178px;
-    height:505px;
-    width:565px;
+    height:100%;
+    width:550px;
   }
   
   #content{
   	position:absolute;
-    left:17px;
     top: 73px;
     height: 100%;
-    width: 760px;
+    width: 100%;
   }
   
   #menu{
   	position:absolute;
     top:32px;
-    left:17px;
     height:14px;
     width: 493px;
     background-color:white;
@@ -111,7 +106,6 @@
   .ad-line {
     background-image:url(../images/bg-adcontainer.png);
     background-repeat:repeat-x;
-    margin: 
   }
   .ad-item {
     position:static;
@@ -237,7 +231,7 @@
     top:0px;
     left:35px;
     height:20px;
-    width:150px;
+    width:119px;
   }
   .aa_info {
     position:absolute;
@@ -250,11 +244,11 @@
     position:absolute;
     top:30px;
     left:35px;
-    width:150px;
+    width:119px;
     height:20px;
   }
 
   .aa_separator {
     heigth:1px;
-    width:200px;
+    width:154px;
   }
