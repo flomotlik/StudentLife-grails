@@ -57,6 +57,6 @@ class CourseController {
     def colleagues = Inscription.findAllByCourse(course)*.user
     colleagues -= user
     log.debug("Users: $colleagues")
-    [course:Course.get(params.id), colleagues:colleagues, courses:user.inscriptions*.course]
+    [course:Course.get(params.id), colleagues:colleagues]
   }
 }
