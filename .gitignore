@@ -20,3 +20,5 @@ web-app/plugins
 test/reports
 stacktrace.log
 facebook.groovy
+bin
+database

@@ -1,0 +1,82 @@
+<html>
+<head></head>
+<body>
+<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/en_US" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+  function callPublish(msg, attachment, action_link) {
+    FB.ensureInit(function () {
+      alert('initiated');
+      //FB.Connect.streamPublish(); works
+      FB.Connect.streamPublish(msg, attachment, action_link);
+  });};
+
+  function showPermissionDialog() {
+    FB.ensureInit(function () {
+      alert('showPermissionDialog');
+      //FB.Connect.showPermissionDialog("publish_stream"); //works!
+      FB.Connect.showPermissionDialog("read_stream, publish_stream");
+  });};
+
+  function inviteConnectUsers() {
+    FB.ensureInit(function () {
+      alert('inviteConnectUsers');
+      //FB.Connect.showPermissionDialog("publish_stream"); //works!
+      FB.Connect.inviteConnectUsers();
+  });};
+
+</script>
+
+
+<fb:profile-pic uid="loggedinuser" facebook-logo="true" linked="true"></fb:profile-pic>
+
+<fb:login-button v="2" size="medium" onlogin="window.location.reload(true);">Connect with Facebook</fb:login-button>
+<!-- <fb:prompt-permission perms=""> Grant permission for status updates </fb:prompt-permission> -->
+
+<input 
+  type="button" 
+  onclick="callPublish('Please join Studentlife',{'name':'Studentlife','href':'http://studentlife.leanvienna.at','description':'I\'m using Studentlife'},null);return false;" 
+  value="Publish" />
+
+<input 
+  type="button" 
+  onclick="showPermissionDialog()" 
+  value="showPermissionDialog" />
+
+<input 
+  type="button" 
+  onclick="inviteConnectUsers()" 
+  value="inviteConnectUsers" />
+
+<!--
+<fb:live-stream event_app_id="c760cd23b5a0aacc18c4738b2528468d" xid="SXID" width="500" height="500"></fb:live-stream>
+-->
+
+<fb:serverFbml style="width: 755px;">  
+  <script type="text/fbml">  
+    <fb:fbml>  
+      <fb:request-form 
+           action="http://studentlife.leanvienna.com/studentlife/post.html" 
+           method="POST" 
+           invite="true" 
+           type="StudentLife" 
+           content="This is a test invitation from XFBML test app <fb:req-choice url='see wiki page for fb:req-choice for details' label='Ignore the Connect test app!' />"
+           >
+           <fb:multi-friend-selector showborder="false" actiontext="Invite your friends to use Connect."/>
+      </fb:request-form>  
+    </fb:fbml>  
+  </script>  
+</fb:serverFbml>
+
+<fb:serverfbml style="width: 350px;">  
+  <script type="text/fbml">  
+    <fb:connect-form action="http://www.example.com/post_invite.php">  </fb:connect-form>  
+  </script> 
+</fb:serverfbml>
+
+<script type="text/javascript">FB.init("c760cd23b5a0aacc18c4738b2528468d", "xd_receiver.html");</script>
+
+</body>
+</html>

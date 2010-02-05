@@ -5,15 +5,21 @@ class TestController {
     def facebookService;
 
     def check = {
-
-      def facebook = facebookService.getFacebookConnection(request, response,
-              "http://apps.facebook.com/momazam");
-      if (facebook == null) {
-
-        log.debug("connection is null");
-        return;
+		
+		log.debug("Session:" + session);
+		log.debug("Request:" + request);
+		log.debug("Reponse:" + response);
+		log.debug("SessionKey: " + params["fb_sig_session_key"])
+		
+	    facebookService.nextPage = "http://apps.facebook.com/momazam/app/test/check"
+		//request.request.requestURL doesn't fit
+	
+      if (facebookService.init(params, request, response)) {
+    	  return;
       }
-      def facebookId = facebook.users_getLoggedInUser(  );
+	
+      def facebookId = facebookService.getLoggedInUser();
+	
       log.debug("ID:" + facebookId);
 
       def friends = facebookService.getFriends(facebookId);
@@ -47,4 +53,32 @@ class TestController {
 
     render(text:"TestController");
   }
+  
+  def inviteText = {
+     // render(view:"invite", model:[]);
+    
+     //render(text:'<a href="http://apps.facebook.com/momazam/app/test/inviteFrame" target="_top">Invite</a>');
+      
+     //redirect(action:"inviteFrame");
+  }
+    
+  def invite = {
+      facebookService.nextPage = "http://apps.facebook.com/momazam/app/test/check"
+      if (facebookService.init(params, request, response)) {
+        return;
+      }
+      def facebookId = facebookService.getLoggedInUser();
+      def friends = facebookService.getFriends(facebookId);
+      def url = facebookService.inviteFriends(facebookId, friends)
+      log.debug("Redirect url:" + url);
+      render(text:'<a href="' + url + '" target="_top">Invite</a>');      
+  }
+      
+  
+  def debug = {
+      log.debug("Debug called");
+      render(text:"Welcome back");
+  }
+  
+  
 }
