@@ -15,6 +15,6 @@ class EventController {
     course.addToEvents(event)
     course.save()
     log.debug("Saved event: " + course.events);
-    redirect(controller:"menu", action:"agenda")
+    redirect(controller:"calendar", action:"index")
   }
 }

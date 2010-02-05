@@ -1,4 +1,4 @@
-<g:formRemote name="myForm" update="content"
+<g:form name="myForm" update="content"
   url="[action:'add', controller:'event']">
   <g:select name="courseId" from="${courses}" optionKey="id"
     optionValue="name" value="${courses[0]}" />
@@ -17,4 +17,4 @@
   <label for="duration">Duration</label>
   <input name="duration" type="text" />
   <input type="submit" value="Add" />
-</g:formRemote>
+</g:form>

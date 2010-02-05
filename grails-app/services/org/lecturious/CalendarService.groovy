@@ -5,14 +5,7 @@ import grails.util.GrailsNameUtils;
 class CalendarService {
   
   def days = [6,0,1,2,3,4,5]
-  
-  def calendar(user) {
-    def gregorian = new GregorianCalendar()
-    def year = gregorian.get(Calendar.YEAR)
-    def month = gregorian.get(Calendar.MONTH)
-    this.calendar(user, year, month)
-  }
-  
+
   def calendar(user, year, month){
     log.debug("Query calendar for user:" + user);
     def calendar = new GregorianCalendar(year, month, 1)
@@ -32,10 +25,7 @@ class CalendarService {
     }
     //    log.debug("LastMonth $lastMonth")
     
-    def thisMonth = (1..daysInMonth).collect{[
-                                              year: year, month: month, day:it, 
-                                              events:courseElements.events.findAll{it.day == it}, 
-                                              todos:courseElements.todos.findAll{it.day == it}] }
+    def thisMonth = (1..daysInMonth).collect{[day:it]}
     
     //    log.debug("ThisMonth $thisMonth")
     def nextMonth = [] 
@@ -76,12 +66,13 @@ class CalendarService {
     def inscriptions = Student.get(user).inscriptions;
     log.debug("Inscriptions: " + inscriptions); 
     def courses = inscriptions*.course
-    log.debug("Found courses:" + courses);
-    if (! courses?.isEmpty()) {
+    def toReturn = []
+    if (courses) {
+      log.debug("InFindByIf")
       def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
       def events = Event.findAllByCourseInListAndDateBetween(courses, from, to)
-      [todos:todos, events:events]
+      toReturn = [todos:todos, events:events]
     }
-    [todos:[], events:[]]
+    return toReturn
   }
 }
