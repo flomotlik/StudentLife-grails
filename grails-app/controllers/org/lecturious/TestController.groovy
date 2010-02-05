@@ -11,7 +11,7 @@ class TestController {
 		log.debug("Reponse:" + response);
 		log.debug("SessionKey: " + params["fb_sig_session_key"])
 		
-	    facebookService.nextPage = "http://apps.facebook.com/momazam/app/test/check"
+	    facebookService.nextPage = "http://apps.facebook.com/momazam"
 		//request.request.requestURL doesn't fit
 	
       if (facebookService.init(params, request, response)) {
@@ -28,7 +28,7 @@ class TestController {
         //log.debug("ID: " + it);
       }
 
-      def myInfo = facebookService.getStudentInfos([facebookId]).get(0);
+      def myInfo = facebookService.getStudentInfos([facebookId])[(String)facebookId];
 
       log.debug("MyInfo:" + myInfo);
 
@@ -40,12 +40,13 @@ class TestController {
 
       def friendInfos = [];
       friends.each{
-        friendInfos += [id:it, name:infos[it].name, image:infos[it].image]
+        String key = it; // must be String
+        friendInfos += [id:key, name:infos[key].name, image:infos[key].image]
       }
 
       log.debug("friends:" + friendInfos);
       render(view:"/test/index",
-              model:[my:[id:facebookId, name:"", image:""], friends:friendInfos])
+              model:[my:[id:facebookId, name:myInfo.name, image:myInfo.image], friends:friendInfos])
 
     }
 

@@ -62,6 +62,7 @@ class FacebookService implements Serializable, InitializingBean {
 			log.debug("Login required");
 			return true;
 	  }
+      /*
 	  try {
 		facebook.users_getLoggedInUser()
 	  }
@@ -75,6 +76,7 @@ class FacebookService implements Serializable, InitializingBean {
 			log.debug("Next session problem: ", e);
 		}
 	  }
+	  */
 	  return false;
   }
   
@@ -86,12 +88,13 @@ class FacebookService implements Serializable, InitializingBean {
     log.debug(studentIds)
     def userInfo = [:]
     if(studentIds){
-      def fbInfo = facebook.users_getInfo(studentIds, [ProfileField.PIC_SQUARE, ProfileField.NAME, ProfileField.FIRST_NAME, ProfileField.LAST_NAME, ProfileField.UID])
+      def fbInfo = facebook.users_getInfo(studentIds, [ProfileField.PROFILE_URL, ProfileField.PIC_SQUARE, ProfileField.NAME, ProfileField.UID])
       log.debug("FBInfo: $fbInfo")
       def length = fbInfo.length();
       for(int i = 0; i < length ; i++) {
         def it = fbInfo.get(i);
-        userInfo[it.uid] = [id:it.uid, name:it.name,image:it.pic_square]
+        String id = it.uid 
+        userInfo[(id)] = [id:id, name:it.name,image:it.pic_square, url:it.profile_url]
       }
     }
     log.debug("Return: " + userInfo)

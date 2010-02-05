@@ -10,4 +10,8 @@ class Message {
 	
 	static belongsTo = [course:Course]
   
+	static mapping = {
+		sort 'dateCreated'
+    }
+    
 }

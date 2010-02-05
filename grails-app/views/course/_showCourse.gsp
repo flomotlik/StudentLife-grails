@@ -1,4 +1,5 @@
-<div id="showCourse"><g:if test="${course}">
+<div id="showCourse">
+<g:if test="${course}">
   <g:formRemote name="addMessage" update="showCourse"
     url="[action:'add', controller:'message']">
     <input name="id" type="hidden" value="${course?.id}" />
@@ -9,8 +10,8 @@
 <ul>
   <g:each in="${course?.messages}" var="message">
     <li>
-      ${userInfo[message.user.facebookId].image}
-      ${userInfo[message.user.facebookId].name}
+      ${userInfo[message.student.facebookId]?.image}
+      ${userInfo[message.student.facebookId]?.name}
       ${message.message}
       ${message.dateCreated}
     </li>

@@ -32,13 +32,27 @@ fixture {
   city(org.lecturious.City){ name = "City" }
   state(org.lecturious.State, name:"Vienna")
   country(org.lecturious.Country){ name = "Country" }
+  
   user(org.lecturious.Student){
-    facebookId = "1062883815"
-    name = "Name"
+    facebookId = "715095657"
+    name = "Fredrik Debong"
     universities = [uni]
   }
   user2(org.lecturious.Student){
-    facebookId = "user2"
-    name = "Second"
+    facebookId = "777618108"
+    name = "Michael Greifeneder"
+    universities = [uni]
   }
+  user3(org.lecturious.Student){
+    facebookId = "1062883815"
+    name = "Florian Motlik"
+    universities = [uni]
+  }
+  
+  user4(org.lecturious.Student){
+    facebookId = "100000202563861"
+    name = "Manuel Weiss"
+    universities = [uni]
+  }
+  
 }

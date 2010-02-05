@@ -47,10 +47,20 @@ class ApplicationController {
           break
         case "test":
         case "production":
-          def facebook = facebookService.getFacebookConnection(request, response)
+          facebookService.init(params, request, response)
 
-          def facebookId = facebook.users_getLoggedInUser();
-          def username = facebook.users_getInfo([facebookId], ["name"]).get(0).name
+          String facebookId = facebookService.getLoggedInUser()
+          
+          def allUserInfo = facebookService.getStudentInfos([facebookId]);
+          
+          log.debug("AllUserInfo: " + allUserInfo);
+          
+          def userInfo = allUserInfo.get(facebookId);
+          
+          log.debug("userInfo: " + userInfo);
+          
+          def username = userInfo.name
+          
 
           def user = Student.findByFacebookId(facebookId)?.id
           if (!user) {
@@ -81,7 +91,8 @@ class ApplicationController {
   }
 
   def load = {
-    if (grails.util.GrailsUtil.environment == "development") {
+    def env = grails.util.GrailsUtil.environment;
+    if ( env == "development" || env == "test") {
       session.user = null
       Student.list()*.delete()
       Country.list()*.delete()

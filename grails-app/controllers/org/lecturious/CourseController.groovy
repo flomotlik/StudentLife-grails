@@ -61,6 +61,6 @@ class CourseController {
     colleagues -= user
     log.debug("Users: $colleagues")
     def userInfo = facebookService.getStudentInfos(course.messages.student*.facebookId);
-    [course:Course.get(params.id), colleagues:colleagues, userInfo:userInfo]
+    [course:Course.get(params.id), colleagues:colleagues, userInfo:userInfo, params:params]
     }
 }
