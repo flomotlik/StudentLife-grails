@@ -9,17 +9,17 @@ class CourseController {
 
   def facebookService
 
-  def add = {
+  def save = {
+
     def course = new Course(params)
     def university = University.get(params.university)
     university.addToCourses(course)
     university.save()
-    redirect(controller:"menu", action:"settings")
+    redirect(controller:"settings", action:"index")
   }
 
-  def renderAdd = {
-	def list = listUniversities();
-    render(template:"/course/add", model:[universities:list])
+  def add = {
+    [universities:listUniversities()]
   }
 
   def search = {
@@ -36,7 +36,7 @@ class CourseController {
       else {
         qString = "%" + qString + "%" 
 	  }
-      def courses = Course.findAllByUniversityInListAndNameIlike(user.universities, qString);
+      def courses = Course.findAllByUniversityInListAndNameIlike(user.universities, qString, [max:15]);
       log.debug(courses)
       render (template:"/settings/searchResults", model:[courses:courses])
     }else{
@@ -60,10 +60,7 @@ class CourseController {
     def colleagues = Inscription.findAllByCourse(course)*.user
     colleagues -= user
     log.debug("Users: $colleagues")
-
     def userInfo = facebookService.getStudentInfos(course.messages.student*.facebookId);
-    def model = [course:Course.get(params.id), colleagues:colleagues, userInfo:userInfo]
-    log.debug("Model: $model")
-    render (template:"show", model:model)
-  }
+    [course:Course.get(params.id), colleagues:colleagues, userInfo:userInfo]
+    }
 }

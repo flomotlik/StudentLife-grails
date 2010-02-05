@@ -8,6 +8,11 @@
 	width: 565px;
 }
 
+table{
+    width:350px;
+    height:300px;
+}
+
 .todo {
 	background-color: blue;
 }

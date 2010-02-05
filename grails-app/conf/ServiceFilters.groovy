@@ -5,13 +5,12 @@ class ServiceFilters {
   def filters = {
     facebook(uri: "/**") {
       before = {
-        log.debug("Filtering: ${request.forwardURI}")
+        log.debug("Filtering: ${request.forwardURI} - User: $session.user")
         if(grails.util.GrailsUtil.environment == "development"){
             return;
         }
         if (!okController.contains(controllerName) && session.user == null) {
-          log.debug("Session.user == null for $request.forwardURI")
-          response.sendError(403)
+          redirect(controller:"application", action:"index")
           return false
         }
       }

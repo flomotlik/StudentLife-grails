@@ -1,25 +1,24 @@
-<div class="calendar">
-  <div class="calendar_row">
-    <div class="calendar_item">Mon.</div>
-    <div class="calendar_item">Tue.</div>
-    <div class="calendar_item">Wed.</div>
-    <div class="calendar_item">Thu.</div>
-    <div class="calendar_item">Fri.</div>
-    <div class="calendar_item">Sat.</div>
-    <div class="calendar_item">Sun.</div>
-  </div>
+<table>
+  <tr>
+    <th>Mon.</th>
+    <th>Tue.</th>
+    <th>Wed.</th>
+    <th>Thu.</th>
+    <th>Fri.</th>
+    <th>Sat.</th>
+    <th>Sun.</th>
+  </tr>
   <g:each in="${rows}" var="row">
-    <div class="calendar_row">
+    <tr>
       <g:each in="${row}" var="item">
-      	<div class="calendar_item ci${rows.size()}">
-      	<sl:calendarItem item="${item}" year="${year}" month="${month}"/>
-      	</div>
+        <td class="${item.type}"><g:remoteLink
+          controller="calendar" action="courseElements"
+          params="[year:year, month:month, day:item.day]"
+          update="courseElements">${item.day}</g:remoteLink></td>
       </g:each>
-    </div>
+    </tr>
   </g:each>
-</div>
-<div class="calendar_links">
-
+</table>
 <g:remoteLink controller="calendar" action="calendar"
   params="[year:(month == 0 ?year - 1 : year), month:(month == 0? 11 : month - 1)]"
   update="calendar">Before</g:remoteLink>
@@ -27,5 +26,3 @@
   params="[year:(month == 11 ?year + 1 : year), month:(month == 11? 0 : month + 1)]"
   update="calendar">Next</g:remoteLink>
 <p>${year} - ${month + 1}</p>
-</div>
-  
