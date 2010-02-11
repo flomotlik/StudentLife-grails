@@ -13,7 +13,7 @@
       <g:each in="${row}" var="item">
         <td class="${item.type}"><g:remoteLink
           controller="calendar" action="courseElements"
-          params="[year:year, month:month, day:item.day]"
+          params="[date_year:year, date_month:month + 1, date_day:item.day]"
           update="courseElements">${item.day}</g:remoteLink></td>
       </g:each>
     </tr>
