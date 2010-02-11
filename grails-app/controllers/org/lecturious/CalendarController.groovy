@@ -15,7 +15,11 @@ class CalendarController {
 
   def courseElements = {HasDateCommand cmd ->
     if (cmd.validate()) {
-      def between = [cmd.date, cmd.date + 1]
+      //Only events from the same day should be loaded. Because of this we add one day to the given date
+      // and subtract 1 from the milliseconds of the date. It therefore has to be on the day before
+      def to = new Date((cmd.date + 1).time - 1)
+      def between = [cmd.date, to]
+      println between
       log.debug(between)
       def model = calendarService.courseElements(session.user, * between)
       def calendar = new GregorianCalendar()

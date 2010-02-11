@@ -19,17 +19,55 @@ class CalendarControllerTests extends StudentLifeControllerTest {
   }
 
   void testCourseElements() {
-    def user = createUser()
     def calendar = new GregorianCalendar(2010, 0, 1)
+    def calendarForEvents = new GregorianCalendar(2010, 0, 1, 10, 10).time
+    def user = createUser()
+    def course = createCourse()
+    user.addToInscriptions(course: course)
+    assert user.save()
+    course.addToEvents(description: "Desc", date: calendarForEvents, duration: 5)
+    course.addToTodos(description: "Desc", date: calendarForEvents)
+    assert course.save()
     mockParams.date_year = calendar.get(Calendar.YEAR)
     mockParams.date_month = calendar.get(Calendar.MONTH)
     mockParams.date_day = calendar.get(Calendar.DAY_OF_MONTH)
     mockSession.user = user.id
     controller.calendarService = new CalendarService()
-    controller.courseElements(new HasDateCommand(date:calendar.time))
+    controller.courseElements(new HasDateCommand(date: calendar.time))
+    def model = renderArgs.model
     assert renderArgs.template == "/calendar/courseElements"
-    assert renderArgs.model.year == 2010
-    assert renderArgs.model.month == 1
-    assert renderArgs.model.day == 1
+    assert model.year == 2010
+    assert model.month == 1
+    assert model.day == 1
+    def todos = model.todos
+    def events = model.events
+    assert todos.size() == 1
+    assert events.size() == 1
+    assert todos*.description == ["Desc"]
+    assert events*.description == ["Desc"]
+    assert todos*.date == [calendarForEvents]
+    assert events*.date == [calendarForEvents]
+  }
+
+  void testCourseElementsOnlySameDay() {
+    //Dates or events that are at 0.0 shouldn't be shown on last day
+    def calendarForEvents = new GregorianCalendar(2010, 1, 2, 0, 0).time
+    def user = createUser()
+    def course = createCourse()
+    user.addToInscriptions (course:course)
+    def desc = "Description"
+    mockSession.user = user.id
+    mockLogging CalendarController
+    course.addToEvents(description: desc, duration: 2, date: calendarForEvents)
+    course.addToTodos(description: desc, date: calendarForEvents)
+    assert course.save()
+    println (course.events*.date)
+    println (course.todos*.date)
+    controller.calendarService = new CalendarService()
+    controller.courseElements(new HasDateCommand(date: calendarForEvents - 1))
+    def model = renderArgs.model
+    println model
+    assert model.events.size() == 0
+    assert model.todos.size() == 0
   }
 }
