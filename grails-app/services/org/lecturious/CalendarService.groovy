@@ -63,10 +63,12 @@ class CalendarService {
   def courseElements(user, from, to){
     log.debug("From: $from")
     log.debug("To: $to")
-    def inscriptions = Student.get(user).inscriptions;
+    def student = Student.get(user)
+    assert student
+    def inscriptions = student.inscriptions;
     log.debug("Inscriptions: " + inscriptions); 
     def courses = inscriptions*.course
-    def toReturn = []
+    def toReturn = [:]
     if (courses) {
       log.debug("InFindByIf")
       def todos = Todo.findAllByCourseInListAndDateBetween(courses, from, to)
