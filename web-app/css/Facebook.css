@@ -1,0 +1,115 @@
+/* 
+    Document   : Facebook.css
+    Created on : 02.02.2010, 12:06:34
+    Author     : FD
+    Description:
+        The main stylesheet for the facebook application.
+*/
+
+/* Default Facebook CSS */
+.fbbody
+{
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+
+/* Default Anchor Style */
+.fbbody a
+{
+    color: #3b5998;
+    outline-style: none;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+}
+.fbbody a:hover
+{
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5
+{
+    font-size:13px;
+    color:#333;
+    margin:0px;
+    padding:0px;
+    display: inline;
+}
+
+h1
+{
+    font-size:14px;
+}
+
+h4, h5
+{
+    font-size:11px;
+}
+
+.Button {
+    padding: 0px;
+    margin-left: 5px;
+
+    background-color: #5B74A8;
+    background-position: 0px -48px;
+    border-color: #29447E #294;
+
+    border-style: solid;
+    border-width: 1px;
+    display: inline-block;
+    outline: none;
+    padding: 3px 6px;
+    vertical-align: bottom;
+
+    color: white;
+}
+
+.clearfix {
+    display: block;
+}
+
+textarea {
+    border: 1px solid #BDC7D8;
+    font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+    font-size: 11px;
+    padding: 3px;
+}
+
+.arrow_down {
+    background-image: url(http://static.ak.fbcdn.net/rsrc.php/z3YC8/hash/74mnzfmd.png);
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: 0px -1773px;
+    height: 5px;
+    width: 9px;
+}
+
+.lightblue_box {
+    display: block;
+    background-color: #EDEFF4;
+    border: 1px solid #D8DFEA;
+    padding: 5px;
+    width: 100%;
+    height: 27px;
+    position: relative;
+}
+
+.uiSideNav{clear:left;font-size:11px;padding-left:0}
+.uiSideNav ul{display:none;padding:0}
+.uiSideNav li{display:block;left:-8px;_left:0;overflow:visible;padding-left:8px;_padding-left:0;position:relative;_margin-left:-8px;width:140px;_width:187px;z-index:2}
+.uiSideNav .item {color:#333;display:block;font-size:11px;border-bottom:1px solid #fff;padding:3px 4px 4px 8px;position:relative;text-decoration:none;}
+.uisideNav ul{padding-bottom:4px}
+.uiSideNav .item:hover,
+.uiSideNav .subitem:hover{background:#eff2f7;text-decoration:none}
+.uiSideNav .selected .item,
+.uiSideNav .selected .item:hover{background:#d8dfea;font-weight:bold}
+.uiSideNav .loading ul .count,
+.uiSideNav .count{color:#808080;padding-left:3px}
+
+.uiSideNav .loadingIndicator{background:url(http://www.facebook.com/rsrc.php/zBS5C/hash/7hwy7at6.gif) no-repeat 0 0;display:none;height:11px;position:absolute;right:0px;top:5px;width:16px}
+.uiSideNav .selected.loadingIndicator{right:5px}
+.loading ul .loadingIndicator{display:block}
+.loading .loadingIndicator{display:block}
+.uiSideNav ul li.loading .loadingIndicator{top:5px}
+.uiSideNav li.loading {background-color:transparent}

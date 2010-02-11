@@ -1,0 +1,297 @@
+/* 
+    Document   : wall
+    Created on : 02.02.2010, 12:28:13
+    Author     : FD
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* basics */
+html, body {
+    height: 100%;
+    width: 716px;
+    font-family: "lucida grande" ,tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+    color: #333333;
+    margin: 0px;
+    padding: 0px;
+}
+
+#header {
+    width: 716px;
+    height: 50px;
+    display: block;
+    clear: both;
+    border-bottom: 1px solid #B3B3B3;
+    padding: 0px 0px 0px 2px;
+}
+
+#wallmenu {
+    display: block;
+    position: relative;
+    left: 15px;
+    top: 35px;
+}
+
+#logo {
+    display: block;
+    position:relative;
+    right:0px;
+    top: 0px;
+    float:right;
+    clear: right;
+}
+
+#contents {
+    float: left;
+    width: 716px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    height: 100%;
+}
+
+#leftCol {
+    clear: left;
+    border-right: 1px solid #B3B3B3;
+    float: left;
+    padding: 10px 0px 0px 0px;
+    width: 140px;
+    height: 100%;
+}
+
+#middle {
+    position: relative;
+    float: left;
+    padding: 10px 14px 0px 14px;
+    width: 406px;
+}
+
+#rightCol {
+    padding: 10px 0px 0px 0px;
+    border-left: 1px solid #B3B3B3;
+    float: left;
+    width: 135px;
+    height: 100%;
+}
+
+.copyright {
+    color: gray;
+    position: absolute;
+    left: 1px;
+    bottom: 0px;
+}
+
+.hidden {
+    display: none;
+}
+
+.stream_header {
+    display: block;
+    position: static;
+    height: 25px;
+    min-height: 24px;
+    width: auto;
+    margin: 0px 0px 8px 0px;
+    padding: 0px;
+    border-bottom: 1px solid #CCC;
+}
+
+.stream_header_content {
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    height: 21px;
+    line-height: 20px;
+    width: auto;
+}
+
+.wallpost {
+    border-top: 1px solid #EEE;
+    height: auto;
+    width: auto;
+    min-height: 52px;
+    padding-left: 60px;
+    padding-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 14px;
+    position: relative;
+}
+
+.wallpost_name {
+    font-size: 13px;
+}
+
+.wallpost_message {
+    color: #333;
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0px;
+    overflow: hidden;
+    padding: 0px;
+    width: 100%;
+    position: static;
+}
+
+.wallpost_data {
+    color: gray;
+    display: inline;
+}
+
+.wall-portrait {
+    color: #3B5998;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    left: 0px;
+    position: absolute;
+    text-decoration: none;
+    float: left;
+}
+
+.Composer {
+    border-bottom: 0px;
+    margin-bottom: 8px;
+    position: static;
+    width: 100%;
+    min-height: 30px;
+}
+
+.Composer_Content {
+    padding: 0px 7px;
+    position: static;
+}
+
+.Composer_TextArea {
+    border: none;
+    font-size: 13px;
+    min-height: 21px;
+    margin: 0px;
+    outline: none;
+    overflow: hidden;
+    padding: 0px;
+    vertical-align: bottom;
+    width: 100%;
+}
+
+.Composer_InputArea {
+    background: white;
+    position: static;
+    border: 1px solid #AEAEAE;
+    border-top-color: #AEAEAE;
+}
+
+.Composer_InputShadow {
+    border-top: 1px solid #E8E8E8;
+    padding: 2px 5px 3px;
+    position: static;
+}
+
+.Composer_TextArea {
+    border: none;
+    font-size: 13px;
+    height: 21px;
+    margin: 0px;
+    outline: none;
+    overflow: hidden;
+    padding: 0px;
+    resize: none;
+    vertical-align: bottom;
+}
+
+.Composer_ButtonArea {
+    height: 24px;
+    margin-bottom: 0px;
+    padding-top: 7px;
+    position: static;
+}
+
+.stream {
+    position: static;
+}
+
+.pagerbox_inner {
+    display: block;
+    margin: 5px 10px;
+    overflow: hidden;
+    width: 200px;
+    width: auto;
+}
+
+.pager_more_link {
+    float: left;
+    padding-right: 5px;
+}
+
+.pagerloader {
+    margin: 1px 15px 0px 25px;
+    position: static;
+}
+
+#pagerbox {
+    background-color: #EDEFF4;
+    border: 1px solid #D8DFEA;
+    width: 390px;
+    padding: 5px;
+    width: 100%;
+    height: 27px;
+    position: relative;   
+}
+
+.rightcontainer {
+    position: relative;
+    width: 126px;
+    height: 240px;
+    padding-left: 8px;
+}
+
+#friends {
+    border-bottom: 1px solid  #B3B3B3;
+    margin-bottom: 10px;
+}
+
+.connectionContainer {
+    display: block;
+    color: #3B5998;
+    height: 60px;
+    width: 50px;
+    left: 0px;
+    float: left;
+    position: static;
+    overflow: hidden;
+    text-decoration: none;
+    text-align: center;
+    padding: 0px 10px 5px 0px;
+}
+
+.connectionContainer .portrait {
+    color: #3B5998;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    left: 0px;
+    float: left;
+    position: static;
+    text-decoration: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.connectionContainer .fname {
+    color: gray;
+    font-weight: normal;
+    font-size: 9px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.more {
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    padding-top: 5px;
+    margin-left: 8px;
+    float: left;
+    padding-right: 5px;
+}
