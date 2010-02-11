@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>StudentLife - Wall</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="css/wall.css" />
+        <link rel="stylesheet" type="text/css" href="css/Facebook.css"/>
+
+        <script type="text/javascript" src="/studentlife/js/prototype/prototype.js"></script>
+
+        <script type="text/javascript">
+            /*
+             * Uservoice feedback script
+             */
+
+            var uservoiceOptions = {
+                /* required */
+                key: 'studentlife',
+                host: 'studentlife.uservoice.com',
+                forum: '38267',
+                showTab: true,
+                /* optional */
+                alignment: 'left',
+                background_color:'#f00',
+                text_color: 'white',
+                hover_color: '#06C',
+                lang: 'en'
+            };
+
+            function _loadUserVoice() {
+                var s = document.createElement('script');
+                s.setAttribute('type', 'text/javascript');
+                s.setAttribute('src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
+                document.getElementsByTagName('head')[0].appendChild(s);
+            }
+            _loadSuper = window.onload;
+            window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); };
+        </script>
+
+        <script type="text/javascript">
+            /*
+             * Used for form
+             */
+            function checkForm() {
+                if($('composer_input').value=="") {
+                    return true;
+                }
+                
+                return false;
+            }
+            function showButtons(){
+                var d = $('composer_buttons');
+                d.show().removeClassName('hidden');
+            }
+
+            function hideButtons(){
+                if(checkForm()) {
+                    var d = $('composer_buttons');
+                    d.hide().addClassName('hidden');
+                }
+            }
+
+            function showLoader(){
+                var d = $('pagerloader');
+                d.show().removeClassName('hidden');
+                alert("Need to remove this upon receiving json");
+            }
+
+            function hideLoader(){
+                var d = $('pagerloader');
+                d.hide().addClassName('hidden');
+            }
+        </script>
+
+        <script type="text/javascript">
+            /*
+             * used for navigation
+             */
+            var s = 'navigation_item_';
+            var navItems = [s + 'all', s + 'mathe1', s + 'mathe2'];
+            var navActive = s + 'all';
+
+            function setActivation(activeItem) {
+                //trigger ajax get of new content for stream
+                if(activeItem != navActive) {
+                    $(navActive).removeClassName('selected');
+                    
+                    navActive = activeItem;
+                    $(navActive).addClassName('loading');
+                    // upon receiving data, remove loading
+                    // $(navActive).removeClassName('loading');
+                    $(navActive).addClassName('selected');
+                } else {
+                    $(navActive).addClassName('loading');
+                    // upon receiving data, remove loading
+                    // $(navActive).removeClassName('loading');
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="fbbody">
+            <div id="header">
+                <div id="wallmenu">
+                    <a href="javascript:void(null)">Agenda</a> | <a href="javascript:void(null)">Courses</a>
+                </div>
+                <img id="logo" src="/studentlife/images/logo.png" alt="Student Life logo">
+            </div>
+
+            <div id="contents">
+
+                <div id="leftCol" class="clearfix">
+                    <h2>Filter</h2>
+                    <ul class="uiSideNav" id="sidenav">
+                        <li class="selected" id="navigation_item_all">
+                            <a class="item" href="javascript:void(null);" onClick="setActivation('navigation_item_all');">
+                                <span>All Messages</span>
+                                <span class="count hidden">(<span class="countValue">0</span>)</span>
+                            </a>
+                            <span class="loadingIndicator"></span>
+                        </li>
+                        <li id="navigation_item_math1">
+                            <a class="item" href="javascript:void(null)" onClick="setActivation('navigation_item_math1');">
+                                <span>Mathe 1</span>
+                                <span class="count hidden">(<span class="countValue">0</span>)</span>
+                            </a>
+                            <span class="loadingIndicator"></span>
+                        </li>
+                        <li id="navigation_item_math2">
+                            <a class="item" href="javascript:void(null)" onClick="setActivation('navigation_item_math2');">
+                                <span>Mathematik 2 für Informatiker</span>
+                                <span class="count hidden">(<span class="countValue">0</span>)</span>
+                            </a>
+                            <span class="loadingIndicator"></span>
+                        </li>
+                    </ul>
+                    <a href="javascript:void(null);" class="addLink">+ Add Courses</a>
+                    <span class="copyright">&copy; 2009-2010 StudentLife</span>
+                </div>
+
+                <div id="middle" class="clearfix">
+
+                    <!-- Wall header -->
+                    <div class="stream_header clearfix">
+                        <span class="stream_header_content">
+                            News
+                        </span>
+                    </div>
+                    <!-- /Wall header -->
+
+                    <!-- Composer -->
+                    <div id="composer" class="Composer clearfix"">
+                         <form action="javascript:void(null);">
+                         <div class="Composer_Content">
+                            <div class="Composer_InputArea_Base Composer_InputArea clearfix">
+                                <div class="Composer_InputShadow">
+                                    <textarea id="composer_input" onfocus="showButtons();" onblur="hideButtons();" class="Composer_TextArea" name="status" title="What's new?" placeholder="What's new?"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="composer_buttons" class="Composer_ButtonArea hidden">
+                            <span style="float: right;">
+                                <span>
+                                    <input value="Share" type="submit" class="Button" onclick="return checkForm();">
+                                </span>
+                            </span>
+                        </div>
+                        </form>
+                    </div>
+                    <!-- /composer -->
+
+                    <!-- stream -->
+                    <div class="stream clearfix">
+                        <div class="wallpost clearfix" style="height: auto">
+                            <a href="http://www.facebook.com/{$authorname}">
+                                <img src="http://profile.ak.fbcdn.net/v22940/1945/9/q631845595_5640.jpg" alt="{$authorname}" class="wall-portrait">
+                            </a>
+                            <div class="wallpost_message clearfix">
+                                <h3>
+                                    <a href="http://www.facebook.com/{$authourfacebookaddress}" class="wallpost_name" target="_blank"><span class="wallpost_name">Author Name</span></a>
+                                </h3>Body!
+                            </div>
+                            <span class="wallpost_data">
+                                <abbr class="timestamp" title="Wed, 03 Feb 2010 02:34:33 -0800">21 minutes ago</abbr>
+                            </span>
+                        </div>
+
+                        <div class="wallpost clearfix" style="height: auto">
+                            <a href="http://www.facebook.com/{$authorname}">
+                                <img src="http://profile.ak.fbcdn.net/profile6/1172/93/q1640224880_7479.jpg" alt="{$authorname}" class="wall-portrait">
+                            </a>
+                            <div class="wallpost_message">
+                                <h3>
+                                    <a href="http://www.facebook.com/{$authourfacebookaddress}" class="wallpost_name" target="_blank"><span class="wallpost_name">Author Name</span></a>
+                                </h3> This is where the message body goes! And if it is longer than one line then this happens. And if it is longer than two line then this happens. And if it is longer than three line then this happens. And if it is longer than one line then this happens. And if it is longer than two line then this happens. And if it is longer than three line then this happens.
+                            </div>
+                            <span class="wallpost_data">
+                                <abbr class="timestamp" title="Wed, 03 Feb 2010 02:34:33 -0800">45 minutes ago</abbr>
+                            </span>
+                        </div>
+
+                        <div class="wallpost clearfix" style="height: auto">
+                            <a href="http://www.facebook.com/{$authorname}">
+                                <img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="wall-portrait">
+                            </a>
+                            <div class="wallpost_message">
+                                <h3>
+                                    <a href="http://www.facebook.com/{$authourfacebookaddress}" class="wallpost_name" target="_blank"><span class="wallpost_name">Author Name</span></a>
+                                </h3> This is where the message body goes! And if it is longer than one line then this happens. And if it is longer than two line then this happens. And if it is longer than three line then this happens.
+                            </div>
+                            <span class="wallpost_data">
+                                <abbr class="timestamp" title="Wed, 03 Feb 2010 02:34:33 -0800">2 hours ago</abbr>
+                            </span>
+                        </div>
+                    </div> <!-- /stream -->
+
+                    <!-- Pager -->
+                    <div id="pagerbox">
+                        <div class="pagerbox_inner">
+                            <a href="javascript:void(null);" class="pager_more_link" onclick="showLoader();">Older Posts <i class="arrow_down"></i></a>
+                            <img src="http://static.ak.fbcdn.net/rsrc.php/zBS5C/hash/7hwy7at6.gif" id="pagerloader" class="pagerloader hidden" style="height:11px;width:16px;" alt="loading">
+                        </div>
+                    </div> <!-- /pager -->
+                </div> <!-- /middle -->
+
+                <div id="rightCol" class="clearfix">
+                    <div id="friends" class="rightcontainer">
+                        <h3>Friends</h3><br/><br/>
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+
+                        <div class="more">
+                            <a href="javascript:void(null);" class="morelink">More</a>
+                        </div>
+                    </div>
+
+                    <div id="colleagues" class="rightcontainer"><h3>Colleagues</h3><br/><br/>
+                        <div class="connectionContainer">
+                            <a href="javascript:void(null);"><img src="http://profile.ak.fbcdn.net/v22943/134/3/q1311198820_5177.jpg" alt="{$authorname}" class="portrait"><br/><span class="fname">Name</span></a>
+                        </div>
+
+
+                        <div class="more">
+                            <a href="javascript:void(null);" class="morelink">More</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
