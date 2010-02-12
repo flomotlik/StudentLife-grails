@@ -21,3 +21,4 @@ test/reports
 stacktrace.log
 facebook.groovy
 *.ser
+database
