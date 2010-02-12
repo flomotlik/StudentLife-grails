@@ -1,7 +1,5 @@
 package org.lecturious
 
-import grails.util.GrailsUtil
-
 class CalendarController {
 
   def calendarService
@@ -10,7 +8,13 @@ class CalendarController {
     //Returning current year and month so include tag in index can call calendar action of this controller
     //with correct year and month
     def gregorian = new GregorianCalendar()
-    [year: gregorian.get(Calendar.YEAR), month: gregorian.get(Calendar.MONTH)]
+    def student = Student.get(session.user)
+    assert student
+    def courses = student.inscriptions*.course
+    def requestParams = [sort: "date", order: "asc", max: 5]
+    def events = Event.findAllByCourseInListAndDateGreaterThan(courses, new Date(), requestParams)
+    def todos = Todo.findAllByCourseInListAndDateGreaterThan(courses, new Date(), requestParams)
+    [year: gregorian.get(Calendar.YEAR), month: gregorian.get(Calendar.MONTH), events: events, todos: todos]
   }
 
   def courseElements = {HasDateCommand cmd ->
