@@ -28,6 +28,22 @@ fixture {
     description = "todo3"
     date = new Date()-31
   }
+  todo5(org.lecturious.Todo){
+    description = "todo5"
+    date = new Date()+1
+  }
+  todo6(org.lecturious.Todo){
+    description = "todo6"
+    date = new Date()+2
+  }
+  todo7(org.lecturious.Todo){
+    description = "todo7"
+    date = new Date()+3
+  }
+  todo8(org.lecturious.Todo){
+    description = "todo7"
+    date = new Date()+4
+  }
   event1(org.lecturious.Event){
     description = "event1"
     date = new Date()

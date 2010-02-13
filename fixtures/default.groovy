@@ -1,6 +1,6 @@
 fixture {
   course(org.lecturious.Course){
-    name="Course1" 
+    name="Mathematik 1" 
     professor="Professor"
     identificator="Identificator"
     type="Type"
