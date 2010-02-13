@@ -5,7 +5,6 @@
 </title>
 
 <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'studentlife.css')}" />
-<link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'calendar.css')}" />
   <g:layoutHead/>
 <g:javascript library="prototype" />
 </head>
