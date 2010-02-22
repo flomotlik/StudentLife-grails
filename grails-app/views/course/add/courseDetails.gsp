@@ -15,7 +15,7 @@
   <input id="identificator" name="identificator" type="text"/>
   <label for="type">Type</label>
   <input id="type" name="type" type="text"/>
-  <input type="submit" value="Add"/>
+  <input type="submit" value="Add" name="dates"/>
 </g:form>
 </body>
 </html>
