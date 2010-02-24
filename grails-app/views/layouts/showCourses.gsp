@@ -3,7 +3,7 @@
 </head>
 <body>
 <g:applyLayout name="main">
-  <g:render template="/user/showCourses" model="['courses':courses]"/>
+  <g:include controller="user" action="showCourses" />
   <div id="subcontent">
     <g:layoutBody/>
     <div id="ad">

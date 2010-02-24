@@ -3,9 +3,12 @@ package org.lecturious
 import grails.converters.JSON
 
 class UserController {
-
-  def workflowService
-
+  
+  def showCourses = {
+    def courses = Student.get(session.user).inscriptions*.course.sort{it.name}
+    [courses:courses]
+  }
+  
   def joinUniversity = {
     def universityId = params.university
     if (universityId && session.user && University.exists(universityId)) {
