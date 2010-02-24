@@ -1,6 +1,6 @@
 package org.lecturious
 
-class Event {
+class Event implements Serializable {
   
   String description
   

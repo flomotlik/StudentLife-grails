@@ -1,6 +1,6 @@
 package org.lecturious
 
-class Course {
+class Course implements Serializable{
   
   String name
   

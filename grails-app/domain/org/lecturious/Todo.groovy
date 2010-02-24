@@ -1,6 +1,6 @@
 package org.lecturious
 
-class Todo{
+class Todo implements Serializable{
   String description
   
   //Date stored in UTC
