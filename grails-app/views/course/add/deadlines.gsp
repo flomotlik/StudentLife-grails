@@ -10,8 +10,7 @@
   <label for="description">Description</label>
   <g:textField name="description"/>
   <g:submitButton name="add" value="Add Deadline"/>
-  <g:submitButton name="save" value="Save"/>
-  <g:submitButton name="cancel" value="Cancel"/>
+  <g:render template="add/buttons" model="[next:'Save']"/>
 </g:form>
 <table>
   <tr>

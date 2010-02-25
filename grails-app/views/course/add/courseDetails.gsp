@@ -5,18 +5,17 @@
 </head>
 <body>
 <g:form name="addCourse" action="add">
-  <g:select name="university" from="${universities?.sort{it.name}}" optionKey="id"
-          optionValue="name" value="${universities?.getAt(0)}"/>
+  <g:select name="university" from="${universities}" optionKey="id"
+          optionValue="name" value="${university?.id}"/>
   <label for="name">Name</label>
-  <input id="name" name="name" type="text"/>
+  <input id="name" name="name" type="text" value="${course?.name}"/>
   <label for="professor">Professor</label>
-  <input id="professor" name="professor" type="text"/>
+  <input id="professor" name="professor" type="text" value="${course?.professor}"/>
   <label for="identificator">Identificator</label>
-  <input id="identificator" name="identificator" type="text"/>
+  <input id="identificator" name="identificator" type="text" value="${course?.identificator}"/>
   <label for="type">Type</label>
-  <input id="type" name="type" type="text"/>
-  <g:submitButton name="dates" value="Dates"/>
-  <g:submitButton name="cancel" value="Cancel"/>
+  <input id="type" name="type" type="text" value="${course?.type}"/>
+  <g:render template="add/buttons"/>
 </g:form>
 </body>
 </html>

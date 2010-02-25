@@ -1,3 +1,4 @@
+
 package org.lecturious
 
 import grails.converters.JSON
@@ -10,24 +11,24 @@ class CourseController {
     initialize{
       action{
         log.debug("Action")
-        [universities:Student.get(session.user).universities.toList()]        
+        def universities = Student.get(session.user).universities.toList().sort{it.name}
+        [universities:universities]
       }
       on("success").to "courseDetails"
     }
-    cancel{
+    redirect{
       redirect(controller:"settings", action:"index") 
     }
     courseDetails{
-      on("dates"){
+      on("next"){
         log.debug("Dates pressed")
-        def course = new Course(params)
+        def course = flow.course ?: new Course()
+        course.properties = params
         def university = University.get(params.university)
-        university.addToCourses(course)
         flow.course = course
         flow.university = university
-        [course:course]
       }.to("dates")
-      on("cancel").to("cancel")
+      on("cancel").to("redirect")
     }
     dates{
       on("add"){
@@ -40,14 +41,15 @@ class CourseController {
           [event:event]
         }
       }.to("dates")
-      on("deadlines").to("deadlines")
+      on("next").to("deadlines")
       on("remove"){
         def id = params.int("id")
         def course = flow.course
         def eventToRemove = course.events.asList()[id]
         course.removeFromEvents(eventToRemove)
       }.to("dates")
-      on("cancel").to("cancel")
+      on("cancel").to("redirect")
+      on("back").to("courseDetails")    
     }
     deadlines{
       on("add"){
@@ -66,13 +68,19 @@ class CourseController {
         def todoToRemove = course.todos.asList()[id]
         course.removeFromTodos(todoToRemove)
       }.to("deadlines")
-      on("save").to("save")
-      on("cancel").to("cancel")
+      on("next").to("save")
+      on("cancel").to("redirect")
+      on("back").to("dates")
     }
     save{
-      def university = flow.university
-      log.debug("In Dates $university")
-      redirect(controller:"settings", action:"index")
+      action{
+        assert flow.university && flow.course
+        def university = flow.university
+        university.addToCourses(flow.course)
+        assert university.save()
+        log.debug("In Dates $university")
+      }
+      on("success").to("redirect")
     }
   }
   
