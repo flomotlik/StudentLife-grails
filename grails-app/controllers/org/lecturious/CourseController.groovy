@@ -14,6 +14,9 @@ class CourseController {
       }
       on("success").to "courseDetails"
     }
+    cancel{
+      redirect(controller:"settings", action:"index") 
+    }
     courseDetails{
       on("dates"){
         log.debug("Dates pressed")
@@ -24,6 +27,7 @@ class CourseController {
         flow.university = university
         [course:course]
       }.to("dates")
+      on("cancel").to("cancel")
     }
     dates{
       on("add"){
@@ -43,6 +47,7 @@ class CourseController {
         def eventToRemove = course.events.asList()[id]
         course.removeFromEvents(eventToRemove)
       }.to("dates")
+      on("cancel").to("cancel")
     }
     deadlines{
       on("add"){
@@ -62,6 +67,7 @@ class CourseController {
         course.removeFromTodos(todoToRemove)
       }.to("deadlines")
       on("save").to("save")
+      on("cancel").to("cancel")
     }
     save{
       def university = flow.university

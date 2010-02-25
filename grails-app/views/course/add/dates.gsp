@@ -13,6 +13,7 @@
   <g:textField name="duration"/>
   <g:submitButton name="add" value="Add Date"/>
   <g:submitButton name="deadlines" value="Deadlines"/>
+  <g:submitButton name="cancel" value="Cancel"/>
 </g:form>
 <table>
   <tr>

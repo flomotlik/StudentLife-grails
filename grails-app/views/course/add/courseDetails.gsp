@@ -16,6 +16,7 @@
   <label for="type">Type</label>
   <input id="type" name="type" type="text"/>
   <g:submitButton name="dates" value="Dates"/>
+  <g:submitButton name="cancel" value="Cancel"/>
 </g:form>
 </body>
 </html>

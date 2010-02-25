@@ -11,6 +11,7 @@
   <g:textField name="description"/>
   <g:submitButton name="add" value="Add Deadline"/>
   <g:submitButton name="save" value="Save"/>
+  <g:submitButton name="cancel" value="Cancel"/>
 </g:form>
 <table>
   <tr>
