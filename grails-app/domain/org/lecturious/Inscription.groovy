@@ -1,6 +1,11 @@
 package org.lecturious
 
+import java.util.Date;
+
 public class Inscription {
+  
+  Date dateCreated
+  
   Course course
   
   static belongsTo = [user:Student]

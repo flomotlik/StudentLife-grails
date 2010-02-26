@@ -1,17 +1,25 @@
 fixture {
+  user2(org.lecturious.Student){
+    facebookId = "user2"
+    name = "Second"
+    lastLogin = new Date()
+  }
   course(org.lecturious.Course){
+    creator = user2
     name="Mathematik 1" 
     professor="Professor"
     identificator="Identificator"
     type="Type"
   }
   course2(org.lecturious.Course){
+    creator = user2
     name="Course2" 
     professor="Professor"
     identificator="Identificator"
     type="Type"
   }
   course3(org.lecturious.Course){
+    creator = user2
     name="Course3" 
     professor="Professor"
     identificator="Identificator"
@@ -36,9 +44,6 @@ fixture {
     facebookId = "development_user"
     name = "Name"
     universities = [uni]
-  }
-  user2(org.lecturious.Student){
-    facebookId = "user2"
-    name = "Second"
+    lastLogin = new Date()
   }
 }

@@ -1,8 +1,20 @@
 package org.lecturious
 
+import java.util.Date;
+
 class Message {
-	
-	String message
-	
-	static belongsTo = [course:Course]
+  
+  Date dateCreated
+  
+  Date lastUpdated
+  
+  Student creator
+  
+  String message
+  
+  static belongsTo = [course:Course]
+  
+  static mapping = {
+    sort 'dateCreated' 
+  }
 }

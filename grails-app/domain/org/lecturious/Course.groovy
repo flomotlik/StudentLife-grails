@@ -1,6 +1,14 @@
 package org.lecturious
 
+import java.util.Date;
+
 class Course implements Serializable{
+  
+  Date dateCreated
+  
+  Date lastUpdated
+  
+  Student creator
   
   String name
   

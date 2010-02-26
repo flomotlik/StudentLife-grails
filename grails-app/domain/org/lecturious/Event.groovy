@@ -1,6 +1,14 @@
 package org.lecturious
 
+import java.util.Date;
+
 class Event implements Serializable {
+  
+  Date dateCreated
+  
+  Date lastUpdated
+  
+  Student creator
   
   String description
   
