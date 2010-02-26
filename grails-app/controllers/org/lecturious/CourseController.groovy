@@ -113,4 +113,8 @@ class CourseController {
     log.debug("Users: $colleagues")
     [course:Course.get(params.id), colleagues:colleagues]
   }
+  
+  def showMessages = show
+  
+  def showLinks = show
 }

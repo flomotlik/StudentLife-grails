@@ -8,6 +8,6 @@ class MessageController {
     def course= Course.get(params.id)
     course.addToMessages(message)
     assert course.save()
-    render (template:"/course/showCourse", model:[course:course])
+    redirect(controller:"course", action:"showMessages", id:course.id)
   }
 }

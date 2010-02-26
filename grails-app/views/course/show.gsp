@@ -4,7 +4,10 @@
   <meta content="showCourses" name="layout">
 </head>
 <body>
-<g:render template="/course/showCourse" model="['course':course]"/>
+<div id="showCourse">
+    <g:include action="showMessages" controller="course" id="${course.id}"/>
+</div>
 <g:render template="/course/showColleagues" model="['colleagues':colleagues]"/>
+ 
 </body>
 </html>
