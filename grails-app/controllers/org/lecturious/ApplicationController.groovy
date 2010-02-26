@@ -24,7 +24,7 @@ class ApplicationController {
           log.debug("Development Mode User: $facebookId")
           def user = Student.findByFacebookId(facebookId)?.id
           if (!user) {
-            def newUser = new Student(name: name, facebookId: facebookId)
+            def newUser = new Student(name: name, facebookId: facebookId, lastLogin:new Date(0))
             newUser.save()
             user = newUser.id
             log.debug("UserID: $user")
@@ -51,6 +51,10 @@ class ApplicationController {
           break
       }
     }
+    def userObject = Student.get(session.user)
+    session.lastLogin = userObject.lastLogin
+    userObject.lastLogin = new Date()
+    assert userObject.save()
     log.debug("LoggedIn UserId: $session.user")
     redirect(controller:"wall", action:"index")
   }
