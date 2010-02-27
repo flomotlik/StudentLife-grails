@@ -8,6 +8,7 @@ class UniversityController {
 
   def search = {
     def qString = params.q;
+    log.debug("Search for '${qString}'");
     if (qString.size() == 0) {
       qString = "%"
     }
@@ -15,7 +16,7 @@ class UniversityController {
       qString = "%" + qString + "%"
     }
     def universities = University.findAllByNameIlike(qString, [max: 15]);
-    log.debug(universities)
+    log.debug("Found universities:" + universities)
     render(template: "/university/searchResults", model: [universities: universities])
   }
 
