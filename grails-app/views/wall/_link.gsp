@@ -7,7 +7,7 @@
 	       <span class="wallpost_name">${it.creator.name}</span>
 	     </a>
 	    </h3>
-        <p style="margin:0px;padding:0px"><a href="${it.link}">${it.link}</a></p>
+        <p style="margin:0px;padding:0px">${it.description}:<a href="${it.link}">${it.link}</a></p>
         <span style="margin:0px;padding:0px">
       		<abbr class="timestamp" title="${it.dateCreated}">${it.dateCreated}</abbr>
       		<!-- TODO set timediff etc -->
