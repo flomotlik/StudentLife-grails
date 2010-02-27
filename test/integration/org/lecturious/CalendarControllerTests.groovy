@@ -19,10 +19,10 @@ class CalendarControllerTests extends StudentLifeControllerTest {
     user.addToInscriptions course: course
     //7 times, so ones is too early and one is not shown, because of max value
     7.times {
-      course.addToEvents(description: "Desc", duration: 1, date: date + it)
+      course.addToEvents(description: "Desc", duration: 1, date: date + it, creator:user)
     }
     7.times {
-      course.addToTodos(description: "Desc", date: date + it)
+      course.addToTodos(description: "Desc", date: date + it, creator:user)
     }
     course.save()
     def calendar = new GregorianCalendar()
@@ -46,8 +46,8 @@ class CalendarControllerTests extends StudentLifeControllerTest {
     def course = createCourse()
     user.addToInscriptions(course: course)
     assert user.save()
-    course.addToEvents(description: "Desc", date: calendarForEvents, duration: 5)
-    course.addToTodos(description: "Desc", date: calendarForEvents)
+    course.addToEvents(description: "Desc", date: calendarForEvents, duration: 5, creator:user)
+    course.addToTodos(description: "Desc", date: calendarForEvents, creator:user)
     assert course.save()
     mockParams.date_year = calendar.get(Calendar.YEAR)
     mockParams.date_month = calendar.get(Calendar.MONTH)
@@ -79,8 +79,8 @@ class CalendarControllerTests extends StudentLifeControllerTest {
     def desc = "Description"
     mockSession.user = user.id
     mockLogging CalendarController
-    course.addToEvents(description: desc, duration: 2, date: calendarForEvents)
-    course.addToTodos(description: desc, date: calendarForEvents)
+    course.addToEvents(description: desc, duration: 2, date: calendarForEvents, creator:user)
+    course.addToTodos(description: desc, date: calendarForEvents, creator:user)
     assert course.save()
     println(course.events*.date)
     println(course.todos*.date)

@@ -77,7 +77,9 @@ class StudentLifeControllerTest extends ControllerUnitTestCase{
   }
   
   def createCourse(){
+    def user = createUser()
     def course = new Course(courseMap)
+    course.creator = user
     assert createUniversity().addToCourses(course).save(flush:true)
     return course
   }
@@ -90,7 +92,7 @@ class StudentLifeControllerTest extends ControllerUnitTestCase{
   }
   
   def createUser(){
-    def user = new Student(facebookId: "1", name:name).save()
+    def user = new Student(facebookId: "1", name:name, lastLogin:new Date()).save()
     assert user
     return user
   }

@@ -16,6 +16,8 @@ class TodoControllerTests extends StudentLifeControllerTest {
     def date = new Date()
     assert Todo.count() == 0
     def desc = "Description"
+    def user = createUser()
+    mockSession.user = user.id
     controller.add(new TodoAddCommand(description: desc, date: date, courseId: course))
     assert redirectArgs.controller == "calendar"
     assert redirectArgs.action == "index"

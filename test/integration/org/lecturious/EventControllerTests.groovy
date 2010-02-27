@@ -15,6 +15,8 @@ class EventControllerTests extends StudentLifeControllerTest {
     assert Event.count() == 0
     def desc = "Description"
     def duration = 60
+    def user = createUser()
+    mockSession.user = user.id
     controller.add(new EventAddCommand(description: desc, date: date, courseId: course, duration: duration))
     assert redirectArgs.controller == "calendar"
     assert redirectArgs.action == "index"

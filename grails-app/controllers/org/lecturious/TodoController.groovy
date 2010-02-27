@@ -1,13 +1,17 @@
 package org.lecturious
 
 class TodoController {
-
+  
   def add = {TodoAddCommand cmd ->
     //Set to true, so Error doesn't get added when validation fails and Course.exists isn't called
     //Only set exists when validation passes
     if (cmd.validate()) {
       def todo = cmd.createTodo()
+      def user = Student.get(session.user)
+      assert user
+      todo.creator = user
       def course = Course.get(cmd.courseId)
+      
       course.addToTodos(todo)
       assert course.save()
       redirect(controller: "calendar", action: "index")

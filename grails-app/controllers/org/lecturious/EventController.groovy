@@ -6,6 +6,9 @@ class EventController {
     if (cmd.validate()) {
       log.debug("EventController.add() called")
       def event = cmd.createEvent()
+      def creator = Student.get(session.user)
+      assert creator
+      event.creator = creator
       def course = Course.get(cmd.courseId)
       course.addToEvents(event)
       course.save()
