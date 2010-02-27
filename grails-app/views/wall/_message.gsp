@@ -1,14 +1,14 @@
-<div style="position:none">
+<div>
     <% fbId = it.creator.facebookId%>
 	<% url = "http://www.facebook.com/profile.php?id=" + fbId  %>
-    <div style="float:none">
-	     <h3 style="margin:0px;padding:0px">
+    <div>
+	     <h3 class="zero_m_p">
 	     <a href="${url}" target="_blank">
 	       <span class="wallpost_name">${it.creator.name}</span>
 	     </a>
 	    </h3>
-        <p style="margin:0px;padding:0px">${it.message}</p>
-        <span style="margin:0px;padding:0px">
+        <p class="zero_m_p">${it.message}</p>
+        <span class="zero_m_p">
       		<abbr class="timestamp" title="${it.dateCreated}">${it.dateCreated}</abbr>
       		<!-- TODO set timediff etc -->
     	</span>
