@@ -14,3 +14,16 @@ Plugins to be installed:
 app-engine
 grails-qooxdoo
 functional-test
+
+
+#############
+To load fixtures call
+http://localhost:8080/studentlife/application/load
+
+
+###### SETUP ########
+Download Java Facebook API from http://facebook-java-api.googlecode.com/files/facebook-java-api-3.0.2-bin.zip, extract and copy content to directory "lib"
+Rename facebook.groovy.template to facebook.groovy 
+Fill in the missing information (Can be found on http://www.facebook.com/developers/)
+
+

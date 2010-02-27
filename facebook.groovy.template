@@ -1,0 +1,5 @@
+facebook { 
+  api_key="YOUR_API_KEY_HERE"
+  secret="YOUR_SECRET_HERE"
+  url="YOUR_WEB_URL_HERE"
+}
