@@ -34,14 +34,16 @@ class ApplicationController {
           break
         case "test":
         case "production":
-          def facebook = facebookService.getFacebookConnection(request, response)
-
-          def facebookId = facebook.users_getLoggedInUser();
-          def username = facebook.users_getInfo([facebookId], ["name"]).get(0).name
-
+          facebookService.init(params, request, response)
+          String facebookId = facebookService.getLoggedInUser()
+          def allUserInfo = facebookService.getStudentInfos([facebookId]);
+          log.debug("AllUserInfo: " + allUserInfo);
+          def userInfo = allUserInfo.get(facebookId);
+          log.debug("userInfo: " + userInfo);
+          def username = userInfo.name
           def user = Student.findByFacebookId(facebookId)?.id
           if (!user) {
-            def newUser = new Student(facebookId: facebookId, name: username)
+            def newUser = new Student(facebookId: facebookId, name: username, lastLogin:new Date(0));
             log.debug("Persisting user $newUser")
             newUser.save(flush: true)
             user = newUser.id
@@ -72,13 +74,21 @@ class ApplicationController {
   }
 
   def load = {
-    if (grails.util.GrailsUtil.environment == "development") {
+    def env = grails.util.GrailsUtil.environment
+    if (env == "development") {
       session.user = null
       Student.list()*.delete()
       Country.list()*.delete()
       def fixture = fixtureLoader.load("default")
       fixture.load("extensions")
       log.debug("Inscription $fixture.inscription.id")
+    }
+    if (env == "test") {
+      session.user = null
+      Student.list()*.delete()
+      Country.list()*.delete()
+      def fixture = fixtureLoader.load("real")
+      log.debug("Loaded fixture")
     }
   }
 }
