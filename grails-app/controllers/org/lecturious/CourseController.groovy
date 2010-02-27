@@ -23,7 +23,10 @@ class CourseController {
       on("next"){
         log.debug("Dates pressed")
         def course = flow.course ?: new Course()
+        
         course.properties = params
+        course.creator = Student.get(session.user)
+        
         def university = University.get(params.university)
         flow.course = course
         flow.university = university
@@ -35,6 +38,7 @@ class CourseController {
         def course = flow.course
         def event = new Event(params)
         event.course = course
+        event.creator = Student.get(session.user)
         if(event.validate()){
           course.addToEvents(event)
         }else{
@@ -56,6 +60,7 @@ class CourseController {
         def course = flow.course
         def todo = new Todo(params)
         todo.course = course
+        todo.creator = Student.get(session.user)
         if(todo.validate()){
           course.addToTodos(todo)
         }else{
