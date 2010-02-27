@@ -4,11 +4,8 @@
       width:732px;
       height:432px;
       background-color:white;
-  } 
-  
-  body, div, img {
       position:absolute;
-   }
+  } 
    
    .typeface-js {
       font-family: Apex New;
@@ -82,6 +79,7 @@
   }
 
   #rightmenu {
+    position:absolute;
     right:0px;
   }
 
