@@ -7,6 +7,10 @@
 	height: 100%;
 	width: 73%;
 }
+#monthSelector{
+	position: relative;
+	left: 40%;
+}
 
 table{
     width:100%;

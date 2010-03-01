@@ -1,3 +1,12 @@
+<p id="monthSelector">
+<g:remoteLink controller="calendar" action="calendar"
+  params="[year:(month == 0 ?year - 1 : year), month:(month == 0? 11 : month - 1)]"
+  update="calendar"><</g:remoteLink>
+  ${year} - ${month + 1}
+  <g:remoteLink controller="calendar" action="calendar"
+  params="[year:(month == 11 ?year + 1 : year), month:(month == 11? 0 : month + 1)]"
+  update="calendar">></g:remoteLink>
+  </p>
 <table>
   <tr>
     <th>Mon.</th>
@@ -19,10 +28,3 @@
     </tr>
   </g:each>
 </table>
-<g:remoteLink controller="calendar" action="calendar"
-  params="[year:(month == 0 ?year - 1 : year), month:(month == 0? 11 : month - 1)]"
-  update="calendar">Before</g:remoteLink>
-<g:remoteLink controller="calendar" action="calendar"
-  params="[year:(month == 11 ?year + 1 : year), month:(month == 11? 0 : month + 1)]"
-  update="calendar">Next</g:remoteLink>
-<p>${year} - ${month + 1}</p>
