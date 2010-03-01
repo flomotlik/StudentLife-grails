@@ -12,7 +12,7 @@
 	left: 40%;
 }
 
-table{
+#calendarTable{
     width:100%;
     height:300px;
 }
@@ -59,13 +59,13 @@ table{
 #both{
     top:300px;
 }
-td a{
+#calendarTable td a{
 	line-height:100%;
 	height: 100%;
 	position: relative;
 	text-decoration: none;
 }
-td a p{
+#calendarTable td a p{
 	text-align: center;
 	color: #000099;
 	width: 100%;
@@ -75,7 +75,7 @@ td a p{
 	padding-top:28%;
 	font-size: x-large;
 	}
-td{
+#calendarTable td{
 	border: 1px solid black;
 	width:14%;
 }

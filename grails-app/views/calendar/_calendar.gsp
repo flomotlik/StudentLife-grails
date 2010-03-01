@@ -7,7 +7,7 @@
   params="[year:(month == 11 ?year + 1 : year), month:(month == 11? 0 : month + 1)]"
   update="calendar">></g:remoteLink>
   </p>
-<table>
+<table id="calendarTable">
   <tr>
     <th>Mon.</th>
     <th>Tue.</th>
@@ -28,3 +28,4 @@
     </tr>
   </g:each>
 </table>
+<div id="element"></div>

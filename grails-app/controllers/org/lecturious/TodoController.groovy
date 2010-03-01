@@ -19,6 +19,10 @@ class TodoController {
       render(template: "/errors", model: [errors: cmd])
     }
   }
+  
+  def show = {
+    [todo:Todo.get(params.id)]
+  }
 }
 class TodoAddCommand {
   Date date

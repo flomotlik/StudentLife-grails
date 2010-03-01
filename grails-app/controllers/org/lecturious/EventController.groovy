@@ -18,6 +18,10 @@ class EventController {
       render(template: "/errors", model: [errors: cmd])
     }
   }
+  
+  def show = {
+    [event:Event.get(params.id)]
+  }
 }
 class EventAddCommand {
   Date date
