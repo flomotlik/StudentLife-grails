@@ -83,9 +83,12 @@ class ApplicationController {
       session.user = null
       Student.list()*.delete()
       Country.list()*.delete()
-      def fixture = fixtureLoader.load("default")
-      fixture.load("extensions")
-      //log.debug("Inscription $fixture.inscription.id")
+      
+      def fixture = fixtureLoader.load("creatorFixture")
+      fixture = fixture.load("todo")
+      fixture = fixture.load("event")
+      fixture.load("students") 
+      log.debug(fixture.course)
     }
   }
 }
