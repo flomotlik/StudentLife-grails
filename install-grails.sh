@@ -6,5 +6,7 @@ unzip -u grails-1.2.1.zip
 mv grails-1.2.1 /opt
 rm -i /opt/grails
 ln -s /opt/grails-1.2.1 /opt/grails
+echo "GRAILS_HOME=/opt/grails" >> /etc/environment
+echo "PATH=$PATH:/opt/grails/bin" >> /etc/environment
 
 
