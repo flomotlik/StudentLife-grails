@@ -97,20 +97,26 @@ class FacebookService implements InitializingBean, Serializable  {
   }
 
   def getStudentInfos(studentIds) {
-    log.debug(studentIds)
-    def userInfo = [:]
-    if(studentIds){
-      def fbInfo = facebook.users_getInfo(studentIds, [ProfileField.PROFILE_URL, ProfileField.PIC_SQUARE, ProfileField.NAME, ProfileField.UID])
-      log.debug("FBInfo: $fbInfo")
-      def length = fbInfo.length();
-      for(int i = 0; i < length ; i++) {
-        def it = fbInfo.get(i);
-        String id = it.uid 
-        userInfo[(id)] = [id:id, name:it.name,image:it.pic_square, url:it.profile_url]
+    try {
+      log.debug(studentIds)
+      def userInfo = [:]
+      if(studentIds){
+        def fbInfo = facebook.users_getInfo(studentIds, [ProfileField.PROFILE_URL, ProfileField.PIC_SQUARE, ProfileField.NAME, ProfileField.UID])
+        log.debug("FBInfo: $fbInfo")
+        def length = fbInfo.length();
+        for(int i = 0; i < length ; i++) {
+          def it = fbInfo.get(i);
+          String id = it.uid
+          userInfo[(id)] = [id:id, name:it.name,image:it.pic_square, url:it.profile_url]
+        }
       }
+      log.debug("Return: " + userInfo)
+      return userInfo
     }
-    log.debug("Return: " + userInfo)
-    return userInfo
+    catch (FacebookException e) {
+      log.warn("getStudendInfos failed:", e);
+      return [];
+    }
   }
 
   def getFriends(studentId) {

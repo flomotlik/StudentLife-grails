@@ -15,10 +15,14 @@ class ApplicationController {
    *  in development mode you can change the logged in user by adding userId
    */
   def index = {
+    if (facebookService.init(params, request, response)) {
+      render();
+    }
     log.debug("Session.user $session.user")
-    if (session.user == null || grails.util.GrailsUtil.environment == "development") {
+    if (session.user == null) {
       switch (grails.util.GrailsUtil.environment) {
         case "development":
+          /*
           def facebookId = params.userId ?: "development_user"
           def name = params.name ?: "Name"
           log.debug("Development Mode User: $facebookId")
@@ -32,9 +36,9 @@ class ApplicationController {
           session.user = user
           log.debug("Session.User: $session.user")
           break
+          */
         case "test":
         case "production":
-          facebookService.init(params, request, response)
           String facebookId = facebookService.getLoggedInUser()
           def allUserInfo = facebookService.getStudentInfos([facebookId]);
           log.debug("AllUserInfo: " + allUserInfo);
@@ -75,20 +79,13 @@ class ApplicationController {
 
   def load = {
     def env = grails.util.GrailsUtil.environment
-    if (env == "development") {
+    if (env == "development" || env == "test") {
       session.user = null
       Student.list()*.delete()
       Country.list()*.delete()
       def fixture = fixtureLoader.load("default")
       fixture.load("extensions")
-      log.debug("Inscription $fixture.inscription.id")
-    }
-    if (env == "test") {
-      session.user = null
-      Student.list()*.delete()
-      Country.list()*.delete()
-      def fixture = fixtureLoader.load("real")
-      log.debug("Loaded fixture")
+      //log.debug("Inscription $fixture.inscription.id")
     }
   }
 }
