@@ -9,9 +9,9 @@ class WallController {
   }
   
   def news = {
-    if (facebookService.init(params, request, response)) {
-    	return;
-    }
+//    if (facebookService.init(params, request, response)) {
+//    	return;
+//    }
     def offset = params.int("offset")?: 0
     log.debug("Offset $offset")
     def student = Student.get(session.user)
@@ -25,8 +25,8 @@ class WallController {
     log.debug(sortedList)
     def sublist = sortedList.subList(offset, Math.min(offset+10, sortedList.size()))
 
-    def userInfo = facebookService.getStudentInfos(sublist.creator*.facebookId);
+//    def userInfo = facebookService.getStudentInfos(sublist.creator*.facebookId);
     log.debug("Sizes: ${sublist.size()} - ${Math.min(offset+10, sortedList.size())}")
-    [news:sublist, total:sortedList.size(), userInfo:userInfo]
+    [news:sublist, total:sortedList.size()]
   }
 }
