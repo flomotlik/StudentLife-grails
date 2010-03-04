@@ -81,8 +81,9 @@ class ApplicationController {
     def env = grails.util.GrailsUtil.environment
     if (env == "development" || env == "test") {
       session.user = null
-      Student.list()*.delete()
+      Inscription.list()*.delete()
       Country.list()*.delete()
+      Student.list()*.delete()
       
       def fixture = fixtureLoader.load("creatorFixture")
       fixture = fixture.load("todo")
