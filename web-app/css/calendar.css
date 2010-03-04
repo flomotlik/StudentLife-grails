@@ -14,6 +14,7 @@ div{
 #monthSelector{
 	position: relative;
 	left: 40%;
+	width:20%;
 }
 
 #calendarTable{
