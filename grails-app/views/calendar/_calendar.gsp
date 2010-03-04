@@ -20,10 +20,9 @@
   <g:each in="${rows}" var="row">
     <tr>
       <g:each in="${row}" var="item">
-        <td><g:remoteLink
-          controller="calendar" action="courseElements"
-          params="[date_year:year, date_month:month + 1, date_day:item.day]"
-          update="courseElements"><p class="${item.type}">${item.day}</p></g:remoteLink></td>
+        <td class="${item.type}" onClick="${remoteFunction(controller:'calendar',action:'courseElements',
+        params:[date_year:year,date_month:month + 1,date_day:item.day],
+            update:'courseElements')}">${item.day}</td>
       </g:each>
     </tr>
   </g:each>
