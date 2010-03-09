@@ -1,13 +1,6 @@
 include "inscriptionsFixture"
 
 fixture{
-  student(org.lecturious.Student){
-    facebookId = "715095657"
-    name = "Fredrik Debong"
-    universities = [uni]
-    lastLogin = new Date(0)
-    inscriptions = [inscription]
-  }
   student2(org.lecturious.Student){
     facebookId = "777618108"
     name = "Michael Greifeneder"
