@@ -44,6 +44,7 @@
     background-color:white;
     height: 300px;
     border: 1px solid black;
+    top:0px;
   }
   
   #subContent{
@@ -255,6 +256,7 @@
   	background-repeat: no-repeat;
   	background-position: 0px 5px;
   	padding-left: 50px;
+  	height: 60px;
   }
   
   .wall_ul {
