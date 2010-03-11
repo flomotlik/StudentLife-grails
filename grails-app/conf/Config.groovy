@@ -1,7 +1,6 @@
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
-grails.config.locations = [ "file:facebook.groovy"]
 //                             "classpath:${appName}-config.groovy",
 //                             "",
 //                             "file:${userHome}/.grails/${appName}-config.groovy"]
@@ -36,12 +35,15 @@ grails.enable.native2ascii = true
 environments {
     production {
         grails.serverURL = "http://www.changeme.com"
+        grails.config.locations = [System.getenv("FACEBOOK_CONNECTION")]
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
+        grails.config.locations = [ "file:facebook.groovy"]
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
+        grails.config.locations = [System.getenv("FACEBOOK_CONNECTION")]
     }
 
 }
