@@ -2,7 +2,6 @@
 .project
 .settings
 .idea
-BuildConfig.groovy
 *.iws
 *.iml
 *.ipr
