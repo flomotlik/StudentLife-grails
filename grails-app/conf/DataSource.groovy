@@ -28,7 +28,6 @@ environments {
   }
   production {
     dataSource {
-      pooled = true
       driverClassName = "org.postgresql.Driver"
       dialect = org.hibernate.dialect.PostgreSQLDialect
       dbCreate = "update"
