@@ -35,7 +35,9 @@ grails.enable.native2ascii = true
 environments {
     production {
         grails.serverURL = "http://studentlife.scale-it.at/"
-        grails.config.locations = ["file:/var/studentlife/fb_connection"]
+        def env = System.getenv("FACEBOOK_CONNECTION")
+        println "FacebookEnvironment: $env"
+        grails.config.locations = [env]
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
