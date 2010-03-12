@@ -34,16 +34,16 @@ grails.enable.native2ascii = true
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
-        grails.serverURL = "http://www.changeme.com"
-        grails.config.locations = [System.getenv("FACEBOOK_CONNECTION")]
+        grails.serverURL = "http://studentlife.scale-it.at/"
+        grails.config.locations = ["file:/var/studentlife/fb_connection"]
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
-        grails.config.locations = [ "file:facebook.groovy"]
+        grails.config.locations = ["file:facebook.groovy"]
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
-        grails.config.locations = [System.getenv("FACEBOOK_CONNECTION")]
+        grails.config.locations = ["file:facebook.groovy"]
     }
 
 }
