@@ -1,6 +1,8 @@
+import org.codehaus.groovy.grails.commons.GrailsApplication;
+
 class ServiceFilters {
   
-  def okController = ["application"]
+  def okController = ["application", "admin"]
   
   def filters = {
     facebook(uri: "/**") {
@@ -16,6 +18,13 @@ class ServiceFilters {
       after={
         if(grails.util.GrailsUtil.environment == "development"){
           response.addHeader("Access-Control-Allow-Origin", "*")
+        }
+      }
+    }
+    admin(controller:"admin"){
+      before={
+        if(session.admin != true){
+          redirect(controller:"application", action:"adminLogin")
         }
       }
     }
