@@ -1,9 +1,9 @@
 package org.lecturious
 
 class CalendarController {
-
+  
   def calendarService
-
+  
   def index = {
     //Returning current year and month so include tag in index can call calendar action of this controller
     //with correct year and month
@@ -11,12 +11,17 @@ class CalendarController {
     def student = Student.get(session.user)
     assert student
     def courses = student.inscriptions*.course
+    log.debug(courses)
     def requestParams = [sort: "date", order: "asc", max: 5]
-    def events = Event.findAllByCourseInListAndDateGreaterThan(courses, new Date(), requestParams)
-    def todos = Todo.findAllByCourseInListAndDateGreaterThan(courses, new Date(), requestParams)
+    def events = []
+    def todos = []
+    if(courses){
+      events = Event.findAllByCourseInListAndDateGreaterThan(courses, new Date(), requestParams)
+      todos = Todo.findAllByCourseInListAndDateGreaterThan(courses, new Date(), requestParams)
+    }
     [year: gregorian.get(Calendar.YEAR), month: gregorian.get(Calendar.MONTH), events: events, todos: todos]
   }
-
+  
   def courseElements = {HasDateCommand cmd ->
     if (cmd.validate()) {
       //Only events from the same day should be loaded. Because of this we add one day to the given date
