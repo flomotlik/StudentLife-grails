@@ -1,5 +1,7 @@
 package org.lecturious
 
+import java.security.MessageDigest;
+
 import grails.util.GrailsUtil
 
 class ApplicationController {
@@ -95,9 +97,21 @@ class ApplicationController {
   
   def adminLogin = {
     def password = grailsApplication.config.admin.password
-    if(password != null && params.password == password){
-      session.admin = true
-      redirect(controller:"admin", action:"index")
+    if(password && params.password){
+      MessageDigest digest = MessageDigest.getInstance("SHA")
+      digest.reset()
+      digest.update (params.password?.bytes)
+      StringBuilder builder = new StringBuilder()
+      def digested = digest.digest()
+      digested.each{
+       builder.append(Integer.toHexString (0xFF & it)) 
+      }
+      def receivedPassword = builder.toString()
+      log.debug(receivedPassword)
+      if(receivedPassword == password){
+        session.admin = true
+        redirect(controller:"admin", action:"index")
+      }
     }
   }
 }
