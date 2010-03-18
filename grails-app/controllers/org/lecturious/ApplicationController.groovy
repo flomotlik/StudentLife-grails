@@ -92,4 +92,12 @@ class ApplicationController {
       log.debug(fixture.course)
     }
   }
+  
+  def adminLogin = {
+    def password = grailsApplication.config.admin.password
+    if(password != null && params.password == password){
+      session.admin = true
+      redirect(controller:"admin", action:"index")
+    }
+  }
 }
