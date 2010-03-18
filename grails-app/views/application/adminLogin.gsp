@@ -4,7 +4,7 @@
 </head>
 <body>
 <g:form name="loginForm" action="adminLogin">
-  <input name="password" id="password" type="text" />
+  <g:passwordField name="password" value=""/>
   <g:submitButton name="update" value="Login" />
 </g:form>
 </body>
