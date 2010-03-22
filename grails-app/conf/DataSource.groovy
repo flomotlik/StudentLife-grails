@@ -32,8 +32,6 @@ environments {
       dialect = org.hibernate.dialect.PostgreSQLDialect
       dbCreate = "update"
       url="jdbc:postgresql://localhost:5432/studentlife"
-      username = ""
-      password = ""
     }
   }
 }
