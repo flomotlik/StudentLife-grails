@@ -16,3 +16,11 @@
 #content label{
 	display: block;
 }
+#searchresults table{
+  width: 100%;
+  text-align: left;
+}
+
+td, th{
+  font-size: 13px;
+}
