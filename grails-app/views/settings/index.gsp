@@ -1,7 +1,6 @@
 <html>
 <head>
   <meta content="settings" name="layout"/>
-  <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'settings.css')}"/>
 </head>
 <body>
 <g:if test="${params['message'] != null}">
