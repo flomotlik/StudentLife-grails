@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+#showCourse {
+   background-color: #EEEEFF;
+   width: 363px;
+   display: inline-block;
+}
+
+#showCourse form,#showCourse input {
+   width: 100%;
+}
+
+#showColleagues {
+   background-color: white;
+   border: 1px solid black;
+   left: 373px;
+   position: absolute;
+   top: 0;
+   width: 154px;
+}

@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+#subContent {
+   position: relative;
+   width: 550px;
+   display: inline-block;
+}
+
+.wall_li {
+   background-repeat: no-repeat;
+   background-position: 0px 5px;
+   padding-left: 50px;
+   height: 60px;
+}
+
+.wall_ul {
+   list-style-type: none;
+   padding: 0px;
+   margin: 0px;
+}
+
+.zero_m_p {
+   margin: 0px;
+   padding: 0px;
+}

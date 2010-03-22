@@ -3,31 +3,36 @@
 <title>
   <g:layoutTitle default = "StudentLife"/>
 </title>
-
-<link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'studentlife.css')}" />
+<link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'main.css')}" />
   <g:layoutHead/>
 <g:javascript library="prototype" />
 </head>
 <body>
+<div id="header">
+<ul id="navigation">
+  <li><g:link controller="calendar" action="index">Agenda</g:link></li>
+  <li><g:link controller="wall" action="index">Courses</g:link></li>
+  <li><g:link controller="settings" action="index">Settings</g:link></li>
+</ul>
 <img id="logo" src="${resource(dir:'images',file:'logo.png')}" alt="StudentLife Logo" />
-<div id="menu">
-<div id="leftmenu"><g:link controller="calendar" action="index">
-  <img class="menuimage" src="${resource(dir:'images',file:'menu-agenda.png')}" alt="Menu Agenda" />
-</g:link> <g:link controller="wall" action="index">
-  <img class="menuimage" src="${resource(dir:'images',file:'menu-courses.png')}"
-    alt="Menu Courses" />
-</g:link></div>
-<!-- leftmenu -->
-<div id="rightmenu"><g:link controller="settings" action="index">
-  <img class="menuimage" src="${resource(dir:'images',file:'menu-coursesettings.png')}"
-    alt="Menu Course Settings" style="padding: 4, 0, 0, 0" />
-</g:link> <img class="menuimage" src="${resource(dir:'images',file:'menu-vborder.png')}"
-  alt="border element" style="padding: 1, 6, 0, 6" /></div>
-<!-- rightmenu --></div>
-<!-- menu -->
+</div>
+
+</div>
+
 <div id=content>
 <g:layoutBody/>
   </div>
 <!-- main -->
+<!-- Facebook Resizable JavaScript Code -->
+<!-- Note: Include this div markup as a workaround for a known bug in this release on IE where you may get a "operation aborted" error -->
+<div id="FB_HiddenIFrameContainer" style="display:none; position:absolute; left:-100px; top:-100px; width:0px; height: 0px;"></div> 
+<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script> 
+<script type="text/javascript"> 
+   FB_RequireFeatures(["CanvasUtil"], 
+       function(){ 
+       FB.XdComm.Server.init('${resource(file:'xd_receiver.html')}');
+       FB.CanvasClient.startTimerToSizeToContent(); 
+   });
+</script>
 </body>
 </html>

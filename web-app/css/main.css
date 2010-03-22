@@ -1,0 +1,51 @@
+body {
+   font-size: 13;
+   font-family: "Verdana", "sans-serif";
+   background-color: white;
+   width: 732px;
+}
+
+#header{
+   width: 100%;
+}
+
+#logo {
+   position: absolute;
+   left: 556px;
+}
+
+#navigation {
+   padding: 0px;
+   position: relative;
+   height: 17px;
+   width: 493px;
+   background-color: white;
+   border-bottom: 1px solid blue;
+   display:inline-block;
+}
+
+#navigation li{
+   list-style-type: none;
+   display: inline;
+   margin-right: px;
+}
+
+#navigation li a{
+   text-decoration: none;
+}
+
+#content {
+   width: 100%;
+   margin-top: 15px;
+}
+
+
+#showCourses {
+   position: relative;
+   display:inline-block;
+   width: 154px;
+   background-color: white;
+   max-height: 447px;
+   margin-right: 25px;
+   float: left;
+}
