@@ -4,7 +4,6 @@
     <div class="aa_box">
       <img class="aa_image" src="images/testprofilepic1.png"/>
       <div class="aa_name typeface-js"><a href="#link">${colleague.name}</a></div>
-      <div class="aa_link"><a href="#link">Add as friend</a></div>
     </div>
     <img src="${resource(dir:'images',file:'columnborder.png')}" class="aa_separator"/>
   </g:each>
