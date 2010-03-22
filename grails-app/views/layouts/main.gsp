@@ -10,8 +10,8 @@
 <body>
 <div id="header">
 <ul id="navigation">
-  <li><g:link controller="calendar" action="index">Agenda</g:link></li>
-  <li><g:link controller="wall" action="index">Courses</g:link></li>
+  <li><g:link controller="calendar" action="index">Agenda</g:link> |</li>
+  <li><g:link controller="wall" action="index">Courses</g:link> |</li>
   <li><g:link controller="settings" action="index">Settings</g:link></li>
 </ul>
 <img id="logo" src="${resource(dir:'images',file:'logo.png')}" alt="StudentLife Logo" />
