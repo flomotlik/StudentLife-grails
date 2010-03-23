@@ -32,6 +32,7 @@ class CourseController {
         flow.university = university
       }.to("dates")
       on("cancel").to("redirect")
+      on("back").to("initialize")
     }
     dates{
       on("add"){

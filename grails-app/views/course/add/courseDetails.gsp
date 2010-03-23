@@ -15,7 +15,7 @@
   <input id="identificator" name="identificator" type="text" value="${course?.identificator}"/>
   <label for="type">Type</label>
   <input id="type" name="type" type="text" value="${course?.type}"/>
-  <g:render template="add/buttons"/>
+  <g:render template="add/buttons" model="[backDisabled:true]"/>
 </g:form>
 </body>
 </html>
