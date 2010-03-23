@@ -18,7 +18,8 @@ class ApplicationController {
    */
   def index = {
     if (facebookService.init(params, request, response)) {
-      render();
+      render(text:"Can't connect to facebook")
+      return
     }
     log.debug("Session.user $session.user")
     if (session.user == null) {
@@ -64,7 +65,13 @@ class ApplicationController {
     userObject.lastLogin = new Date()
     assert userObject.save()
     log.debug("LoggedIn UserId: $session.user")
-    redirect(controller:"wall", action:"index")
+    def redirectArguments = [controller:"wall", action:"index"]
+    println userObject.universities?.size()
+    if(!userObject.universities || userObject.universities.size() == 0){
+        println "university"
+        redirectArguments.controller = "university"
+    }
+    redirect(redirectArguments)
   }
 
   def change = {
