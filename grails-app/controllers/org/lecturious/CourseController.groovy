@@ -83,8 +83,17 @@ class CourseController {
         assert flow.university && flow.course
         def university = flow.university
         university.addToCourses(flow.course)
-        assert university.save()
+        assert university.save(flush:true)
         log.debug("In Dates $university")
+      }
+      on("success").to("join")
+    }
+    join{
+      action{
+        def student = Student.get(session.user)
+        log.debug(flow.course)
+        student.addToInscriptions(course:flow.course)
+        assert student.save()
       }
       on("success").to("redirect")
     }
