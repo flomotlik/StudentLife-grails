@@ -1,7 +1,7 @@
 fixture{
   course(org.lecturious.Course){
     creator:creator
-    name="Course1" 
+    name="Semistrukturierte Daten" 
     professor="Professor"
     identificator="Identificator"
     type="Type"
