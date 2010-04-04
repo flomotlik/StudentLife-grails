@@ -11,8 +11,12 @@
   <g:textField name="description"/>
   <label for="duration"><g:message code="durationInMinutes"/></label>
   <g:textField name="duration"/>
-  <g:submitButton name="add" value="${g.message(code:'add')}"/>
+  <label for="recurring"><g:message code="recurring"/></label>
+  <g:select name="recurringWeeks" from="${0..26}" value="0"/>
+  <%def addMessage = "${g.message(code:'date')} ${g.message(code:'add')}" %>
+  <g:submitButton name="add" value="${addMessage}"/>
   <g:render template="add/buttons"/>
+  
 </g:form>
 <table>
   <tr>

@@ -9,7 +9,8 @@
   <g:datePicker name="date" value="${new Date()}" precision="minute"/>
   <label for="description"><g:message code="description"/></label>
   <g:textField name="description"/>
-  <g:submitButton name="add" value="${g.message(code:'add')}"/>
+  <%def addMessage = "${g.message(code:'deadline')} ${g.message(code:'add')}" %>
+  <g:submitButton name="add" value="${addMessage}"/>
   <g:render template="add/buttons" model="[next:'save']"/>
 </g:form>
 <table>

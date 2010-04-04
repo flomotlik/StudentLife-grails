@@ -35,13 +35,19 @@ class CourseController {
       on("back").to("initialize")
     }
     dates{
-      on("add"){
+      on("add"){ WithRecurrenceCommand cmd ->
         def course = flow.course
         def event = new Event(params)
         event.course = course
         event.creator = Student.get(session.user)
         if(event.validate()){
           course.addToEvents(event)
+          cmd.recurringWeeks.times {
+            def recurringEvent = new Event(event.properties)
+            recurringEvent.date += 7*(it + 1)
+            assert recurringEvent.validate()
+            course.addToEvents (recurringEvent)
+          }
         }else{
           [event:event]
         }
@@ -132,4 +138,8 @@ class CourseController {
   def showMessages = show
   
   def showLinks = show
+}
+
+class WithRecurrenceCommand{
+    int recurringWeeks
 }
