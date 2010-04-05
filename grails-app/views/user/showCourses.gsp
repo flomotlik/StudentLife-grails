@@ -3,7 +3,9 @@
 <ul>
   <g:each in="${courses}" var="course">
     <li><g:link controller="course" action="show"
-      id="${course.id}">${course.name}</g:link></li>
+      id="${course.id}">
+      <sl:subString value="${course.name}" max="14" attach="..." />
+      </g:link></li>
   </g:each>
 </ul>
 </div>
