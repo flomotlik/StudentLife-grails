@@ -1,10 +1,11 @@
+<g:applyLayout name="showCourses">
 <html>
 <head>
   <title>Show Course ${course.name}</title>
   <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'showCourse.css')}" />
-  <meta content="showCourses" name="layout">
 </head>
 <body>
+<h2>${course.name}</h2>
 <div id="showCourse">
     <g:include action="showMessages" controller="course" id="${course.id}"/>
 </div>
@@ -12,3 +13,4 @@
  
 </body>
 </html>
+</g:applyLayout>
