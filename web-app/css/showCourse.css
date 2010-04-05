@@ -13,8 +13,31 @@
 #showColleagues {
    background-color: white;
    border: 1px solid black;
-   left: 373px;
-   position: absolute;
-   top: 0;
    width: 154px;
+   min-height: 150px;
+   float:right;
+}
+
+#showColleagues ul{
+   list-style-type: none;
+   padding-left: 0px;
+   margin: 0px;
+   text-align: center;
+}
+
+#showColleagues li{
+   margin: 5 0 5 0;
+}
+
+h2{
+ margin:0px;
+}
+   
+   
+#showCourses ul{
+  padding-left: 15px;
+}
+
+#showCourses a{
+  width: 154px;
 }
