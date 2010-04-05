@@ -10,7 +10,7 @@ body {
 }
 
 #logo {
-   position: absolute;
+   float:right;
    left: 556px;
 }
 
@@ -41,7 +41,6 @@ body {
 
 
 #showCourses {
-   position: relative;
    display:inline-block;
    width: 154px;
    background-color: white;

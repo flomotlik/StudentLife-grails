@@ -1,9 +1,7 @@
 @CHARSET "UTF-8";
 
 #subContent {
-   position: relative;
    width: 550px;
-   display: inline-block;
 }
 
 .wall_li {

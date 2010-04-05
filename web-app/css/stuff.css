@@ -3,12 +3,6 @@
    font-size: 13;
 }
 
-
-
-#ad {
-   position: relative;
-}
-
 .course-item {
    background-image: url(../images/columnborder.png);
    background-position: bottom left;
@@ -27,114 +21,6 @@
    border-style: none;
 }
 
-.ad-line {
-   background-image: url(../images/bg-adcontainer.png);
-   background-repeat: repeat-x;
-}
-
-.ad-item {
-   position: relative;
-}
-
-#adlogo {
-   margin: 2 0 2 0;
-}
-
-#attending_list {
-   list-style-type: none;
-   padding: 0;
-   margin-left: 0;
-   position: relative;
-}
-
-.attending-item {
-   height: 52px;
-}
-
-.attending-image {
-   position: relative;
-   left: 5px;
-   top: 5px;
-   width: 30px;
-   height: 52px;
-   margin: 0 4 0 1;
-   float: left;
-}
-
-.attending-box {
-   position: relative;
-   left: 5px;
-}
-
-.attending-name {
-   position: relative;
-   color: #264393;
-   padding: 2 0 0 0;
-   top: 2px;
-}
-
-.attending-info {
-   position: relative;
-   padding: 2 0 0 0;
-}
-
-.addlink {
-   position: relative;
-   /*
-    left:42px;
-    top:100px;
-*/
-}
-
 #item {
    width: 250px;
-}
-
-.aa_container {
-   position: relative;
-   font-family: "Verdana";
-   font-size: 11;
-}
-
-.aa_box {
-   position: relative;
-   height: 60px;
-   width: 154px;
-}
-
-.aa_image {
-   position: relative;
-   top: 10px;
-   left: 2px;
-   height: 30px;
-   width: 30px;
-}
-
-.aa_name {
-   position: relative;
-   top: 0px;
-   left: 35px;
-   height: 20px;
-   width: 119px;
-}
-
-.aa_info {
-   position: relative;
-   top: 15px;
-   left: 35px;
-   height: 20px;
-   width: 150px;
-}
-
-.aa_link {
-   position: relative;
-   top: 30px;
-   left: 35px;
-   width: 119px;
-   height: 20px;
-}
-
-.aa_separator {
-   heigth: 1px;
-   width: 154px;
 }
