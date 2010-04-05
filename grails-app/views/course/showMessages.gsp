@@ -1,4 +1,3 @@
-<g:render template="tablinks" model="[course:course]"/>
 <g:if test="${course}">
   <g:formRemote name="addMessage" update="showCourse"
     url="[action:'add', controller:'message']">
