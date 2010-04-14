@@ -14,4 +14,11 @@ class StudentLifeTagLib {
       out << attach
     }
   }
+  
+  def facebookProfileLink = { attr ->
+      def facebookId = attr.facebookId
+      def text = attr.text
+      def facebookProfileURL = g.message(code:"facebookProfileURL")
+      out << "<a href=\"$facebookProfileURL$facebookId\" target=\"_blank\">$text</a>"
+  }
 }

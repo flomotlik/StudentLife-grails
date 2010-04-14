@@ -2,7 +2,7 @@
   <ul>
     <g:each in="${colleagues}" var="colleague">
       <li>
-        <a href="#link">${colleague.name}</a>
+        <sl:facebookProfileLink facebookId="${colleague.facebookId}" text="${colleague.name}"/>
       </li>
     </g:each>
   </ul>
