@@ -1,19 +1,12 @@
 #courseElements {
-   display: inline-block;
    float: left;
-   left: 0;
-   position: relative;
-   top: 0;
-   width: 25%;
+   width: 29%;
 }
 
 #calendar {
-   position: relative;
-   margin-left: 14px; top : 0px;
-   width: 73%;
+   margin-left: 14px;
+   width: 69%;
    display: inline-block;
-   width: 73%;
-   top: 0px;
 }
 
 #monthSelector {
