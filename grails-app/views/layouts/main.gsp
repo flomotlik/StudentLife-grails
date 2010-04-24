@@ -13,6 +13,7 @@
   <li><g:link controller="calendar" action="index"><g:message code="calendar"/></g:link> |</li>
   <li><g:link controller="wall" action="index"><g:message code="courses"/></g:link> |</li>
   <li><g:link controller="settings" action="index"><g:message code="settings"/></g:link></li>
+  <li class="menu-right"><a href="http://www.facebook.com/apps/application.php?id=172606493847" target="_blank">Feedback</a></li>
 </ul>
 <img id="logo" src="${resource(dir:'images',file:'logo.png')}" alt="StudentLife Logo" />
 </div>
