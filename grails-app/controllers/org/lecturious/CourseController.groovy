@@ -12,10 +12,20 @@ class CourseController {
       action{
         log.debug("Action")
         def universities = Student.get(session.user).universities.toList().sort{it.name}
-        [universities:universities]
+        if(universities.size() > 0){
+            return [universities:universities]
+                    
+        }else{
+            universityRedirect()
+        }
       }
       on("success").to "courseDetails"
+      on("universityRedirect").to "universityRedirect"
     }
+    universityRedirect{
+        redirect(controller:"university", action:"index") 
+      }
+
     redirect{
       redirect(controller:"settings", action:"index") 
     }
@@ -28,6 +38,7 @@ class CourseController {
         course.creator = Student.get(session.user)
         
         def university = University.get(params.university)
+        assert university
         flow.course = course
         flow.university = university
       }.to("dates")
